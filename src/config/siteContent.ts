@@ -15,7 +15,7 @@ export type Feature = {
 };
 
 export const siteContent = {
-  brand: 'NovaFrame Studio',
+  brand: 'OrellanaTech',
   siteUrl: 'https://orellanatech.monespaceprof.com',
   contactEmail: 'contact@example.com',
   nav: [
@@ -29,7 +29,7 @@ export const siteContent = {
     eyebrow: 'Experience 3D pilotee par le scroll',
     title: 'Un site qui se traverse comme un espace.',
     description:
-      'NovaFrame transforme une presentation web en parcours immersif: camera synchronisee, interface lisible, scenes 3D utiles et performance maitrisee.',
+      'OrellanaTech transforme une presentation web en parcours immersif: camera synchronisee, interface lisible, scenes 3D utiles et performance maitrisee.',
     primaryAction: 'Explorer',
     secondaryAction: 'Voir la demo',
   },

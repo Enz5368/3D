@@ -1,4 +1,4 @@
-# NovaFrame Studio - site 3D immersif
+# OrellanaTech - site 3D immersif
 
 Site statique React/Vite/TypeScript avec scene Three.js pilotee par le scroll.
 
