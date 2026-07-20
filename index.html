@@ -1,47 +1,398 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OrellanaTech | Dépannage informatique et création web à Grenoble</title>
-    <meta
-      name="description"
-      content="Dépannage PC et Mac, montage sur mesure, NAS, sites web, logiciels et maison connectée à Grenoble. Devis gratuit avec OrellanaTech."
-    />
-    <meta name="theme-color" content="#071012" />
-    <meta property="og:title" content="OrellanaTech | Services informatiques à Grenoble" />
-    <meta
-      property="og:description"
-      content="Dépannage, PC sur mesure, NAS, sites web et solutions numériques personnalisées. Découvrez les services et préparez votre devis."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://orellanatech.monespaceprof.com/" />
-    <meta property="og:image" content="/og-image.svg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="OrellanaTech" />
-    <meta
-      name="twitter:description"
-      content="Services informatiques, création web et solutions numériques à Grenoble."
-    />
-    <link rel="canonical" href="https://orellanatech.monespaceprof.com/" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "OrellanaTech",
-        "description": "Dépannage informatique, montage PC, NAS, création de sites web, logiciels sur mesure et maison connectée.",
-        "areaServed": "Grenoble et alentours",
-        "url": "https://orellanatech.monespaceprof.com/",
-        "email": "orellanatech37@gmail.com",
-        "telephone": "+33759727856",
-        "identifier": "SIREN 105848204",
-        "priceRange": "€€"
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OrellanaTech propose des services informatiques, sites web, logiciels sur mesure, setup, NAS et maison connectée autour de Grenoble.">
+  <title>OrellanaTech | Services informatiques et sites web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="scene-root" aria-hidden="true"></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navigation principale">
+      <a class="brand" href="#accueil" aria-label="Accueil OrellanaTech">
+        <img class="brand-logo" src="assets/logo-sts.png" alt="OrellanaTech Logo">
+        <span>OrellanaTech</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="main-menu">
+        <a href="#accueil">Accueil</a>
+        <a href="#services">Services</a>
+        <a href="#configurateur">Configurateur</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn-small" href="#configurateur">Demander un devis gratuit</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="accueil">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <p class="eyebrow">Services numériques personnalisés</p>
+          <h1>Services informatiques et sites web</h1>
+          <p class="hero-text">Dépannage PC & Mac, création de sites web, automatisation Excel, NAS, setup et maison connectée avec devis simple et personnalisé.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#configurateur">Demander un devis gratuit</a>
+            <a class="btn btn-secondary" href="#services">Voir les tarifs</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Aperçu des prestations">
+          <img class="hero-image" src="assets/hero-tech.png" alt="Illustration d'un poste informatique avec écran, NAS et téléphone">
+          <div class="status-card">
+            <span class="status-dot"></span>
+            <span>Devis personnalisé sans paiement en ligne</span>
+          </div>
+          <div class="hero-metrics">
+            <div>
+              <strong>dès 30 €</strong>
+              <span>diagnostic PC</span>
+            </div>
+            <div>
+              <strong>dès 100 €</strong>
+              <span>montage PC</span>
+            </div>
+            <div>
+              <strong>dès 290 €</strong>
+              <span>site avec formulaire</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Services</h2>
+          <p>Chaque service est rangé par domaine pour trouver rapidement la prestation adaptée à votre besoin.</p>
+        </div>
+        <div class="service-tabs" role="tablist" aria-label="Secteurs d'activité">
+          <button class="service-tab active" type="button" role="tab" aria-selected="true" data-sector="informatique">Informatique</button>
+          <button class="service-tab" type="button" role="tab" aria-selected="false" data-sector="web">Sites web</button>
+          <button class="service-tab" type="button" role="tab" aria-selected="false" data-sector="outils">Logiciels sur mesure</button>
+          <button class="service-tab" type="button" role="tab" aria-selected="false" data-sector="connecte">Maison connectée</button>
+          <button class="service-tab" type="button" role="tab" aria-selected="false" data-sector="all">Tout voir</button>
+        </div>
+        <div class="services-grid">
+          <a class="service-card" href="services/reparation-optimisation-pc-mac.html" data-sector="informatique">
+            <img class="service-icon" src="assets/icon-pc-repair.svg" alt="">
+            <h3>Réparation / Optimisation PC & Mac</h3>
+            <p class="price">À Partir De 30 €</p>
+            <p>Diagnostic, Système Lent, Windows, macOS, Pilotes, SSD/RAM.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/montage-pc-mac.html" data-sector="informatique">
+            <img class="service-icon" src="assets/icon-pc-build.svg" alt="">
+            <h3>Montage PC & Mac</h3>
+            <p class="price">À Partir De 100 €</p>
+            <p>Montage PC Fixe, Choix Composants, Windows, Mac, Drivers, Tests.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/setup-bureau-teletravail-gaming.html" data-sector="informatique">
+            <img class="service-icon" src="assets/icon-setup.svg" alt="">
+            <h3>Setup Bureau / Télétravail / Gaming</h3>
+            <p class="price">À Partir De 80 €</p>
+            <p>Double Écran, Clavier, Souris, Webcam, Rangement Câbles, Confort.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/nas-sauvegarde.html" data-sector="informatique">
+            <img class="service-icon" src="assets/icon-nas.svg" alt="">
+            <h3>NAS / Sauvegarde</h3>
+            <p class="price">À Partir De 120 €</p>
+            <p>NAS, Photos, Documents, Sauvegarde PC, Dossiers Partagés.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/remplacement-ecran-telephone.html" data-sector="informatique">
+            <img class="service-icon" src="assets/icon-phone.svg" alt="">
+            <h3>Remplacement Écran Téléphone</h3>
+            <p class="price">À Partir De 40 € + Pièce</p>
+            <p>Écran Cassé, Aide Au Choix De La Pièce, Test Tactile/Affichage.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/site-web-personnalise-formulaire.html" data-sector="web">
+            <img class="service-icon" src="assets/icon-web.svg" alt="">
+            <h3>Site Web Personnalisé Avec Formulaire</h3>
+            <p class="price">À Partir De 290 €</p>
+            <p>Site Vitrine Simple, Page De Présentation, Formulaire De Contact Ou Demande De Devis, Intégration Mobile Et Mise En Ligne.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/site-web-personnalise-formulaire.html#cartes-visite" data-sector="web">
+            <img class="service-icon" src="assets/icon-business-card.svg" alt="">
+            <h3>Cartes De Visite + Design</h3>
+            <p class="price">À Partir De 25 €</p>
+            <p>Design Personnalisé De La Carte Et Choix Simple Du Format, De La Finition Et De La Quantité.</p>
+            <span class="service-link">Voir les tarifs</span>
+          </a>
+          <a class="service-card" href="https://mes-cours.netlify.app/" target="_blank" rel="noopener noreferrer" data-sector="web">
+            <img class="service-icon" src="assets/icon-software.svg" alt="">
+            <h3>Portail Pédagogique Privé</h3>
+            <p class="price">4,99 € / mois</p>
+            <p>Portail pédagogique privé pour organiser les classes, séquences, séances, activités et ressources d’une professeure d’italien.</p>
+            <span class="service-link">Voir l’offre</span>
+          </a>
+          <a class="service-card example-service-card" href="https://maxsono.vercel.app/" target="_blank" rel="noopener noreferrer" data-sector="web">
+            <img class="service-icon" src="assets/logo-maxsono.svg" alt="">
+            <h3>Exemple Site DJ</h3>
+            <p class="price">MaxSono</p>
+            <p>Site Vitrine Événementiel Avec Présentation, Prestations Et Appel À La Réservation.</p>
+            <span class="service-link">Voir l'exemple</span>
+          </a>
+          <a class="service-card example-service-card" href="https://avocat-meite-bintou.vercel.app/" target="_blank" rel="noopener noreferrer" data-sector="web">
+            <img class="service-icon" src="assets/logo-avocat-meite.svg" alt="">
+            <h3>Exemple Site Avocat</h3>
+            <p class="price">Cabinet Avocat Meite Bintou</p>
+            <p>Site Professionnel Sobre Avec Mise En Avant De L'Activité, Des Informations Et Du Contact.</p>
+            <span class="service-link">Voir l'exemple</span>
+          </a>
+          <a class="service-card" href="services/logiciels-sur-mesure.html" data-sector="outils">
+            <img class="service-icon" src="assets/icon-software.svg" alt="">
+            <h3>Logiciels Sur Mesure</h3>
+            <p class="price">À Partir De 300 €</p>
+            <p>Création De Logiciels Personnalisés, Automatisation Excel, Gestion Simple, Suivi Client, Gestion De Stock, Formulaires, Tableaux De Bord, Calculs Automatiques.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+          <a class="service-card" href="services/domotique-legere.html" data-sector="connecte">
+            <img class="service-icon" src="assets/icon-smart-home.svg" alt="">
+            <h3>Domotique Légère</h3>
+            <p class="price">À Partir De 80 €</p>
+            <p>Lampes, Prises Et Volets Commandables Avec Application; Google Home, Alexa, Home Assistant.</p>
+            <span class="service-link">Voir la page du service</span>
+          </a>
+        </div>
+        <p class="service-area-note">Services physiques disponibles sur Grenoble. En dehors de Grenoble, un supplément kilométrique peut être appliqué selon la distance.</p>
+      </div>
+    </section>
+
+    <section class="section trust-section" id="pourquoi">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Pourquoi choisir OrellanaTech ?</h2>
+          <p>Une approche claire, locale et adaptée à votre niveau technique, avec une estimation avant toute intervention.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-badge">01</span>
+            <h3>Devis gratuit avant toute intervention</h3>
+          </article>
+          <article class="feature-card">
+            <span class="feature-badge">02</span>
+            <h3>Prix clairs et adaptés au besoin</h3>
+          </article>
+          <article class="feature-card">
+            <span class="feature-badge">03</span>
+            <h3>Explications simples, sans jargon</h3>
+          </article>
+          <article class="feature-card">
+            <span class="feature-badge">04</span>
+            <h3>Intervention autour de Grenoble</h3>
+          </article>
+          <article class="feature-card">
+            <span class="feature-badge">05</span>
+            <h3>Prestations possibles à distance selon le besoin</h3>
+          </article>
+          <article class="feature-card">
+            <span class="feature-badge">06</span>
+            <h3>Accompagnement après la prestation</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section configurator-section" id="configurateur">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Composez votre demande en quelques clics</h2>
+          <p>Ajoutez une ou plusieurs prestations, puis envoyez un récapitulatif clair avec vos coordonnées.</p>
+        </div>
+        <div class="config-layout">
+          <div class="config-panel">
+            <label class="field-label" for="category-select">Catégorie de besoin</label>
+            <select id="category-select">
+              <option value="">Choisir une catégorie</option>
+            </select>
+            <div id="dynamic-questions" class="questions"></div>
+            <button id="add-to-cart" class="btn full-width" type="button">Ajouter à ma demande</button>
+            <p id="config-message" class="form-message" aria-live="polite"></p>
+          </div>
+
+          <aside class="cart-panel" aria-label="Panier de demande">
+            <div class="cart-header">
+              <div>
+                <p class="eyebrow">Récapitulatif</p>
+                <h3>Ma demande</h3>
+              </div>
+              <button id="clear-cart" class="text-button" type="button">Vider</button>
+            </div>
+            <div id="cart-items" class="cart-items">
+              <p class="empty-cart">Aucun service ajouté pour le moment.</p>
+            </div>
+            <div class="cart-total">
+              <span>Total estimé</span>
+              <strong id="cart-total">0 €</strong>
+            </div>
+            <p class="estimate-note">Prix estimatif. Le devis final est confirmé après échange selon le matériel, la distance et la difficulté.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about-section" id="a-propos">
+      <div class="container about-grid">
+        <div class="section-heading">
+          <h2>À propos d'OrellanaTech</h2>
+          <p>Je m'appelle Enzo Orellana, fondateur d'OrellanaTech. J'accompagne les particuliers, indépendants et petites entreprises dans leurs besoins informatiques : dépannage, création de sites web, automatisation, sauvegarde, setup et maison connectée. Mon objectif est de proposer des solutions simples, claires et adaptées à chaque besoin.</p>
+        </div>
+        <article class="about-card">
+          <p class="eyebrow">OrellanaTech</p>
+          <h3>Enzo Orellana</h3>
+          <p>Chaque demande est étudiée avant intervention afin de proposer une estimation cohérente, sans paiement en ligne.</p>
+          <a class="btn" href="#contact">Parler de mon projet</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section faq-section" id="faq">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Questions fréquentes</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>Le devis est-il gratuit ?</summary>
+            <p>Oui, la demande de devis est gratuite et sans engagement. Le prix final est confirmé après échange selon le besoin, le matériel, la distance et la difficulté.</p>
+          </details>
+          <details>
+            <summary>Est-ce que vous vous déplacez ?</summary>
+            <p>Oui, les prestations physiques sont possibles autour de Grenoble. En dehors de Grenoble, un supplément kilométrique peut être appliqué selon la distance.</p>
+          </details>
+          <details>
+            <summary>Puis-je demander une prestation à distance ?</summary>
+            <p>Oui, certaines prestations peuvent se faire à distance : aide logicielle, conseil, création de site web, configuration simple ou accompagnement.</p>
+          </details>
+          <details>
+            <summary>Est-ce que le prix affiché est définitif ?</summary>
+            <p>Non, les prix affichés sont indicatifs. Le devis final est confirmé après analyse de la demande.</p>
+          </details>
+          <details>
+            <summary>Est-ce que vous intervenez sur l'électricité ?</summary>
+            <p>Oui, pour la petite domotique essentiellement.</p>
+          </details>
+          <details>
+            <summary>Est-ce que le paiement se fait en ligne ?</summary>
+            <p>Non, aucun paiement n'est demandé sur le site. Le site sert uniquement à envoyer une demande de devis.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-grid">
+        <div>
+          <h2>Parlons de votre projet</h2>
+          <p>Une panne, un site web, un logiciel sur mesure ou une installation à préparer ? Envoyez votre demande, je vous réponds avec une estimation claire.</p>
+          <ul class="check-list">
+            <li>Services physiques avec zone d'intervention précisée dans les services</li>
+            <li>Supplément possible selon les kilomètres</li>
+            <li>Estimation ajustée après échange</li>
+            <li>Contact possible par téléphone, email ou formulaire</li>
+            <li>Configuration domotique limitée aux objets compatibles</li>
+          </ul>
+          <div class="contact-methods">
+            <button class="contact-method copy-contact" type="button" data-copy="07 59 72 78 56" data-label="Téléphone">
+              <span>Téléphone</span>
+              <strong>07 59 72 78 56</strong>
+            </button>
+            <button class="contact-method copy-contact" type="button" data-copy="orellanatech37@gmail.com" data-label="Email">
+              <span>Email</span>
+              <strong>orellanatech37@gmail.com</strong>
+            </button>
+          </div>
+        </div>
+
+        <form id="quote-form" class="contact-form" action="https://formspree.io/f/mjgdjjyv" method="POST">
+          <input type="hidden" name="_subject" value="Nouvelle demande OrellanaTech">
+          <div class="form-heading">
+            <h3>Décrire mon besoin</h3>
+          </div>
+          <div class="form-row">
+            <label>
+              Prénom *
+              <input type="text" name="prenom" id="first-name" autocomplete="given-name">
+            </label>
+            <label>
+              Nom
+              <input type="text" name="nom" autocomplete="family-name">
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Email *
+              <input type="email" name="email" id="email" autocomplete="email">
+            </label>
+            <label>
+              Téléphone *
+              <input type="tel" name="telephone" id="phone" autocomplete="tel">
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Ville *
+              <input type="text" name="ville" id="city" autocomplete="address-level2">
+            </label>
+            <label>
+              Créneau souhaité
+              <input type="text" name="creneau" placeholder="Ex : soir, samedi, semaine">
+            </label>
+          </div>
+          <label>
+            Message complémentaire
+            <textarea name="message" rows="5" placeholder="Modèle du PC, référence téléphone, contraintes, disponibilités..."></textarea>
+          </label>
+          <input type="hidden" name="recapitulatif_panier" id="cart-summary">
+          <button class="btn full-width" type="submit">Envoyer ma demande</button>
+          <p id="form-message" class="form-message" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>
+        <p>OrellanaTech</p>
+        <p>Services informatiques, sites web, logiciels sur mesure, setup, NAS et maison connectée.</p>
+      </div>
+      <div class="footer-links">
+        <button class="copy-link copy-contact" type="button" data-copy="07 59 72 78 56" data-label="Téléphone">07 59 72 78 56</button>
+        <button class="copy-link copy-contact" type="button" data-copy="orellanatech37@gmail.com" data-label="Email">orellanatech37@gmail.com</button>
+      </div>
+    </div>
+    <div class="container legal-band">
+      <details>
+        <summary>Mentions légales</summary>
+        <p><strong>OrellanaTech</strong><br>Enzo Orellana<br>Entrepreneur individuel / micro-entreprise<br>SIREN : 105848204<br>Email : orellanatech37@gmail.com<br>Téléphone : 07 59 72 78 56<br>Zone d'intervention : Grenoble et alentours<br>TVA non applicable, article 293 B du CGI<br>Hébergement : à compléter selon la plateforme utilisée.</p>
+      </details>
+      <details>
+        <summary>Confidentialité</summary>
+        <p>Les informations envoyées via le formulaire servent uniquement à répondre à votre demande, préparer une estimation ou échanger sur une prestation. Elles ne sont pas vendues ni utilisées pour de la prospection automatique.</p>
+      </details>
+      <details>
+        <summary>Conditions de service</summary>
+        <p>Les tarifs affichés sont indicatifs et présentés "à partir de". Aucun paiement n'est effectué sur le site. Une demande envoyée via le formulaire ne devient une commande qu'après confirmation d'un devis ou d'un accord.</p>
+      </details>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
 </html>

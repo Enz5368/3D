@@ -1,6 +1,7 @@
-# OrellanaTech - site 3D immersif
+# OrellanaTech — site métier avec fond 3D
 
-Site statique React/Vite/TypeScript avec scene Three.js pilotee par le scroll.
+Le site métier historique OrellanaTech est conservé en HTML, CSS et JavaScript,
+avec une scène React/Three.js fixe pilotée par le scroll en arrière-plan.
 
 Adresse de production : `https://orellanatech.monespaceprof.com`
 
@@ -13,14 +14,16 @@ npm run lint
 npm run build
 ```
 
-## Personnalisation
+## Structure
 
-- Textes, liens, e-mail et donnees de demonstration : `src/config/siteContent.ts`
-- Chemin camera : `src/config/cameraPath.ts`
-- Timings, seuils responsive et densite de particules : `src/config/animationConfig.ts`
-- Images, modeles et textures optimises : `src/assets/`
-
-L'adresse `contact@example.com` est encore un placeholder a remplacer.
+- Page principale et contenu métier : `index.html`
+- Apparence originale : `public/style.css`
+- Configurateur, panier, filtres et interactions : `public/script.js`
+- Pages détaillées : `services/`
+- Images et logos : `public/assets/`
+- Couche d’intégration du fond 3D : `src/styles/legacy-scene.css`
+- Chemin caméra 3D : `src/config/cameraPath.ts`
+- Réglages de la scène : `src/config/animationConfig.ts`
 
 ## Architecture de production
 

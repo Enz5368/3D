@@ -1,16 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
-import './styles/globals.css';
+import { SceneLayer } from './SceneLayer';
+import './styles/legacy-scene.css';
 
-const root = document.getElementById('root');
+const sceneRoot = document.getElementById('scene-root');
 
-if (!root) {
-  throw new Error('Root element not found');
+if (!sceneRoot) {
+  throw new Error('Scene root element not found');
 }
 
-createRoot(root).render(
+createRoot(sceneRoot).render(
   <StrictMode>
-    <App />
+    <SceneLayer />
   </StrictMode>,
 );

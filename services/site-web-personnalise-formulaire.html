@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Creation de site web personnalise avec formulaire : site vitrine, page de presentation, formulaire de contact ou devis, responsive et mise en ligne.">
+  <title>Site web personnalise avec formulaire | OrellanaTech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="service-page">
+  <div id="scene-root" aria-hidden="true"></div>
+  <header class="site-header"><nav class="nav container" aria-label="Navigation principale"><a class="brand" href="../index.html#accueil"><img class="brand-logo" src="../assets/logo-sts.png" alt="OrellanaTech Logo"><span>OrellanaTech</span></a><div class="nav-links"><a href="../index.html#services">Services</a><a href="../index.html#configurateur">Configurateur</a><a href="../index.html#contact">Contact</a><a class="btn btn-small" href="../index.html#configurateur">Demander un devis gratuit</a></div></nav></header>
+  <main>
+    <section class="service-detail-hero"><div class="container service-detail-grid"><div><p class="eyebrow">Creation web</p><h1>Site web personnalise avec formulaire</h1><p>Creation d'un site vitrine clair, responsive et adapte a votre activite, avec formulaire de contact, demande de devis ou reservation selon votre besoin.</p></div><aside class="service-summary-card"><img class="service-icon" src="../assets/icon-web.svg" alt=""><p class="price">A partir de 290 &euro;</p><p>Tarif selon le nombre de pages, le contenu et les fonctionnalites.</p><a class="btn" id="website-request" href="../index.html#configurateur">Demander ce service</a></aside></div></section>
+    <section class="service-detail-section"><div class="container service-content-grid">
+      <article class="service-content-card"><h2>Pour quels besoins ?</h2><ul><li>Site vitrine pour artisan, independant, association ou petit commerce.</li><li>Page de presentation professionnelle avec contact visible.</li><li>Formulaire de contact, devis, inscription ou reservation simple.</li><li>Refonte d'une page existante devenue trop ancienne.</li></ul></article>
+      <article class="service-content-card"><h2>Ce qui est inclus</h2><ul><li>Structure responsive pour mobile, tablette et ordinateur.</li><li>Integration des textes, images et informations principales.</li><li>Formulaire envoye vers votre email.</li><li>Aide a la mise en ligne et aux reglages essentiels.</li></ul></article>
+      <article class="service-content-card"><h2>Deroulement</h2><ol><li>Vous indiquez votre activite, vos pages et le type de formulaire.</li><li>Je propose une structure simple et lisible.</li><li>Le site est integre puis ajuste avec vos retours.</li><li>La mise en ligne est accompagnee si besoin.</li></ol></article>
+      <article class="service-content-card"><h2>A prevoir</h2><p>Le nom de domaine, l'hebergement, les photos professionnelles et les services externes eventuels ne sont pas inclus sauf accord specifique.</p></article>
+    </div></section>
+    <section class="service-detail-section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Exemples de sites web</h2>
+          <p>Deux realisations que vous pouvez ouvrir pour voir le rendu sur ordinateur et mobile.</p>
+        </div>
+        <div class="web-examples-grid">
+          <article class="web-example-card">
+            <img class="project-logo" src="../assets/logo-maxsono.svg" alt="Logo MaxSono">
+            <div>
+              <h3>MaxSono</h3>
+              <p>Site vitrine evenementiel avec presentation, prestations et appel a la reservation.</p>
+              <a class="btn btn-secondary" href="https://maxsono.vercel.app/" target="_blank" rel="noopener noreferrer">Voir l'exemple</a>
+            </div>
+          </article>
+          <article class="web-example-card">
+            <img class="project-logo" src="../assets/logo-avocat-meite.svg" alt="Logo Cabinet avocat Meite Bintou">
+            <div>
+              <h3>Cabinet avocat Meite Bintou</h3>
+              <p>Site professionnel sobre avec mise en avant de l'activite, des informations et du contact.</p>
+              <a class="btn btn-secondary" href="https://avocat-meite-bintou.vercel.app/" target="_blank" rel="noopener noreferrer">Voir l'exemple</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="service-detail-section" id="cartes-visite">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Cartes de visite + design</h2>
+          <p>Je cree aussi le design de la carte. Choisissez simplement le format, la finition et la quantite; le prix arrondi sert d'estimation claire avant devis final.</p>
+        </div>
+        <div class="business-card-picker" data-card-picker>
+          <div class="picker-panel">
+            <div class="picker-group">
+              <h3>Format</h3>
+              <div class="picker-options picker-options-three">
+                <button class="picker-option is-selected" type="button" data-format="Standard 85 x 55 mm">
+                  <span class="mini-card standard-card"></span>
+                  <strong>Standard</strong>
+                  <span>85 x 55 mm</span>
+                </button>
+                <button class="picker-option" type="button" data-format="Carre 65 x 65 mm">
+                  <span class="mini-card square-card"></span>
+                  <strong>Carre</strong>
+                  <span>65 x 65 mm</span>
+                </button>
+                <button class="picker-option" type="button" data-format="Slim 85 x 40 mm">
+                  <span class="mini-card slim-card"></span>
+                  <strong>Slim</strong>
+                  <span>85 x 40 mm</span>
+                </button>
+              </div>
+            </div>
+            <div class="picker-group">
+              <h3>Finition</h3>
+              <div class="picker-options picker-options-three">
+                <button class="picker-option finish-option is-selected" type="button" data-finish="Aucun(e)">
+                  <span class="finish-preview finish-none"></span>
+                  <strong>Aucun(e)</strong>
+                  <span>prix slim</span>
+                </button>
+                <button class="picker-option finish-option" type="button" data-finish="Effet metallise">
+                  <span class="finish-preview finish-metal"></span>
+                  <strong>Effet metallise</strong>
+                  <span>rendu premium</span>
+                </button>
+                <button class="picker-option finish-option" type="button" data-finish="Vernis selectif">
+                  <span class="finish-preview finish-varnish"></span>
+                  <strong>Vernis selectif</strong>
+                  <span>prix affiche</span>
+                </button>
+              </div>
+            </div>
+            <div class="picker-group">
+              <h3>Orientation</h3>
+              <div class="segmented-options">
+                <button class="segment-option" type="button" data-orientation="Verticale">Verticale</button>
+                <button class="segment-option is-selected" type="button" data-orientation="Horizontale">Horizontale</button>
+              </div>
+            </div>
+            <div class="picker-group">
+              <label class="field-label" for="business-card-quantity">Quantite</label>
+              <select id="business-card-quantity">
+                <option value="100">100 cartes</option>
+                <option value="250" selected>250 cartes</option>
+                <option value="500">500 cartes</option>
+                <option value="1000">1000 cartes</option>
+                <option value="1500">1500 cartes</option>
+                <option value="2000">2000 cartes</option>
+              </select>
+            </div>
+          </div>
+          <aside class="picker-summary">
+            <div class="business-card-preview" aria-hidden="true">
+              <img class="preview-logo" src="../assets/icon-business-card.svg" alt="">
+              <div>
+                <strong>Votre nom</strong>
+                <span>Carte de visite</span>
+              </div>
+            </div>
+            <p class="eyebrow">Selection</p>
+            <h3 id="business-card-choice">Slim 85 x 40 mm - Aucun(e)</h3>
+            <p id="business-card-details">250 cartes - 0,10 &euro; / unite</p>
+            <p class="price" id="business-card-total">25 &euro;</p>
+            <p class="estimate-note">Le design personnalise de la carte est inclus dans la demande. Le prix final est confirme avant impression.</p>
+            <a class="btn" id="business-card-request" href="../index.html#configurateur">Demander cette carte</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="service-cta-band"><div class="container service-cta-inner"><div><h2>Un site simple qui presente vraiment votre activite.</h2><p>Choisissez le nombre de pages et le formulaire souhaite.</p></div><a class="btn" href="../index.html#configurateur">Composer ma demande</a></div></section>
+  </main>
+  <script>
+    const cardPicker = document.querySelector("[data-card-picker]");
+    const pendingCartStorageKey = "orellanatech-pending-cart-item";
+
+    function sendPendingCartItem(item) {
+      localStorage.setItem(pendingCartStorageKey, JSON.stringify(item));
+      window.location.href = "../index.html#configurateur";
+    }
+
+    const websiteRequest = document.querySelector("#website-request");
+
+    if (websiteRequest) {
+      websiteRequest.addEventListener("click", (event) => {
+        event.preventDefault();
+        sendPendingCartItem({
+          categoryKey: "siteWebFormulaire",
+          category: "Site web personnalise avec formulaire",
+          selections: {
+            besoinPrincipal: ["Site vitrine"],
+            pages: ["Je ne sais pas"],
+            formulaire: ["Contact"],
+            utilisateur: ["Entreprise"],
+            budget: ["290 a 500 €"]
+          },
+          budget: "290 a 500 €",
+          price: 290
+        });
+      });
+    }
+
+    if (cardPicker) {
+      const cardPrices = {
+        "Aucun(e)": {
+          100: { unit: "0,18", total: 20, detail: "estimation 18 €" },
+          250: { unit: "0,10", total: 25, detail: "22,79 € affiche" },
+          500: { unit: "0,06", total: 30, detail: "estimation 30 €" },
+          1000: { unit: "0,05", total: 50, detail: "estimation 50 €" },
+          1500: { unit: "0,05", total: 80, detail: "estimation 75 €" },
+          2000: { unit: "0,05", total: 100, detail: "estimation 100 €" }
+        },
+        "Effet metallise": {
+          100: { unit: "0,30", total: 30, detail: "estimation 30 €" },
+          250: { unit: "0,16", total: 40, detail: "38,39 € affiche" },
+          500: { unit: "0,11", total: 60, detail: "estimation 55 €" },
+          1000: { unit: "0,07", total: 70, detail: "estimation 70 €" },
+          1500: { unit: "0,07", total: 110, detail: "estimation 105 €" },
+          2000: { unit: "0,07", total: 140, detail: "estimation 140 €" }
+        }
+      };
+
+      const state = {
+        format: "Standard 85 x 55 mm",
+        finish: "Aucun(e)",
+        orientation: "Horizontale",
+        quantity: "250"
+      };
+
+      const choice = document.querySelector("#business-card-choice");
+      const details = document.querySelector("#business-card-details");
+      const total = document.querySelector("#business-card-total");
+      const request = document.querySelector("#business-card-request");
+      const quantity = document.querySelector("#business-card-quantity");
+
+      function selectButton(button, selector) {
+        button.closest(selector).querySelectorAll("button").forEach((item) => item.classList.remove("is-selected"));
+        button.classList.add("is-selected");
+      }
+
+      function renderCardChoice() {
+        const isSlim = state.format === "Slim 85 x 40 mm";
+
+        cardPicker.querySelectorAll("[data-finish]").forEach((button) => {
+          const disabled = isSlim && button.dataset.finish !== "Aucun(e)";
+          button.disabled = disabled;
+          button.classList.toggle("is-disabled", disabled);
+        });
+
+        if (isSlim && state.finish !== "Aucun(e)") {
+          state.finish = "Aucun(e)";
+          cardPicker.querySelectorAll("[data-finish]").forEach((button) => {
+            button.classList.toggle("is-selected", button.dataset.finish === "Aucun(e)");
+          });
+        }
+
+        const finishPrices = cardPrices[state.finish] || cardPrices["Aucun(e)"];
+        const price = finishPrices[state.quantity];
+        const needsCustomQuote = false;
+        const customNote = `${price.unit} € / unite - ${price.detail}`;
+        const customTotal = `${price.total} €`;
+
+        choice.textContent = `${state.format} - ${state.finish}`;
+        details.textContent = `${state.quantity} cartes - ${state.orientation} - ${customNote}`;
+        total.textContent = customTotal;
+        request.href = `../index.html#configurateur`;
+      }
+
+      request.addEventListener("click", (event) => {
+        event.preventDefault();
+        const selectedOption = `${state.format} - ${state.finish} - ${state.quantity} cartes`;
+        const price = cardPrices[state.finish]?.[state.quantity]?.total;
+        const isQuote = state.finish === "Vernis selectif" || state.format !== "Slim 85 x 40 mm" || price === undefined;
+
+        sendPendingCartItem({
+          categoryKey: "cartesVisite",
+          category: "Cartes de visite + design",
+          selections: {
+            formatQuantite: [selectedOption],
+            orientation: [state.orientation],
+            design: ["Creation complete"],
+            budget: ["Prix affiche OK"]
+          },
+          budget: "Prix affiche OK",
+          price: price || 0,
+          priceLabel: ""
+        });
+      });
+
+      cardPicker.querySelectorAll("[data-format]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.format = button.dataset.format;
+          selectButton(button, ".picker-options");
+          renderCardChoice();
+        });
+      });
+
+      cardPicker.querySelectorAll("[data-finish]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.finish = button.dataset.finish;
+          selectButton(button, ".picker-options");
+          renderCardChoice();
+        });
+      });
+
+      cardPicker.querySelectorAll("[data-orientation]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.orientation = button.dataset.orientation;
+          selectButton(button, ".segmented-options");
+          renderCardChoice();
+        });
+      });
+
+      quantity.addEventListener("change", () => {
+        state.quantity = quantity.value;
+        renderCardChoice();
+      });
+
+      renderCardChoice();
+    }
+  </script>
+  <script>
+    const finalCardPrices = {
+      "Slim 85 x 40 mm - Aucun(e)": { 100: 20, 250: 25, 500: 30, 1000: 50, 1500: 80, 2000: 100 },
+      "Standard 85 x 55 mm - Aucun(e)": { 100: 20, 250: 25, 500: 30, 1000: 50, 1500: 80, 2000: 100 },
+      "Standard 85 x 55 mm - Effet metallise": { 100: 30, 250: 40, 500: 60, 1000: 70, 1500: 110, 2000: 140 },
+      "Standard 85 x 55 mm - Vernis selectif": { 100: 30, 250: 40, 500: 60, 1000: 80, 1500: 120, 2000: 160 },
+      "Carre 65 x 65 mm - Aucun(e)": { 100: 30, 250: 25, 500: 60, 1000: 80, 1500: 120, 2000: 160 },
+      "Carre 65 x 65 mm - Effet metallise": { 100: 40, 250: 60, 500: 80, 1000: 110, 1500: 160, 2000: 210 },
+      "Carre 65 x 65 mm - Vernis selectif": { 100: 40, 250: 60, 500: 80, 1000: 110, 1500: 160, 2000: 210 }
+    };
+
+    function getFinalCardSelection() {
+      const selectedFormat = document.querySelector("[data-format].is-selected")?.dataset.format || "Standard 85 x 55 mm";
+      const selectedFinish = document.querySelector("[data-finish].is-selected")?.dataset.finish || "Aucun(e)";
+      const selectedOrientation = document.querySelector("[data-orientation].is-selected")?.dataset.orientation || "Horizontale";
+      const selectedQuantity = document.querySelector("#business-card-quantity")?.value || "250";
+      const key = `${selectedFormat} - ${selectedFinish}`;
+      const total = finalCardPrices[key]?.[selectedQuantity] || 0;
+      return { selectedFormat, selectedFinish, selectedOrientation, selectedQuantity, total };
+    }
+
+    function renderFinalCardPrice() {
+      const { selectedFormat, selectedFinish, selectedOrientation, selectedQuantity, total } = getFinalCardSelection();
+      const choice = document.querySelector("#business-card-choice");
+      const details = document.querySelector("#business-card-details");
+      const price = document.querySelector("#business-card-total");
+      const unitPrice = total > 0 ? (total / Number(selectedQuantity)).toFixed(2).replace(".", ",") : "0,00";
+
+      if (choice && details && price) {
+        choice.textContent = `${selectedFormat} - ${selectedFinish}`;
+        details.textContent = `${selectedQuantity} cartes - ${selectedOrientation} - ${unitPrice} € / unite`;
+        price.textContent = `${total} €`;
+      }
+    }
+
+    document.querySelectorAll("[data-format], [data-finish], [data-orientation], #business-card-quantity").forEach((control) => {
+      const eventName = control.tagName === "SELECT" ? "change" : "click";
+      control.addEventListener(eventName, () => window.setTimeout(renderFinalCardPrice, 0));
+    });
+
+    document.querySelector("#business-card-request")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const { selectedFormat, selectedFinish, selectedOrientation, selectedQuantity, total } = getFinalCardSelection();
+      localStorage.setItem("orellanatech-pending-cart-item", JSON.stringify({
+        categoryKey: "cartesVisite",
+        category: "Cartes de visite + design",
+        selections: {
+          formatQuantite: [`${selectedFormat} - ${selectedFinish} - ${selectedQuantity} cartes`],
+          orientation: [selectedOrientation],
+          design: ["Creation complete"],
+          budget: ["Prix affiche OK"]
+        },
+        budget: "Prix affiche OK",
+        price: total
+      }));
+      window.location.href = "../index.html#configurateur";
+    }, true);
+
+    renderFinalCardPrice();
+  </script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
