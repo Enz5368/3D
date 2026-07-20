@@ -41,6 +41,7 @@ rollback() {
       ln -s "$previous_release" "$rollback_link"
       mv -Tf "$rollback_link" "$current_link"
     else
+      rm -f "$current_link"
       docker_cmd rm -f "$container_name" >/dev/null 2>&1 || true
     fi
   fi
@@ -54,7 +55,7 @@ tar -xzf "$archive_path" -C "$release_dir"
 test -f "$release_dir/index.html"
 install -m 0644 "$config_path" "$runtime_dir/default.conf"
 
-ln -s "$release_dir" "$next_link"
+ln -s "releases/$release_id" "$next_link"
 mv -Tf "$next_link" "$current_link"
 
 docker_cmd rm -f "$container_name" >/dev/null 2>&1 || true
