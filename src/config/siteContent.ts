@@ -18,7 +18,7 @@ export type Feature = {
 
 export const siteContent = {
   brand: 'NovaFrame Studio',
-  siteUrl: 'https://example.com',
+  siteUrl: 'https://orellanatech.monespaceprof.com',
   contactEmail: 'contact@example.com',
   nav: [
     { label: 'Vision', href: '#vision' },
