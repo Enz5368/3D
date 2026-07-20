@@ -1,4 +1,5 @@
 import { ArrowUp } from 'lucide-react';
+import { contactDetails } from '../../config/businessContent';
 import { siteContent } from '../../config/siteContent';
 
 export const SiteFooter = () => {
@@ -6,7 +7,7 @@ export const SiteFooter = () => {
 
   return (
     <footer className="footer">
-      <a className="footer__brand" href="#top" aria-label="Retour au debut">
+      <a className="footer__brand" href="#accueil" aria-label="Retour au début">
         {siteContent.brand}
       </a>
       <nav aria-label="Navigation de pied de page">
@@ -17,11 +18,11 @@ export const SiteFooter = () => {
         ))}
       </nav>
       <div className="footer__meta">
-        <span>{year}</span>
-        <a href="#legal">Mentions legales</a>
-        <a href="#privacy">Confidentialite</a>
+        <span>© {year} · SIREN {contactDetails.siren}</span>
+        <span>Mentions légales</span>
+        <span>Confidentialité</span>
         <a href={`mailto:${siteContent.contactEmail}`}>{siteContent.contactEmail}</a>
-        <a className="icon-link" href="#top" aria-label="Retour en haut de page">
+        <a className="icon-link" href="#accueil" aria-label="Retour en haut de page">
           <ArrowUp size={18} aria-hidden="true" />
         </a>
       </div>

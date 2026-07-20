@@ -17,7 +17,7 @@ export const Navigation = () => {
 
   return (
     <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
-      <a className="nav__brand" href="#top" aria-label={`${siteContent.brand} - accueil`}>
+      <a className="nav__brand" href="#accueil" aria-label={`${siteContent.brand} - accueil`}>
         <span className="nav__brand-mark" aria-hidden="true">O</span>
         <span className="nav__brand-name">{siteContent.brand}</span>
       </a>
