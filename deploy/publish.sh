@@ -40,6 +40,8 @@ rollback() {
       rollback_link="$site_root/.rollback-$release_id"
       ln -s "$previous_release" "$rollback_link"
       mv -Tf "$rollback_link" "$current_link"
+    else
+      docker_cmd rm -f "$container_name" >/dev/null 2>&1 || true
     fi
   fi
   rm -f "$archive_path" "$config_path" "$0"

@@ -3,9 +3,7 @@ import {
   BrainCircuit,
   Gauge,
   LayoutDashboard,
-  Move3d,
   ShieldCheck,
-  Sparkles,
   Waypoints,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
