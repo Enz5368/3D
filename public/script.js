@@ -851,9 +851,7 @@ function validateForm(event) {
 
   const requiredFields = [
     { selector: "#first-name", label: "Prénom" },
-    { selector: "#email", label: "Email" },
-    { selector: "#phone", label: "Téléphone" },
-    { selector: "#city", label: "Ville" }
+    { selector: "#email", label: "Email" }
   ];
 
   const missing = requiredFields
