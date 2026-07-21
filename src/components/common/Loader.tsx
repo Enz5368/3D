@@ -27,7 +27,7 @@ export const Loader = ({ isReady }: LoaderProps) => {
   return (
     <div className={`loader ${isReady ? 'loader--ready' : ''}`} role="status" aria-live="polite">
       <div className="loader__mark" aria-hidden="true" />
-      <p>NovaFrame Studio</p>
+      <p>OrellanaTech</p>
       <strong>{displayProgress}%</strong>
       <div className="loader__bar">
         <span style={{ transform: `scaleX(${Math.max(displayProgress, 8) / 100})` }} />

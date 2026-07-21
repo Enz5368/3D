@@ -17,8 +17,8 @@ type MainSceneProps = {
 export const MainScene = ({ isMobile, isLowPower, particleCount, reducedMotion }: MainSceneProps) => (
   <>
     <CameraRig reducedMotion={reducedMotion} isMobile={isMobile} />
-    <color attach="background" args={['#071012']} />
-    <fog attach="fog" args={['#071012', 9, 24]} />
+    <color attach="background" args={['#071c29']} />
+    <fog attach="fog" args={['#071c29', 9, 24]} />
     <Lighting isLowPower={isLowPower} />
     <Environment />
     <MainObject reducedMotion={reducedMotion} />

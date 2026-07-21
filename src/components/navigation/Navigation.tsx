@@ -17,8 +17,8 @@ export const Navigation = () => {
 
   return (
     <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
-      <a className="nav__brand" href="#top" aria-label="NovaFrame Studio - accueil">
-        <span aria-hidden="true">N</span>
+      <a className="nav__brand" href="#top" aria-label="OrellanaTech - accueil">
+        <span aria-hidden="true">O</span>
         {siteContent.brand}
       </a>
       <button
@@ -42,7 +42,7 @@ export const Navigation = () => {
           </a>
         ))}
         <a className="nav__cta" href="#contact" onClick={() => setOpen(false)}>
-          Contact
+          Demander un devis
         </a>
       </nav>
     </header>

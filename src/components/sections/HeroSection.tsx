@@ -1,30 +1,24 @@
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import { siteContent } from '../../config/siteContent';
-import { useRevealAnimations } from '../../hooks/useRevealAnimations';
 
 export const HeroSection = () => {
-  useRevealAnimations();
-
   return (
-    <section className="hero section" id="top" aria-labelledby="hero-title">
+    <section className="hero" id="top" aria-labelledby="hero-title">
       <div className="hero__content" data-reveal>
         <p className="eyebrow">{siteContent.hero.eyebrow}</p>
         <h1 id="hero-title">{siteContent.hero.title}</h1>
         <p className="hero__lead">{siteContent.hero.description}</p>
         <div className="hero__actions">
-          <a className="button button--primary" href="#vision">
-            {siteContent.hero.primaryAction}
-            <ArrowRight size={18} aria-hidden="true" />
+          <a className="button button--primary" href="#estimation">
+            Obtenir une estimation <ArrowRight size={18} aria-hidden="true" />
           </a>
-          <a className="button button--secondary" href="#demo">
-            {siteContent.hero.secondaryAction}
-          </a>
+          <a className="button button--secondary" href="#services">Découvrir les services</a>
         </div>
+        <p className="hero__local"><MapPin size={15} /> Grenoble et alentours · Assistance à distance</p>
       </div>
-      <a className="scroll-cue" href="#vision" aria-label="Faire defiler vers la section vision">
-        <ArrowDown size={18} aria-hidden="true" />
-        Scroll
-      </a>
+      <div className="hero__visual-label" aria-hidden="true">
+        <span>Assistance</span><span>Web</span><span>Automatisation</span>
+      </div>
     </section>
   );
 };

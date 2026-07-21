@@ -1,123 +1,79 @@
-import {
-  Blocks,
-  BrainCircuit,
-  Gauge,
-  LayoutDashboard,
-  Move3d,
-  ShieldCheck,
-  Sparkles,
-  Waypoints,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-
-export type Feature = {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-};
+import { Bot, Globe2, HousePlug, Laptop, ShieldCheck, Sparkles } from 'lucide-react';
 
 export const siteContent = {
-  brand: 'NovaFrame Studio',
-  siteUrl: 'https://example.com',
-  contactEmail: 'contact@example.com',
+  brand: 'OrellanaTech',
+  siteUrl: 'https://homespacepro.com',
+  contactEmail: 'orellanatech37@gmail.com',
+  phone: '07 59 72 78 56',
   nav: [
-    { label: 'Vision', href: '#vision' },
-    { label: 'Fonctions', href: '#features' },
-    { label: 'Demo', href: '#demo' },
-    { label: 'Resultats', href: '#results' },
-    { label: 'Galerie', href: '#gallery' },
+    { label: 'Services', href: '#services' },
+    { label: 'Estimation', href: '#estimation' },
+    { label: 'À propos', href: '#about' },
+    { label: 'FAQ', href: '#faq' },
   ],
   hero: {
-    eyebrow: 'Experience 3D pilotee par le scroll',
-    title: 'Un site qui se traverse comme un espace.',
+    eyebrow: 'Services numériques sur mesure',
+    title: 'La technologie, simplement maîtrisée.',
     description:
-      'NovaFrame transforme une presentation web en parcours immersif: camera synchronisee, interface lisible, scenes 3D utiles et performance maitrisee.',
-    primaryAction: 'Explorer',
-    secondaryAction: 'Voir la demo',
+      'Dépannage, création web et automatisation pour les particuliers et petites entreprises de Grenoble.',
   },
-  vision: {
-    title: 'Une narration spatiale, pas un simple effet visuel.',
-    body:
-      'Le contenu reste au premier plan pendant que la scene accompagne chaque argument. Les transitions guident le regard, revelent les usages et donnent une impression de profondeur sans sacrifier la clarte.',
-    cards: [
-      {
-        title: 'Pour les marques exigeantes',
-        text: 'Lancement produit, studio creatif, SaaS premium ou portfolio technique: l experience donne un signal fort des la premiere seconde.',
-      },
-      {
-        title: 'Pour les utilisateurs reels',
-        text: 'Navigation clavier, textes HTML, responsive mobile et reduction des mouvements assurent une experience utilisable au quotidien.',
-      },
-      {
-        title: 'Pour les equipes produit',
-        text: 'Contenu, positions camera et timings sont centralises afin de faire evoluer la page sans fouiller chaque composant.',
-      },
-    ],
-  },
-  features: [
+  services: [
     {
-      icon: Waypoints,
-      title: 'Camera choregraphiee',
-      description: 'Un chemin 3D continu relie les sections avec des interpolations douces.',
+      icon: Laptop,
+      title: 'Assistance informatique',
+      description: 'PC lent, panne, installation, sauvegarde ou récupération de données.',
+      price: 'Dès 30 €',
+      tone: 'mint',
+      featured: true,
     },
     {
-      icon: LayoutDashboard,
-      title: 'Interfaces flottantes',
-      description: 'Les panneaux HTML et les objets 3D racontent la meme etape au meme moment.',
+      icon: Globe2,
+      title: 'Sites web',
+      description: 'Des sites rapides, lisibles et pensés pour convertir vos visiteurs.',
+      price: 'Dès 290 €',
+      tone: 'blue',
     },
     {
-      icon: Gauge,
-      title: 'Performance controlee',
-      description: 'DPR limite, scene mobile allegee, listeners nettoyes et animations suspendues si besoin.',
+      icon: Bot,
+      title: 'Logiciels sur mesure',
+      description: 'Automatisez les tâches répétitives avec des outils adaptés à votre activité.',
+      price: 'Sur devis',
+      tone: 'peach',
     },
+    {
+      icon: HousePlug,
+      title: 'Maison connectée',
+      description: 'Installation et configuration d’équipements compatibles, sans jargon.',
+      price: 'Dès 100 €',
+      tone: 'lilac',
+      featured: true,
+    },
+  ],
+  benefits: [
     {
       icon: ShieldCheck,
-      title: 'Accessible par defaut',
-      description: 'Contenu semantique, focus visible, contrastes solides et mode reduced motion.',
+      number: '01',
+      title: 'Un prix annoncé avant l’intervention',
+      text: 'Vous recevez une estimation claire avant de vous engager.',
     },
     {
-      icon: Blocks,
-      title: 'Architecture modulaire',
-      description: 'Composants courts, configuration centrale et scene Three.js organisee.',
+      icon: Sparkles,
+      number: '02',
+      title: 'Des explications compréhensibles',
+      text: 'La solution vous est expliquée simplement, sans jargon inutile.',
     },
     {
-      icon: BrainCircuit,
-      title: 'Experience memorable',
-      description: 'Micro-interactions discretes et transitions utiles, sans surenchere visuelle.',
-    },
-  ] satisfies Feature[],
-  demo: {
-    title: 'Une demonstration qui simule un vrai produit.',
-    body:
-      'La camera s approche d un poste de controle 3D. Les panneaux changent de profondeur et les etats de l interface accompagnent la lecture.',
-    steps: ['Decouverte', 'Configuration', 'Projection', 'Conversion'],
-  },
-  metrics: [
-    { value: '01', label: 'scene centrale configurable', note: 'Donnee de demonstration' },
-    { value: '07', label: 'sections synchronisees', note: 'Donnee de demonstration' },
-    { value: '60', label: 'fps vises sur desktop', note: 'Objectif technique' },
-  ],
-  gallery: [
-    {
-      title: 'Tunnel produit',
-      category: 'Scroll 3D',
-      description: 'Cartes visuelles et camera en avance progressive.',
-    },
-    {
-      title: 'Console immersive',
-      category: 'Interface',
-      description: 'Ecran 3D avec etats de demonstration synchronises.',
-    },
-    {
-      title: 'Lancement premium',
-      category: 'Brand',
-      description: 'Composition finale avec lumiere chaude et appel a l action.',
+      icon: HousePlug,
+      number: '03',
+      title: 'Un accompagnement de proximité',
+      text: 'À Grenoble ou à distance, avant comme après la prestation.',
     },
   ],
-  cta: {
-    title: 'Pret a donner du relief a votre presence web ?',
-    body:
-      'Cette base est prete a recevoir vos textes, captures, modeles GLB optimises et integration de contact.',
-    action: 'Demarrer un projet',
-  },
+  faqs: [
+    ['Le devis est-il gratuit ?', 'Oui. Une première estimation est communiquée gratuitement avant toute intervention.'],
+    ['Est-ce que vous vous déplacez ?', 'Oui, autour de Grenoble. La zone et les éventuels frais de déplacement sont précisés avant validation.'],
+    ['Puis-je demander une prestation à distance ?', 'Oui. De nombreux diagnostics, réglages et accompagnements peuvent être réalisés à distance.'],
+    ['Le prix affiché est-il définitif ?', 'Il s’agit d’une estimation. Le tarif final est confirmé après échange selon le matériel, la distance et la difficulté.'],
+    ['Est-ce que le paiement se fait en ligne ?', 'Non. Aucun paiement n’est demandé sur le site. Les modalités sont convenues directement après validation du devis.'],
+  ],
 };

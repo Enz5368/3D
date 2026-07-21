@@ -1,6 +1,6 @@
-# NovaFrame Studio - site 3D immersif
+# OrellanaTech
 
-Prototype professionnel React/Vite/TypeScript avec scene Three.js pilotee par le scroll.
+Site vitrine premium pour les services informatiques, web et d'automatisation d'OrellanaTech à Grenoble.
 
 ## Commandes
 
@@ -8,14 +8,7 @@ Prototype professionnel React/Vite/TypeScript avec scene Three.js pilotee par le
 npm install
 npm run dev
 npm run build
-npm run preview
+npm run lint
 ```
 
-## Personnalisation
-
-- Textes, liens, e-mail et donnees de demonstration: `src/config/siteContent.ts`
-- Chemin camera: `src/config/cameraPath.ts`
-- Timings, seuils responsive et densite de particules: `src/config/animationConfig.ts`
-- Images, modeles et textures optimises a ajouter dans `src/assets/`
-
-Le domaine `https://example.com` et l'adresse `contact@example.com` sont des placeholders a remplacer avant publication.
+Le projet utilise React, TypeScript, Vite, Three.js, GSAP et Lenis. Les coordonnées, services et contenus principaux sont centralisés dans `src/config/siteContent.ts`.

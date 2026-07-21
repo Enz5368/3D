@@ -10,7 +10,7 @@ export const Environment = () => (
         mixStrength={0.35}
         roughness={0.75}
         depthScale={0.4}
-        color="#071012"
+        color="#071c29"
         metalness={0.25}
       />
     </mesh>
