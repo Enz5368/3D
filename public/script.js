@@ -970,30 +970,3 @@ copyButtons.forEach((button) => {
   button.setAttribute("aria-label", `Copier ${button.dataset.label || "contact"}`);
   button.addEventListener("click", () => handleCopyContact(button));
 });
-
-const setupStory = document.querySelector(".setup-story");
-
-if (setupStory && !window.matchMedia("(max-width: 900px), (prefers-reduced-motion: reduce)").matches) {
-  let storyFrame = 0;
-
-  const renderSetupStory = () => {
-    const rect = setupStory.getBoundingClientRect();
-    const scrollable = Math.max(setupStory.offsetHeight - window.innerHeight, 1);
-    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-    const eased = progress * progress * (3 - 2 * progress);
-    const hotspotProgress = Math.min(1, Math.max(0, (progress - 0.34) / 0.34));
-
-    setupStory.style.setProperty("--story-progress", eased.toFixed(4));
-    setupStory.style.setProperty("--hotspot-progress", hotspotProgress.toFixed(4));
-    setupStory.classList.toggle("is-explored", hotspotProgress > 0.7);
-    storyFrame = 0;
-  };
-
-  const requestStoryRender = () => {
-    if (!storyFrame) storyFrame = window.requestAnimationFrame(renderSetupStory);
-  };
-
-  renderSetupStory();
-  window.addEventListener("scroll", requestStoryRender, { passive: true });
-  window.addEventListener("resize", requestStoryRender, { passive: true });
-}
