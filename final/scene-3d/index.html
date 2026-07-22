@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrellanaTech — Scène 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+    "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+    "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js",
+    "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.mjs"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- La hauteur de #scroll-track définit la durée de la séquence (400vh = 3 écrans de scroll) -->
+<div id="scroll-track">
+  <div id="stage3d">
+    <canvas id="scene-canvas"></canvas>
+
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <!-- Overlay des plaques hotspots (projetées en 2D) -->
+    <div id="hotspot-layer"></div>
+
+    <header class="hud">
+      <span class="brand">ORELLANATECH</span>
+      <span class="mode-plate">ORELLANATECH — STUDIO</span>
+    </header>
+
+    <!-- Graduation de progression (élément signature) -->
+    <div class="ruler" aria-hidden="true">
+      <div class="ruler-ticks"></div>
+      <div id="ruler-needle"></div>
+    </div>
+
+    <!-- Fallback si WebGL indisponible : liste des services en HTML pur -->
+    <div id="webgl-fallback" hidden>
+      <h1>OrellanaTech</h1>
+      <p>Services informatiques &amp; développement web — Grenoble</p>
+      <ul>
+        <li><a href="#configurateur">Domotique légère</a></li>
+        <li><a href="#configurateur">Réparation &amp; optimisation PC / Mac</a></li>
+        <li><a href="#configurateur">Site web personnalisé &amp; portail pédagogique</a></li>
+        <li><a href="#configurateur">Montage PC, setup &amp; logiciels sur mesure</a></li>
+        <li><a href="#configurateur">Sauvegarde &amp; stockage réseau (NAS)</a></li>
+        <li><a href="#configurateur">Remplacement d'écran de téléphone</a></li>
+        <li><a href="#configurateur">Cartes de visite &amp; design</a></li>
+      </ul>
+    </div>
+
+    <div id="loader3d" role="status" aria-label="Chargement de la scène">
+      <div class="dial">
+        <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+          <circle class="track" cx="80" cy="80" r="70" stroke-width="2"
+                  stroke-dasharray="3 5"></circle>
+          <circle class="arc" id="load-arc" cx="80" cy="80" r="70" stroke-width="3"
+                  stroke-dasharray="439.8" stroke-dashoffset="439.8" stroke-linecap="butt"></circle>
+        </svg>
+        <span class="pct" id="load-pct">0</span>
+        <span class="label">CALIBRATION DE LA SCÈNE</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Repère provisoire : à l'intégration finale, c'est le configurateur du site qui suit -->
+<section class="next-placeholder">
+  <h2>SUITE DU SITE</h2>
+  <p>À l'intégration : le configurateur, à propos et contact prennent le relais ici — inchangés.</p>
+</section>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

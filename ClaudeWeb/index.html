@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORELLANATECH — Services Informatiques & Architecture Digitale · Grenoble</title>
+<meta name="description" content="ORELLANATECH : réparation PC/Mac, montage PC, NAS, domotique, sites web, cartes de visite. Grenoble.">
+<style>
+  :root{
+    --amber:#ffb454; --cyan:#4de8ff;
+    --bg:#0a0a0c; --ink:#f2efe9; --ink-dim:rgba(242,239,233,.6);
+    --glass:rgba(15,15,20,.55); --glass-border:rgba(255,255,255,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);
+    font-family:'Inter','Segoe UI',system-ui,sans-serif;overflow-x:hidden}
+  ::selection{background:var(--amber);color:#000}
+
+  #stage{height:600vh;position:relative}
+  #viewport{position:sticky;top:0;height:100vh;width:100%;overflow:hidden}
+  #bgvideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:saturate(1.05) contrast(1.04)}
+  #bgfallback{position:absolute;inset:0;background:
+      radial-gradient(60% 50% at 75% 30%, rgba(77,232,255,.12), transparent 60%),
+      radial-gradient(50% 60% at 20% 70%, rgba(255,180,84,.14), transparent 60%),
+      linear-gradient(160deg,#101014 0%,#0a0a0c 60%,#060607 100%)}
+  #viewport::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%)}
+  .bar{position:absolute;left:0;right:0;height:4vh;background:#000;pointer-events:none}
+  .bar.top{top:0}.bar.bot{bottom:0}
+
+  #rail{position:fixed;right:22px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:14px;z-index:50}
+  #rail button{width:10px;height:10px;border-radius:50%;border:1px solid var(--ink-dim);
+    background:transparent;padding:0;cursor:pointer;transition:all .4s cubic-bezier(.22,1,.36,1)}
+  #rail button.active{background:var(--amber);border-color:var(--amber);box-shadow:0 0 12px var(--amber)}
+
+  .panel{position:absolute;z-index:10;background:var(--glass);
+    -webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);
+    border:1px solid var(--glass-border);border-radius:18px;padding:26px 30px;
+    box-shadow:0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+    max-width:min(420px,88vw);will-change:transform,opacity}
+  .panel h3{font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:10px;font-weight:600}
+  .panel h3 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:var(--cyan);margin-right:9px;box-shadow:0 0 10px var(--cyan)}
+  .panel ul{list-style:none}
+  .panel li{display:flex;justify-content:space-between;gap:18px;padding:8px 0;
+    border-bottom:1px dashed rgba(255,255,255,.08);font-size:.93rem}
+  .panel li:last-child{border-bottom:none}
+  .panel li .price{color:var(--cyan);font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+  .panel p.note{margin-top:10px;font-size:.8rem;color:var(--ink-dim)}
+
+  #hero{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;pointer-events:none}
+  #hero h1{font-size:clamp(2.6rem,8vw,6.5rem);font-weight:800;letter-spacing:.14em;
+    background:linear-gradient(100deg,var(--ink) 30%,var(--amber) 55%,var(--cyan) 80%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 80px rgba(255,180,84,.15)}
+  #hero p{margin-top:14px;font-size:clamp(.85rem,2vw,1.15rem);letter-spacing:.28em;
+    text-transform:uppercase;color:var(--ink-dim)}
+  #hero .scrollcue{position:absolute;bottom:9vh;font-size:.75rem;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--ink-dim);animation:cue 2.2s ease-in-out infinite}
+  @keyframes cue{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(10px);opacity:1}}
+
+  #devis{position:absolute;inset:0;z-index:20;display:flex;justify-content:center;align-items:center}
+  #devis .box{width:min(760px,92vw);max-height:84vh;overflow-y:auto;
+    background:rgba(10,10,14,.72);-webkit-backdrop-filter:blur(24px) saturate(1.4);
+    backdrop-filter:blur(24px) saturate(1.4);border:1px solid var(--glass-border);
+    border-radius:22px;padding:36px 40px;
+    box-shadow:0 30px 90px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08)}
+  #devis h2{font-size:1.6rem;letter-spacing:.06em;margin-bottom:4px}
+  #devis h2 span{color:var(--amber)}
+  #devis .sub{color:var(--ink-dim);font-size:.9rem;margin-bottom:22px}
+  .svc{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;
+    cursor:pointer;border:1px solid transparent;transition:all .25s cubic-bezier(.22,1,.36,1);
+    user-select:none}
+  .svc:hover{background:rgba(255,255,255,.05)}
+  .svc input{accent-color:var(--amber);width:17px;height:17px;cursor:pointer}
+  .svc .lbl{flex:1;font-size:.95rem}
+  .svc .lbl small{display:block;color:var(--ink-dim);font-size:.78rem;margin-top:2px}
+  .svc .pr{color:var(--cyan);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.92rem}
+  .svc.checked{border-color:rgba(255,180,84,.4);background:rgba(255,180,84,.06)}
+  #total-row{display:flex;justify-content:space-between;align-items:baseline;margin-top:22px;
+    padding-top:18px;border-top:1px solid rgba(255,255,255,.14)}
+  #total-row .cap{letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;color:var(--ink-dim)}
+  #total{font-size:2rem;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums}
+  #total small{font-size:.9rem;color:var(--ink-dim);font-weight:400}
+  .actions{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}
+  .btn{flex:1;min-width:200px;text-align:center;padding:14px 22px;border-radius:12px;
+    font-size:.92rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+    text-decoration:none;cursor:pointer;border:none;transition:all .3s cubic-bezier(.22,1,.36,1)}
+  .btn.primary{background:linear-gradient(100deg,var(--amber),#ff9a2e);color:#1a1005}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,180,84,.35)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--glass-border)}
+  .btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+
+  #loader{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;
+    flex-direction:column;gap:18px;justify-content:center;align-items:center;
+    transition:opacity .8s cubic-bezier(.22,1,.36,1),visibility .8s}
+  #loader.done{opacity:0;visibility:hidden}
+  #loader .logo{letter-spacing:.3em;font-weight:700;font-size:1.1rem}
+  #loader .logo b{color:var(--amber)}
+  #loadbar{width:min(280px,60vw);height:2px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  #loadbar i{display:block;height:100%;width:20%;background:linear-gradient(90deg,var(--amber),var(--cyan));
+    animation:load 1.1s ease-in-out infinite}
+  @keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(600%)}}
+
+  @media (max-width:640px){
+    .panel{padding:20px 22px}
+    .pos-tl,.pos-tr{top:12vh !important;left:4vw !important;right:4vw !important}
+    .pos-bl,.pos-br{bottom:10vh !important;left:4vw !important;right:4vw !important}
+    #rail{right:10px}
+    #devis .box{padding:26px 22px}
+  }
+</style>
+</head>
+<body>
+<div id="loader"><div class="logo">ORELLANA<b>TECH</b></div><div id="loadbar"><i></i></div></div>
+<div id="root"></div>
+
+<script type="importmap">
+{
+  "imports":{
+    "react":"https://esm.sh/react@18.3.1",
+    "react-dom/client":"https://esm.sh/react-dom@18.3.1/client",
+    "framer-motion":"https://esm.sh/framer-motion@11.3.19?deps=react@18.3.1,react-dom@18.3.1"
+  }
+}
+</script>
+<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+
+<script type="text/babel" data-type="module" data-presets="react">
+import React, { useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
+import { motion, useScroll, useSpring, useTransform, useMotionValueEvent } from "framer-motion";
+
+/* Vidéo cinématique Higgsfield. 1) fichier local recommandé, 2) URL hébergée (peut expirer). */
+const SOURCES = [
+  "assets/orellanatech-studio.mp4",
+  "https://d8j0ntlcm91z4.cloudfront.net/user_3GoWrWHEoHYXJA86wd9cnzSlJsd/hf_20260721_171921_98aece1c-0fb4-4379-8656-a221fc370cbf.mp4"
+];
+const VIDEO_ENDS_AT = 0.80; // % de scroll où la vidéo atteint sa dernière image
+
+const SERVICES = [
+  {id:"repar",   name:"Réparation / Optimisation PC & Mac", note:"Diagnostic, nettoyage, upgrade", price:30},
+  {id:"ecran",   name:"Remplacement écran téléphone",       note:"Hors coût de la pièce", price:40, extra:"+ pièce"},
+  {id:"setup",   name:"Setup Gaming / Bureau",              note:"Câblage, périphériques, ergonomie", price:80},
+  {id:"domo",    name:"Domotique légère",                   note:"Lampes, volets, prises, Google/Alexa", price:80},
+  {id:"montage", name:"Montage PC sur mesure",              note:"Choix composants + assemblage", price:100},
+  {id:"nas",     name:"NAS / Sauvegarde",                   note:"Cloud privé, protection des données", price:120},
+  {id:"carte",   name:"Cartes de visite & design",          note:"Création graphique + fichiers print", price:25},
+  {id:"site",    name:"Site web personnalisé + formulaire", note:"Design, développement, mise en ligne", price:290},
+  {id:"logiciel",name:"Logiciel sur mesure",                note:"Outil métier, automatisation", price:300},
+  {id:"portail", name:"Portail pédagogique privé",          note:"Abonnement mensuel", price:4.99, monthly:true}
+];
+
+const RAIL = [
+  {label:"Accueil", go:0.00}, {label:"Domotique & NAS", go:0.22},
+  {label:"Hardware", go:0.42}, {label:"Web & Design", go:0.62}, {label:"Devis", go:0.90}
+];
+
+/* Panneau overlay : fondu + glissement pilotés par le scroll lissé */
+function Panel({ smooth, range, from, className, children }){
+  const [a,b,c,d] = range;
+  const opacity = useTransform(smooth, [a,b,c,d], [0,1,1,0]);
+  const y  = useTransform(smooth, [a,b,c,d], [34,0,0,-24]);
+  const x  = useTransform(smooth, [a,b,c,d],
+              from==="left" ? [-46,0,0,-46] : from==="right" ? [46,0,0,46] : [0,0,0,0]);
+  return (
+    <motion.div className={"panel "+className} style={{opacity,y,x}}>{children}</motion.div>
+  );
+}
+
+function App(){
+  const videoRef = useRef(null);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [active, setActive] = useState(0);
+  const [picked, setPicked] = useState({});
+  const targetTime = useRef(0);
+
+  const { scrollYProgress } = useScroll();
+  // Lissage spring : c'est LUI qui rend le défilement fluide (au lieu du seek brut)
+  const smooth = useSpring(scrollYProgress, { stiffness:110, damping:30, mass:0.35 });
+
+  /* ---- Chargement vidéo (src direct = pas de souci CORS) ---- */
+  useEffect(()=>{
+    const v = videoRef.current; if(!v) return;
+    let i = 0;
+    const loadNext = ()=>{
+      if(i >= SOURCES.length){ setFailed(true); finish(); return; }
+      v.src = SOURCES[i++];
+      v.load();
+    };
+    const onMeta = ()=>{ setReady(true); finish(); };
+    const onErr  = ()=> loadNext();
+    const finish = ()=> document.getElementById("loader").classList.add("done");
+    v.addEventListener("loadedmetadata", onMeta);
+    v.addEventListener("error", onErr, true);
+    loadNext();
+    return ()=>{ v.removeEventListener("loadedmetadata", onMeta); v.removeEventListener("error", onErr, true); };
+  },[]);
+
+  /* ---- Scrub : le scroll lissé -> temps cible, appliqué en rAF avec fastSeek ---- */
+  useMotionValueEvent(smooth, "change", (p)=>{
+    const v = videoRef.current;
+    if(v && v.duration){
+      targetTime.current = Math.min(p / VIDEO_ENDS_AT, 1) * (v.duration - 0.05);
+    }
+    // rail actif
+    const zones = [0.10,0.32,0.52,0.72,1.01];
+    let idx = zones.findIndex(z=> p < z); if(idx<0) idx = 4;
+    setActive(idx);
+  });
+
+  useEffect(()=>{
+    let raf, cur = 0;
+    const loop = ()=>{
+      const v = videoRef.current;
+      if(v && v.duration){
+        cur += (targetTime.current - cur) * 0.16;      // easing supplémentaire
+        if(Math.abs(v.currentTime - cur) > 0.015){
+          if(v.fastSeek) v.fastSeek(cur);              // seek vers keyframe = plus fluide
+          else v.currentTime = cur;
+        }
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return ()=> cancelAnimationFrame(raf);
+  },[]);
+
+  const goTo = (p)=>{
+    const y = p * (document.getElementById("stage").offsetHeight - innerHeight);
+    window.scrollTo({ top:y, behavior:"smooth" });
+  };
+
+  /* ---- Devis ---- */
+  const toggle = (id)=> setPicked(s=> ({...s, [id]: !s[id]}));
+  let oneOff = 0, monthly = 0; const chosen = [];
+  SERVICES.forEach(s=>{ if(picked[s.id]){ chosen.push(s.name); s.monthly ? monthly += s.price : oneOff += s.price; }});
+  const fmt = (n,d=0)=> n.toLocaleString("fr-FR", d?{minimumFractionDigits:d}:undefined);
+  const mailHref = "mailto:enzoorellana200438640@gmail.com?subject="+
+    encodeURIComponent("Demande de devis — ORELLANATECH")+"&body="+
+    encodeURIComponent(
+      "Bonjour ORELLANATECH,\n\nJe souhaite un devis pour :\n- "+
+      (chosen.length?chosen.join("\n- "):"(aucun service sélectionné)")+
+      "\n\nEstimation affichée : dès "+fmt(oneOff)+" €"+
+      (monthly? " + "+fmt(monthly,2)+" €/mois":"")+
+      "\n\nMes coordonnées :\nNom :\nTéléphone :\nVille : Grenoble\n\nMerci !");
+
+  const devisOpacity = useTransform(smooth, [0.80,0.85,1], [0,1,1]);
+  const devisScale   = useTransform(smooth, [0.80,0.86],   [0.96,1]);
+  const heroOpacity  = useTransform(smooth, [0,0.10,0.15], [1,1,0]);
+  const heroY        = useTransform(smooth, [0,0.15],      [0,-60]);
+
+  return (
+    <div id="stage">
+      <div id="viewport">
+        {failed && <div id="bgfallback"></div>}
+        <video id="bgvideo" ref={videoRef} muted playsInline preload="auto" style={{display: failed?"none":"block"}}></video>
+        <div className="bar top"></div><div className="bar bot"></div>
+
+        {/* S1 HERO */}
+        <motion.div id="hero" style={{opacity:heroOpacity, y:heroY}}>
+          <h1>ORELLANATECH</h1>
+          <p>Services Informatiques &amp; Architecture Digitale — Grenoble</p>
+          <div className="scrollcue">▼ Scroll pour explorer le studio</div>
+        </motion.div>
+
+        {/* S2 FENÊTRE & NAS */}
+        <div style={{position:"absolute",top:"16vh",left:"6vw"}}>
+          <Panel smooth={smooth} range={[0.18,0.21,0.37,0.40]} from="left" className="">
+            <h3><span className="dot"></span>Domotique Légère</h3>
+            <ul>
+              <li>Lampes, volets, prises connectées <span className="price">dès 80&nbsp;€</span></li>
+              <li>Intégration Google Home / Alexa <span className="price">inclus</span></li>
+            </ul>
+            <p className="note">Pilotez votre intérieur à la voix ou au smartphone.</p>
+          </Panel>
+        </div>
+        <div style={{position:"absolute",bottom:"14vh",left:"6vw"}}>
+          <Panel smooth={smooth} range={[0.22,0.25,0.37,0.40]} from="left" className="">
+            <h3><span className="dot"></span>NAS / Sauvegarde</h3>
+            <ul>
+              <li>Cloud privé à domicile <span className="price">dès 120&nbsp;€</span></li>
+              <li>Sécurisation de vos données <span className="price">inclus</span></li>
+            </ul>
+            <p className="note">Vos fichiers, chez vous, accessibles partout.</p>
+          </Panel>
+        </div>
+
+        {/* S3 HARDWARE & LAPTOP */}
+        <div style={{position:"absolute",top:"14vh",right:"6vw"}}>
+          <Panel smooth={smooth} range={[0.40,0.43,0.57,0.60]} from="right" className="">
+            <h3><span className="dot"></span>Hardware PC &amp; Mac</h3>
+            <ul>
+              <li>Réparation / Optimisation PC &amp; Mac <span className="price">dès 30&nbsp;€</span></li>
+              <li>Montage PC sur mesure <span className="price">dès 100&nbsp;€</span></li>
+              <li>Setup Gaming / Bureau <span className="price">dès 80&nbsp;€</span></li>
+              <li>Logiciels sur mesure <span className="price">dès 300&nbsp;€</span></li>
+            </ul>
+          </Panel>
+        </div>
+        <div style={{position:"absolute",bottom:"12vh",right:"6vw"}}>
+          <Panel smooth={smooth} range={[0.44,0.47,0.57,0.60]} from="right" className="">
+            <h3><span className="dot"></span>Smartphone</h3>
+            <ul><li>Remplacement écran téléphone <span className="price">dès 40&nbsp;€ + pièce</span></li></ul>
+            <p className="note">Diagnostic offert avant intervention.</p>
+          </Panel>
+        </div>
+
+        {/* S4 ÉCRAN & BRANDING */}
+        <div style={{position:"absolute",top:"16vh",left:"6vw"}}>
+          <Panel smooth={smooth} range={[0.60,0.63,0.77,0.80]} from="left" className="">
+            <h3><span className="dot"></span>Web &amp; Digital</h3>
+            <ul>
+              <li>Site web personnalisé + formulaire <span className="price">dès 290&nbsp;€</span></li>
+              <li>Portail pédagogique privé <span className="price">4,99&nbsp;€/mois</span></li>
+            </ul>
+          </Panel>
+        </div>
+        <div style={{position:"absolute",bottom:"13vh",right:"6vw"}}>
+          <Panel smooth={smooth} range={[0.64,0.67,0.77,0.80]} from="right" className="">
+            <h3><span className="dot"></span>Branding</h3>
+            <ul><li>Cartes de visite &amp; design <span className="price">dès 25&nbsp;€</span></li></ul>
+            <p className="note">Identité visuelle cohérente, print &amp; digital.</p>
+          </Panel>
+        </div>
+
+        {/* S5 CONFIGURATEUR */}
+        <motion.div id="devis" style={{opacity:devisOpacity, scale:devisScale,
+            pointerEvents: active===4 ? "auto":"none"}}>
+          <div className="box">
+            <h2>Configurateur de <span>devis</span></h2>
+            <p className="sub">Cochez vos besoins — estimation instantanée, sans engagement.</p>
+            {SERVICES.map(s=>(
+              <label key={s.id} className={"svc"+(picked[s.id]?" checked":"")}>
+                <input type="checkbox" checked={!!picked[s.id]} onChange={()=>toggle(s.id)} />
+                <span className="lbl">{s.name}<small>{s.note}</small></span>
+                <span className="pr">{s.monthly? fmt(s.price,2)+" €/mois" : "dès "+s.price+" €"+(s.extra?" "+s.extra:"")}</span>
+              </label>
+            ))}
+            <div id="total-row">
+              <span className="cap">Estimation à partir de</span>
+              <span id="total">{fmt(oneOff)}&nbsp;€ <small>{monthly? "+ "+fmt(monthly,2)+" €/mois":""}</small></span>
+            </div>
+            <div className="actions">
+              <a className="btn primary" href={mailHref}>Demander ce devis</a>
+              <button className="btn ghost" type="button" onClick={()=>setPicked({})}>Réinitialiser</button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <nav id="rail" aria-label="Progression">
+        {RAIL.map((r,i)=>(
+          <button key={i} title={r.label} className={active===i?"active":""} onClick={()=>goTo(r.go)} />
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

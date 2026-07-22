@@ -35,8 +35,8 @@ export const Lighting = ({ isLowPower }: LightingProps) => {
         castShadow={!isLowPower}
         shadow-mapSize={[1024, 1024]}
       />
-      <pointLight ref={accentLight} position={[3, 1.5, 2.5]} color="#8df4df" intensity={1.1} />
-      <pointLight position={[-3, -1, -2]} color="#f0c36a" intensity={0.8} />
+      <pointLight ref={accentLight} position={[3, 1.5, 2.5]} color="#2997ff" intensity={1.1} />
+      <pointLight position={[-3, -1, -2]} color="#bf5af2" intensity={0.8} />
     </>
   );
 };

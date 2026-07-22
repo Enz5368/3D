@@ -1,0 +1,285 @@
+/* OrellanaTech — Scène 3D · palette « Banc d'essai » */
+:root {
+  --alu: #F2F1EC;
+  --graphite: #232422;
+  --orange: #E8551F;
+  --bleu: #3E7C93;
+  --laiton: #A9814A;
+  --reglet: #C6C6BE;
+  --anthracite: #2E3236;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ffffff;
+  color: var(--graphite);
+  font-family: var(--font-body);
+  font-weight: 300;
+}
+
+/* ===== Piste de scroll + cadre 3D épinglé ===== */
+#scroll-track {
+  position: relative;
+  height: 300vh; /* durée de la séquence scrollytelling (trajet raccourci) */
+}
+#stage3d {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+}
+#scene-canvas { display: block; width: 100%; height: 100%; }
+
+/* Couche overlay des hotspots : pointer-events gérés par plaque */
+#hotspot-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+}
+
+/* Graduation de progression (bas d'écran) */
+.ruler {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 55%);
+  height: 16px;
+  z-index: 10;
+}
+.ruler-ticks {
+  position: absolute;
+  top: 4px;
+  width: 100%;
+  height: 8px;
+  background: repeating-linear-gradient(90deg,
+    var(--graphite) 0 1px, transparent 1px 14px);
+  opacity: 0.45;
+}
+#ruler-needle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 16px;
+  background: var(--orange);
+}
+
+/* ===== Hotspots : réticule + fiche signalétique (pas de tooltip arrondi) ===== */
+.hotspot {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 12;
+  will-change: transform, opacity;
+  transition: opacity 0.35s ease;
+}
+/* le réticule est centré sur l'ancre 3D ; la fiche se déploie sur le côté */
+.hs-reticle {
+  position: absolute;
+  left: -9px; top: -9px;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--anthracite);
+  border-radius: 50%;
+}
+.hs-reticle::before, .hs-reticle::after {
+  content: ''; position: absolute; background: var(--anthracite);
+}
+.hs-reticle::before { left: 50%; top: -5px; width: 1.5px; height: 5px; transform: translateX(-50%); }
+.hs-reticle::after  { top: 50%; left: -5px; height: 1.5px; width: 5px; transform: translateY(-50%); }
+
+/* ligne de rappel entre le réticule et la fiche */
+.hs-leader {
+  position: absolute;
+  top: 0;
+  height: 1px;
+  width: 46px;
+  background: var(--anthracite);
+}
+.hs-left  .hs-leader { right: 9px; }
+.hs-right .hs-leader { left: 9px; }
+
+.hs-plate {
+  position: absolute;
+  top: -15px;
+  display: block;
+  background: color-mix(in srgb, var(--anthracite) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--anthracite) 70%, #ffffff);
+  /* coin haut entaillé côté ligne de rappel */
+  padding: 9px 14px;
+  color: #f0f1f2;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.22);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+.hs-left  .hs-plate { right: 55px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 12px); }
+.hs-right .hs-plate { left: 55px;  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%); }
+.hs-plate:hover { background: var(--anthracite); }
+.hs-plate:focus-visible { outline: 2px solid var(--anthracite); outline-offset: 2px; }
+
+.hs-title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.13em;
+  color: #f0f1f2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspot { transition: none; }
+}
+
+/* ===== Profil mobile : une plaque unique épinglée en bas d'écran ===== */
+.is-mobile .hotspot.hs-mobile-active {
+  transform: none !important;
+  top: auto; bottom: 24px;
+  left: 50%;
+  margin-left: min(-45vw, -180px);
+  width: min(90vw, 360px);
+  z-index: 14;
+}
+.is-mobile .hs-mobile-active .hs-reticle,
+.is-mobile .hs-mobile-active .hs-leader { display: none; }
+.is-mobile .hs-mobile-active .hs-plate {
+  position: relative;
+  top: 0; left: 0; right: 0;
+  width: 100%;
+  clip-path: none;
+  text-align: center;
+}
+
+/* ===== prefers-reduced-motion : la piste ne pousse plus le scroll ===== */
+body.reduced #scroll-track { height: 100vh; }
+@media (prefers-reduced-motion: reduce) {
+  .corner, .hotspot { transition: none; }
+}
+
+/* ===== Fallback WebGL ===== */
+#webgl-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  padding: 8vw;
+  background: #ffffff;
+}
+#webgl-fallback h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: clamp(1.6rem, 6vw, 2.6rem);
+}
+#webgl-fallback p { color: #6b6b64; margin-bottom: 10px; }
+#webgl-fallback ul { list-style: none; display: grid; gap: 8px; }
+#webgl-fallback a {
+  color: var(--graphite);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid var(--reglet);
+  padding: 8px 0;
+  display: inline-block;
+}
+#webgl-fallback a:hover { color: var(--bleu); }
+
+/* Section repère sous la séquence (retirée à l'intégration) */
+.next-placeholder {
+  min-height: 60vh;
+  display: grid;
+  place-content: center;
+  gap: 10px;
+  text-align: center;
+  border-top: 1px solid var(--reglet);
+}
+.next-placeholder h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+.next-placeholder p { color: #6b6b64; max-width: 46ch; }
+
+/* Amorces d'angle (élément signature) */
+.corner {
+  position: absolute;
+  width: 26px; height: 26px;
+  pointer-events: none;
+  z-index: 10;
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.corner.tl { top: 14px; left: 14px; border-top: 2px solid var(--graphite); border-left: 2px solid var(--graphite); }
+.corner.tr { top: 14px; right: 14px; border-top: 2px solid var(--graphite); border-right: 2px solid var(--graphite); }
+.corner.bl { bottom: 14px; left: 14px; border-bottom: 2px solid var(--graphite); border-left: 2px solid var(--graphite); }
+.corner.br { bottom: 14px; right: 14px; border-bottom: 2px solid var(--graphite); border-right: 2px solid var(--graphite); }
+
+/* ===== HUD ===== */
+.hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 30px;
+  z-index: 10;
+  pointer-events: none;
+}
+.hud > * { pointer-events: auto; }
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+}
+.mode-plate {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--graphite);
+  border: 1px solid var(--laiton);
+  background: color-mix(in srgb, var(--alu) 88%, transparent);
+  padding: 8px 14px;
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px); /* coin entaillé */
+}
+
+/* ===== Écran de chargement (cadran gradué, vraie progression) ===== */
+#loader3d {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+#loader3d.done { opacity: 0; visibility: hidden; }
+.dial { position: relative; width: 160px; height: 160px; }
+.dial svg { transform: rotate(-90deg); }
+.dial .track { stroke: var(--reglet); }
+.dial .arc { stroke: var(--orange); transition: stroke-dashoffset 0.2s linear; }
+.dial .pct {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+.dial .label {
+  position: absolute;
+  bottom: -34px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--bleu);
+  white-space: nowrap;
+}

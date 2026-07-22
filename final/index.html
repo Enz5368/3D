@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrellanaTech — Services Informatiques & Sites Web · Grenoble</title>
+<meta name="description" content="OrellanaTech : réparation PC/Mac, montage PC, NAS, domotique, sites web, logiciels sur mesure et cartes de visite autour de Grenoble. Devis gratuit en ligne.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  .service-showcase { perspective: 1100px; }
+  .service-showcase > div { height: 100%; }
+  .service-product-card { min-height: 590px; overflow: hidden; background:#111; border-radius:28px; color:#f5f5f7; transform-style:preserve-3d; transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease; }
+  .service-product-card:hover { transform:translateY(-10px) rotateX(2deg); box-shadow:0 35px 85px rgba(0,0,0,.28); }
+  .service-stage { position:relative; height:320px; overflow:hidden; background:#000; perspective:850px; }
+  .service-stage::before { content:""; position:absolute; width:210px;height:210px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:#0071e3;filter:blur(75px);opacity:.25; }
+  .service-stage::after { content:""; position:absolute;width:170px;height:24px;left:50%;bottom:37px;transform:translateX(-50%);border-radius:50%;background:#000;filter:blur(12px);opacity:.85; }
+  .service-object { --w:160px;--h:180px;position:absolute;width:var(--w);height:var(--h);left:50%;top:48%;transform-style:preserve-3d;animation:serviceFloat 5s ease-in-out infinite; }
+  .service-showcase:nth-child(2n) .service-object{animation-delay:-1.7s}.service-showcase:nth-child(3n) .service-object{animation-delay:-3.1s}
+  .obj-front,.obj-side,.obj-top,.obj-a,.obj-b,.obj-c { position:absolute;display:block;box-sizing:border-box; }
+  .obj-front { inset:0;border:1px solid rgba(255,255,255,.35);border-radius:18px;background:linear-gradient(145deg,#3d4249,#111317 70%);box-shadow:inset 0 1px 1px rgba(255,255,255,.5);transform:translateZ(18px); }
+  .obj-side { width:36px;height:calc(100% - 16px);right:-18px;top:8px;border-radius:0 12px 12px 0;background:linear-gradient(90deg,#24282d,#070809);transform:rotateY(90deg); }
+  .obj-top { width:calc(100% - 14px);height:36px;left:7px;top:-18px;border-radius:12px 12px 0 0;background:linear-gradient(#666c74,#1b1e22);transform:rotateX(90deg); }
+  .obj-a,.obj-b,.obj-c { z-index:2;transform:translateZ(23px); }
+  .type-laptop .service-object{--w:190px;--h:125px;top:43%}.type-laptop .obj-front{border:7px solid #292c31;border-bottom-width:13px;border-radius:11px;background:radial-gradient(circle at 70% 30%,#2997ff,transparent 25%),linear-gradient(145deg,#17385f,#030507)}.type-laptop .obj-a{width:230px;height:15px;left:-20px;bottom:-26px;border-radius:3px 3px 15px 15px;background:linear-gradient(#e2e4e6,#666b71);transform:translateZ(5px) rotateX(70deg)}
+  .type-tower .service-object{--w:125px;--h:205px}.type-tower .obj-front{background:#0d0f12}.type-tower .obj-a,.type-tower .obj-b{width:64px;height:64px;left:30px;border:2px solid #2997ff;border-radius:50%;box-shadow:inset 0 0 22px #0071e3,0 0 14px #0071e3}.type-tower .obj-a{top:25px}.type-tower .obj-b{bottom:24px;border-color:#bf5af2;box-shadow:inset 0 0 22px #bf5af2,0 0 14px #bf5af2}
+  .type-desk .service-object{--w:205px;--h:112px;top:42%}.type-desk .obj-front{border:6px solid #282b30;border-radius:8px;background:linear-gradient(135deg,#0a84ff,#5e5ce6 62%,#bf5af2)}.type-desk .obj-a{width:18px;height:55px;left:94px;bottom:-54px;background:linear-gradient(90deg,#555b62,#c5c9ce,#44484d)}.type-desk .obj-b{width:105px;height:10px;left:50px;bottom:-61px;border-radius:50%;background:#777d84}.type-desk .obj-c{width:250px;height:12px;left:-22px;bottom:-83px;border-radius:4px;background:linear-gradient(90deg,#352314,#a4764d,#352314);transform:translateZ(0)}
+  .type-nas .service-object{--w:175px;--h:155px}.type-nas .obj-front{background:linear-gradient(145deg,#f4f4f6,#7c8289);border-color:#fff}.type-nas .obj-a,.type-nas .obj-b{width:54px;height:112px;top:21px;border-radius:7px;background:linear-gradient(90deg,#282b2e,#060708,#383c41);border:1px solid #696e74}.type-nas .obj-a{left:24px}.type-nas .obj-b{right:24px}.type-nas .obj-c{width:7px;height:7px;right:9px;top:10px;border-radius:50%;background:#30d158;box-shadow:0 0 9px #30d158}
+  .type-phone .service-object{--w:112px;--h:215px}.type-phone .obj-front{border:7px solid #383b40;border-radius:25px;background:radial-gradient(circle at 66% 30%,#ff375f,transparent 28%),radial-gradient(circle at 35% 67%,#0a84ff,transparent 32%),#08090b}.type-phone .obj-a{width:42px;height:12px;left:35px;top:5px;border-radius:10px;background:#000}
+  .type-browser .service-object,.type-portal .service-object,.type-software .service-object{--w:210px;--h:145px}.type-browser .obj-front{background:linear-gradient(#1c1c1e 0 21px,transparent 21px),linear-gradient(135deg,#f5f5f7 0 52%,#d7e8ff 52%)}.type-browser .obj-a{left:10px;top:7px;width:7px;height:7px;border-radius:50%;background:#ff5f57;box-shadow:13px 0 #febc2e,26px 0 #28c840}.type-browser .obj-b{left:20px;top:48px;width:92px;height:12px;border-radius:6px;background:#1d1d1f;box-shadow:0 25px #0071e3}.type-browser .obj-c{right:18px;bottom:18px;width:64px;height:64px;border-radius:18px;background:linear-gradient(145deg,#0a84ff,#5e5ce6)}
+  .type-card .service-object{--w:210px;--h:125px}.type-card .obj-front{background:linear-gradient(135deg,#f5f5f7,#c8c8cc)}.type-card .obj-a{width:50px;height:50px;left:20px;top:22px;border-radius:14px;background:linear-gradient(145deg,#0071e3,#5e5ce6)}.type-card .obj-b{width:92px;height:10px;right:20px;top:30px;border-radius:6px;background:#1d1d1f;box-shadow:0 22px #86868b,0 40px #c2c2c7}
+  .type-portal .obj-front{background:linear-gradient(145deg,#17304d,#09111d)}.type-portal .obj-a{inset:18px;border-radius:10px;background:repeating-linear-gradient(0deg,transparent 0 22px,rgba(41,151,255,.22) 23px),linear-gradient(90deg,#0a84ff 0 28%,transparent 28%)}
+  .type-software .obj-front{background:linear-gradient(145deg,#12161d,#07090d)}.type-software .obj-a{width:140px;height:70px;left:34px;top:38px;background:linear-gradient(135deg,transparent 40%,#30d158 41% 44%,transparent 45%),linear-gradient(25deg,transparent 48%,#2997ff 49% 52%,transparent 53%)}.type-software .obj-b{width:7px;height:7px;left:18px;top:16px;border-radius:50%;background:#ff453a;box-shadow:13px 0 #ffd60a,26px 0 #30d158}
+  .type-home .service-object{--w:190px;--h:170px}.type-home .obj-front{clip-path:polygon(50% 0,100% 35%,90% 35%,90% 100%,10% 100%,10% 35%,0 35%);border-radius:0;background:linear-gradient(145deg,#f5f5f7,#8e939a)}.type-home .obj-side,.type-home .obj-top{display:none}.type-home .obj-a{width:48px;height:72px;left:71px;bottom:0;border-radius:22px 22px 0 0;background:#17191c}.type-home .obj-b{width:24px;height:24px;left:83px;bottom:27px;border-radius:50%;background:#30d158;box-shadow:0 0 25px #30d158}
+  @keyframes serviceFloat{0%,100%{transform:translate(-50%,-50%) rotateX(-8deg) rotateY(-22deg) translateY(0)}50%{transform:translate(-50%,-50%) rotateX(-3deg) rotateY(22deg) translateY(-11px)}}
+  @media(prefers-reduced-motion:reduce){.service-object{animation:none}.service-product-card{transition:none}}
+  /* Compact cards using generated 3D raster artwork only. */
+  .service-product-card { min-height:450px; border-radius:22px; }
+  .service-product-card:hover { transform:translateY(-6px); box-shadow:0 22px 55px rgba(0,0,0,.2); }
+  .service-media { position:relative; aspect-ratio:3/2; flex:none; overflow:hidden; background:#02060a; }
+  .service-image-hd { display:block; width:100%; height:100%; object-fit:cover; transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
+  .service-product-card:hover .service-image-hd { transform:scale(1.035); filter:brightness(1.06); }
+  .portfolio-label { position:absolute; left:14px; top:14px; z-index:2; padding:7px 11px; border-radius:999px; background:rgba(0,113,227,.92); color:white; font-size:10px; font-weight:800; letter-spacing:.08em; box-shadow:0 8px 20px rgba(0,0,0,.24); backdrop-filter:blur(12px); }
+  .service-product-card.is-example { box-shadow:inset 0 0 0 1px rgba(41,151,255,.5); }
+  #services { background:#1d1d1f; color:#f5f5f7; }
+  #services .services-intro { color:#a1a1a6; }
+  #services .service-filter { border-color:#424245; background:#2c2c2e; color:#f5f5f7; }
+  #services .service-filter:hover { border-color:#6e6e73; background:#3a3a3c; }
+  #services .service-filter.is-active { border-color:#0071e3; background:#0071e3; color:#fff; }
+  #services .service-area-band { border-left-color:#2997ff; background:#2c2c2e; color:#d2d2d7; }
+  @media(max-width:640px){.service-product-card{min-height:420px}}
+</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: "#ffffff",
+          surface: "#f5f5f7",
+          ink: "#1d1d1f",
+          brand: { amber: "#0071e3", amberDark: "#0077ed", cyan: "#0071e3" }
+        },
+        fontFamily: { sans: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"] },
+        keyframes: {
+          loadbar: { "0%": { transform: "translateX(-100%)" }, "100%": { transform: "translateX(600%)" } }
+        },
+        animation: { loadbar: "loadbar 1.1s ease-in-out infinite" }
+      }
+    }
+  };
+</script>
+</head>
+<body class="bg-bg font-sans text-ink antialiased selection:bg-brand-amber selection:text-white">
+<div id="root"></div>
+
+<script type="importmap">
+{
+  "imports":{
+    "react":"https://esm.sh/react@18.3.1",
+    "react-dom/client":"https://esm.sh/react-dom@18.3.1/client",
+    "framer-motion":"https://esm.sh/framer-motion@11.3.19?deps=react@18.3.1,react-dom@18.3.1"
+  }
+}
+</script>
+<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+
+<script type="text/babel" data-type="module" data-presets="react">
+import React, { useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
+import {
+  motion, useScroll, useSpring, useTransform,
+  useReducedMotion, useMotionValue,
+} from "framer-motion";
+
+/* ============================== Data ============================== */
+
+const prices = {
+  diagnosticPc: 30, optimisationPc: 50, reinstallWindows: 80, ssdRam: 50,
+  montagePc: 100, montageWindowsDrivers: 130, setupSimple: 80, nasSimple: 120,
+  domotiqueLegere: 80, ecranTelephone: 40, applicationLocale: 300,
+  siteWebFormulaire: 290, carteVisite: 25, portailPedagogique: 4.99,
+};
+
+const businessCardPrices = {
+  "Slim 85 x 40 mm - Aucun(e) - 100 cartes": 20, "Slim 85 x 40 mm - Aucun(e) - 250 cartes": 25,
+  "Slim 85 x 40 mm - Aucun(e) - 500 cartes": 30, "Slim 85 x 40 mm - Aucun(e) - 1000 cartes": 50,
+  "Slim 85 x 40 mm - Aucun(e) - 1500 cartes": 80, "Slim 85 x 40 mm - Aucun(e) - 2000 cartes": 100,
+  "Standard 85 x 55 mm - Aucun(e) - 100 cartes": 20, "Standard 85 x 55 mm - Aucun(e) - 250 cartes": 25,
+  "Standard 85 x 55 mm - Aucun(e) - 500 cartes": 30, "Standard 85 x 55 mm - Aucun(e) - 1000 cartes": 50,
+  "Standard 85 x 55 mm - Aucun(e) - 1500 cartes": 80, "Standard 85 x 55 mm - Aucun(e) - 2000 cartes": 100,
+  "Standard 85 x 55 mm - Effet metallise - 100 cartes": 30, "Standard 85 x 55 mm - Effet metallise - 250 cartes": 40,
+  "Standard 85 x 55 mm - Effet metallise - 500 cartes": 60, "Standard 85 x 55 mm - Effet metallise - 1000 cartes": 70,
+  "Standard 85 x 55 mm - Effet metallise - 1500 cartes": 110, "Standard 85 x 55 mm - Effet metallise - 2000 cartes": 140,
+  "Standard 85 x 55 mm - Vernis selectif - 100 cartes": 30, "Standard 85 x 55 mm - Vernis selectif - 250 cartes": 40,
+  "Standard 85 x 55 mm - Vernis selectif - 500 cartes": 60, "Standard 85 x 55 mm - Vernis selectif - 1000 cartes": 80,
+  "Standard 85 x 55 mm - Vernis selectif - 1500 cartes": 120, "Standard 85 x 55 mm - Vernis selectif - 2000 cartes": 160,
+  "Carre 65 x 65 mm - Aucun(e) - 100 cartes": 30, "Carre 65 x 65 mm - Aucun(e) - 250 cartes": 25,
+  "Carre 65 x 65 mm - Aucun(e) - 500 cartes": 60, "Carre 65 x 65 mm - Aucun(e) - 1000 cartes": 80,
+  "Carre 65 x 65 mm - Aucun(e) - 1500 cartes": 120, "Carre 65 x 65 mm - Aucun(e) - 2000 cartes": 160,
+  "Carre 65 x 65 mm - Effet metallise - 100 cartes": 40, "Carre 65 x 65 mm - Effet metallise - 250 cartes": 60,
+  "Carre 65 x 65 mm - Effet metallise - 500 cartes": 80, "Carre 65 x 65 mm - Effet metallise - 1000 cartes": 110,
+  "Carre 65 x 65 mm - Effet metallise - 1500 cartes": 160, "Carre 65 x 65 mm - Effet metallise - 2000 cartes": 210,
+  "Carre 65 x 65 mm - Vernis selectif - 100 cartes": 40, "Carre 65 x 65 mm - Vernis selectif - 250 cartes": 60,
+  "Carre 65 x 65 mm - Vernis selectif - 500 cartes": 80, "Carre 65 x 65 mm - Vernis selectif - 1000 cartes": 110,
+  "Carre 65 x 65 mm - Vernis selectif - 1500 cartes": 160, "Carre 65 x 65 mm - Vernis selectif - 2000 cartes": 210,
+};
+
+const categories = {
+  reparation: {
+    label: "Réparation PC", basePrice: prices.diagnosticPc,
+    questions: [
+      { id: "probleme", title: "Problème", type: "radio", options: ["PC Lent", "Ne Démarre Pas", "Problème Windows", "Virus / Pubs", "Bruit / Chauffe", "Écran Bleu", "Autre"] },
+      { id: "budget", title: "Budget Réparation", type: "radio", options: ["Moins De 30 €", "30 À 60 €", "60 À 100 €", "Plus De 100 €", "Je Veux D'Abord Un Diagnostic"] },
+    ],
+  },
+  montage: {
+    label: "Montage PC", basePrice: prices.montagePc,
+    questions: [
+      { id: "utilisation", title: "Utilisation Principale", type: "radio", options: ["Bureautique", "Études", "Gaming", "Streaming", "Montage Vidéo", "Programmation", "Dessin / 3D", "Musique", "Usage Familial"] },
+      { id: "budget", title: "Budget Matériel", type: "radio", options: ["Moins De 400 €", "400 À 600 €", "600 À 800 €", "800 À 1000 €", "1000 À 1500 €", "Plus De 1500 €", "Je Ne Sais Pas"] },
+      { id: "materiel", title: "Matériel Déjà Possédé", type: "checkbox", options: ["Écran", "Clavier/Souris", "Boîtier", "Alimentation", "Carte Graphique", "Stockage", "Rien"] },
+      { id: "besoin", title: "Besoin", type: "radio", options: ["Conseil Composants", "Montage Uniquement", "Montage + Windows + Drivers", "Montage + Installation Complète"] },
+    ],
+  },
+  ssdRam: {
+    label: "SSD / RAM", basePrice: prices.ssdRam,
+    questions: [
+      { id: "objectif", title: "Objectif", type: "radio", options: ["Accélérer Le PC", "Ajouter Du Stockage", "Améliorer Les Performances", "Remplacer Un Ancien Disque"] },
+      { id: "piece", title: "Le Client A Déjà La Pièce", type: "radio", options: ["Oui", "Non", "Je Veux Un Conseil"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["Moins De 50 €", "50 À 100 €", "Plus De 100 €", "Je Ne Sais Pas"] },
+    ],
+  },
+  setup: {
+    label: "Setup Bureau / Télétravail / Gaming", basePrice: prices.setupSimple,
+    questions: [
+      { id: "type", title: "Type De Setup", type: "radio", options: ["Bureau", "Télétravail", "Étudiant", "Gaming", "Mixte"] },
+      { id: "besoins", title: "Besoins", type: "checkbox", options: ["Double Écran", "Webcam", "Clavier/Souris", "Rangement Câbles", "Installation Logiciels", "Optimisation Windows", "Imprimante/Périphériques"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["Moins De 50 €", "50 À 100 €", "100 À 250 €", "Plus De 250 €"] },
+    ],
+  },
+  nas: {
+    label: "NAS / Sauvegarde", basePrice: prices.nasSimple,
+    questions: [
+      { id: "objectif", title: "Objectif", type: "checkbox", options: ["Sauvegarde Photos", "Sauvegarde Documents", "Stockage Familial", "Partage De Fichiers", "Sauvegarde PC", "Conseil Achat NAS"] },
+      { id: "materiel", title: "Matériel Déjà Possédé", type: "radio", options: ["Oui", "Non", "Je Veux Un Conseil"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["Moins De 100 €", "100 À 250 €", "250 À 500 €", "Plus De 500 €"] },
+    ],
+  },
+  domotique: {
+    label: "Domotique Légère", basePrice: prices.domotiqueLegere,
+    note: "Prestation Limitée À La Configuration D'Objets Connectés Compatibles, Sans Modification De L'Installation Électrique Fixe.",
+    questions: [
+      { id: "equipement", title: "Équipement À Configurer", type: "checkbox", options: ["Lampe Connectée", "Prise Connectée", "Volet Compatible Application", "Assistant Vocal", "Home Assistant", "Plusieurs Appareils", "Je Veux Un Conseil"] },
+      { id: "objectif", title: "Objectif", type: "checkbox", options: ["Contrôler Depuis Le Téléphone", "Programmer Des Horaires", "Scénario Matin/Soir", "Regrouper Dans Une Seule Application", "Ajouter Google Home / Alexa"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["Moins De 50 €", "50 À 150 €", "150 À 300 €", "Plus De 300 €"] },
+    ],
+  },
+  telephone: {
+    label: "Remplacement Écran Téléphone", basePrice: prices.ecranTelephone,
+    questions: [
+      { id: "marque", title: "Marque", type: "radio", options: ["iPhone", "Samsung", "Xiaomi / Redmi", "Oppo", "Autre"] },
+      { id: "ecran", title: "Le Client A Déjà L'Écran", type: "radio", options: ["Oui", "Non", "Je Veux Un Conseil"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["Moins De 50 €", "50 À 100 €", "Plus De 100 €", "Je Veux Savoir Si Ça Vaut Le Coup"] },
+    ],
+  },
+  applicationLocale: {
+    label: "Logiciel Sur Mesure", basePrice: prices.applicationLocale,
+    questions: [
+      { id: "besoinPrincipal", title: "Besoin Principal", type: "radio", options: ["Gestion De Stock", "Suivi Client", "Automatisation Excel", "Formulaire Avec Export", "Logiciel De Devis/Facture Simple", "Tableau De Bord", "Calcul Automatique", "Organisation De Fichiers", "Autre"] },
+      { id: "utilisateur", title: "Utilisateur", type: "radio", options: ["Particulier", "Étudiant", "Association", "Artisan", "Petit Commerce", "Entreprise"] },
+      { id: "format", title: "Format Souhaité", type: "radio", options: ["Logiciel Windows Local", "Fichier Excel Automatisé", "Script Simple", "Tableau De Bord", "Je Veux Un Conseil"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["300 À 500 €", "500 À 1000 €", "1000 À 2000 €", "Plus De 2000 €", "Je Veux D'Abord Estimer"] },
+    ],
+  },
+  siteWebFormulaire: {
+    label: "Site Web Personnalisé Avec Formulaire", basePrice: prices.siteWebFormulaire,
+    questions: [
+      { id: "besoinPrincipal", title: "Besoin Principal", type: "radio", options: ["Site Vitrine", "Page De Présentation", "Formulaire De Contact", "Formulaire De Devis", "Refonte D'Un Site Existant", "Je Veux Un Conseil"] },
+      { id: "pages", title: "Nombre De Pages", type: "radio", options: ["1 Page", "2 À 3 Pages", "4 À 6 Pages", "Plus De 6 Pages", "Je Ne Sais Pas"] },
+      { id: "formulaire", title: "Type De Formulaire", type: "checkbox", options: ["Contact", "Demande De Devis", "Réservation / Rendez-Vous", "Inscription", "Envoi Vers Email", "Je Veux Un Conseil"] },
+      { id: "utilisateur", title: "Utilisateur", type: "radio", options: ["Particulier", "Association", "Artisan", "Petit Commerce", "Entreprise"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["290 À 500 €", "500 À 1000 €", "1000 À 2000 €", "Plus De 2000 €", "Je Veux D'Abord Estimer"] },
+    ],
+  },
+  portailPedagogique: {
+    label: "Portail Pédagogique Privé", basePrice: prices.portailPedagogique, billing: "monthly",
+    note: "Abonnement à 4,99 € par mois. Accès au portail : https://mes-cours.netlify.app/",
+    questions: [
+      { id: "utilisationPortail", title: "Utilisation Souhaitée", type: "checkbox", options: ["Classes", "Séquences", "Séances", "Activités", "Ressources"] },
+      { id: "demarrage", title: "Démarrage Souhaité", type: "radio", options: ["Dès Que Possible", "À Une Date Précise", "Je Souhaite D'Abord Des Informations"] },
+    ],
+  },
+  cartesVisite: {
+    label: "Cartes De Visite + Design", basePrice: prices.carteVisite,
+    questions: [
+      { id: "formatQuantite", title: "Format / Finition Et Quantité", type: "radio", options: Object.keys(businessCardPrices) },
+      { id: "orientation", title: "Orientation", type: "radio", options: ["Horizontale", "Verticale"] },
+      { id: "design", title: "Design De La Carte", type: "radio", options: ["Création Complète", "J'Ai Déjà Une Idée", "J'Ai Déjà Un Logo", "Adapter Un Design Existant"] },
+      { id: "budget", title: "Budget", type: "radio", options: ["Prix Affiché OK", "Je Veux D'Abord Valider Le Design", "Je Veux Comparer Plusieurs Quantités"] },
+    ],
+  },
+};
+
+const SERVICES = [
+  { title: "Réparation / Optimisation PC & Mac", price: "À partir de 30 €", desc: "Diagnostic, système lent, Windows, macOS, pilotes, SSD/RAM.", icon: "assets/icon-pc-repair.svg", href: "services/reparation-optimisation-pc-mac.html", sector: "informatique" },
+  { title: "Montage PC & Mac", price: "À partir de 100 €", desc: "Montage PC fixe, choix composants, Windows, Mac, drivers, tests.", icon: "assets/icon-pc-build.svg", href: "services/montage-pc-mac.html", sector: "informatique" },
+  { title: "Setup Bureau / Télétravail / Gaming", price: "À partir de 80 €", desc: "Double écran, clavier, souris, webcam, rangement câbles, confort.", icon: "assets/icon-setup.svg", href: "services/setup-bureau-teletravail-gaming.html", sector: "informatique" },
+  { title: "NAS / Sauvegarde", price: "À partir de 120 €", desc: "NAS, photos, documents, sauvegarde PC, dossiers partagés.", icon: "assets/icon-nas.svg", href: "services/nas-sauvegarde.html", sector: "informatique" },
+  { title: "Remplacement Écran Téléphone", price: "À partir de 40 € + pièce", desc: "Écran cassé, aide au choix de la pièce, test tactile/affichage.", icon: "assets/icon-phone.svg", href: "services/remplacement-ecran-telephone.html", sector: "informatique" },
+  { title: "Site Web Personnalisé Avec Formulaire", price: "À partir de 290 €", desc: "Site vitrine, page de présentation, formulaire de contact ou de devis, mise en ligne.", icon: "assets/icon-web.svg", href: "services/site-web-personnalise-formulaire.html", sector: "web" },
+  { title: "Cartes De Visite + Design", price: "À partir de 25 €", desc: "Design personnalisé, choix du format, de la finition et de la quantité.", icon: "assets/icon-business-card.svg", href: "services/site-web-personnalise-formulaire.html#cartes-visite", sector: "web", linkLabel: "Voir les tarifs" },
+  { title: "Portail Pédagogique Privé", price: "4,99 € / mois", desc: "Portail privé pour organiser classes, séquences, séances et ressources.", icon: "assets/icon-software.svg", href: "https://mes-cours.netlify.app/", sector: "web", external: true, linkLabel: "Voir l'offre" },
+  { title: "Exemple Site DJ", price: "MaxSono", desc: "Site vitrine événementiel avec présentation, prestations et appel à la réservation.", icon: "assets/logo-maxsono.svg", href: "https://maxsono.vercel.app/", sector: "web", external: true, example: true, linkLabel: "Voir l'exemple" },
+  { title: "Exemple Site Avocat", price: "Cabinet Avocat Meite Bintou", desc: "Site professionnel sobre avec mise en avant de l'activité et du contact.", icon: "assets/logo-avocat-meite.svg", href: "https://avocat-meite-bintou.vercel.app/", sector: "web", external: true, example: true, linkLabel: "Voir l'exemple" },
+  { title: "Logiciels Sur Mesure", price: "À partir de 300 €", desc: "Logiciels personnalisés, automatisation Excel, suivi client, tableaux de bord.", icon: "assets/icon-software.svg", href: "services/logiciels-sur-mesure.html", sector: "outils" },
+  { title: "Domotique Légère", price: "À partir de 80 €", desc: "Lampes, prises et volets pilotables via application, Google Home, Alexa.", icon: "assets/icon-smart-home.svg", href: "services/domotique-legere.html", sector: "connecte" },
+];
+
+const FEATURES = [
+  "Devis gratuit avant toute intervention", "Prix clairs et adaptés au besoin",
+  "Explications simples, sans jargon", "Intervention autour de Grenoble",
+  "Prestations possibles à distance selon le besoin", "Accompagnement après la prestation",
+];
+
+const FAQS = [
+  ["Le devis est-il gratuit ?", "Oui, la demande de devis est gratuite et sans engagement. Le prix final est confirmé après échange selon le besoin, le matériel, la distance et la difficulté."],
+  ["Est-ce que vous vous déplacez ?", "Oui, les prestations physiques sont possibles autour de Grenoble. En dehors de Grenoble, un supplément kilométrique peut être appliqué selon la distance."],
+  ["Puis-je demander une prestation à distance ?", "Oui, certaines prestations peuvent se faire à distance : aide logicielle, conseil, création de site web, configuration simple ou accompagnement."],
+  ["Est-ce que le prix affiché est définitif ?", "Non, les prix affichés sont indicatifs. Le devis final est confirmé après analyse de la demande."],
+  ["Est-ce que vous intervenez sur l'électricité ?", "Oui, pour la petite domotique essentiellement."],
+  ["Est-ce que le paiement se fait en ligne ?", "Non, aucun paiement n'est demandé sur le site. Le site sert uniquement à envoyer une demande de devis."],
+];
+
+const HOTSPOTS = [
+  { title: "Domotique légère", text: "Lampes, volets et prises pilotés depuis votre téléphone.", pos: "left" },
+  { title: "Site web & portail pédagogique", text: "Sites vitrines sur mesure et portail pédagogique privé.", pos: "right" },
+  { title: "Réparation, montage & logiciels", text: "Réparation, montage PC, setup bureau et logiciels sur mesure.", pos: "left" },
+  { title: "NAS & sauvegarde", text: "Vos fichiers protégés, accessibles partout.", pos: "right" },
+  { title: "Écran de téléphone", text: "Remplacement d'écran, diagnostic offert avant intervention.", pos: "left" },
+  { title: "Cartes de visite & design", text: "Design personnalisé, formats et finitions sur mesure.", pos: "right" },
+];
+
+/* ============================== Helpers ============================== */
+
+function formatPrice(value) {
+  return `${value.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} €`;
+}
+
+function estimateCategoryPrice(categoryKey, selections) {
+  if (categoryKey === "montage") {
+    const need = (selections.besoin && selections.besoin[0]) || "";
+    if (need.includes("Windows") || need.includes("Installation Complète")) return prices.montageWindowsDrivers;
+    return prices.montagePc;
+  }
+  if (categoryKey === "reparation") {
+    const problem = (selections.probleme && selections.probleme[0]) || "";
+    if (problem === "PC Lent") return prices.optimisationPc;
+    if (problem === "Problème Windows" || problem === "Virus / Pubs" || problem === "Écran Bleu") return prices.reinstallWindows;
+    return prices.diagnosticPc;
+  }
+  return categories[categoryKey].basePrice;
+}
+
+function labelFromKey(key) {
+  const labels = {
+    probleme: "Problème", budget: "Budget", utilisation: "Utilisation", materiel: "Matériel",
+    besoin: "Besoin", objectif: "Objectif", piece: "Pièce", type: "Type", besoins: "Besoins",
+    equipement: "Équipement", marque: "Marque", ecran: "Écran", besoinPrincipal: "Besoin Principal",
+    utilisateur: "Utilisateur", format: "Format Souhaité", pages: "Pages", formulaire: "Formulaire",
+    utilisationPortail: "Utilisation Du Portail", demarrage: "Démarrage",
+  };
+  return labels[key] || key;
+}
+
+function scrollToId(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  if (window.__lenis) window.__lenis.scrollTo(target, { offset: -72 });
+  else target.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function useLenis() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.Lenis) return;
+    const lenis = new window.Lenis({ lerp: 0.11, smoothWheel: true, wheelMultiplier: 1 });
+    window.__lenis = lenis;
+    if (window.ScrollTrigger) lenis.on("scroll", window.ScrollTrigger.update);
+    let raf;
+    function loop(time) { lenis.raf(time); raf = requestAnimationFrame(loop); }
+    raf = requestAnimationFrame(loop);
+    return () => { cancelAnimationFrame(raf); lenis.destroy(); window.__lenis = null; };
+  }, []);
+}
+
+function useCart() {
+  const [cart, setCart] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("orellanatech-cart") || "[]"); } catch { return []; }
+  });
+
+  useEffect(() => { localStorage.setItem("orellanatech-cart", JSON.stringify(cart)); }, [cart]);
+
+  const addItem = (item) => setCart((c) => [...c, { id: Date.now(), ...item }]);
+  const removeItem = (id) => setCart((c) => c.filter((i) => i.id !== id));
+  const clearCart = () => setCart([]);
+
+  const totals = cart.reduce((t, i) => {
+    if (i.billing === "monthly") t.monthly += i.price; else t.oneTime += i.price;
+    return t;
+  }, { oneTime: 0, monthly: 0 });
+
+  const totalsLabel = totals.monthly && totals.oneTime
+    ? `${formatPrice(totals.oneTime)} + ${formatPrice(totals.monthly)} / mois`
+    : totals.monthly ? `${formatPrice(totals.monthly)} / mois` : formatPrice(totals.oneTime);
+
+  const summary = cart.length === 0 ? "" : cart.map((item, i) =>
+    `Prestation ${i + 1}: ${item.category}\nOptions: ${item.details}\nBudget indiqué: ${item.budget}\nPrix estimé: ${item.priceLabel || formatPrice(item.price)}`
+  ).join("\n\n") + `\n\nTotal estimé: ${totalsLabel}`;
+
+  return { cart, addItem, removeItem, clearCart, totalsLabel, summary };
+}
+
+/* ============================== Shared UI ============================== */
+
+function Reveal({ children, className = "", delay = 0, y = 48 }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduce ? false : { opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function ParallaxGlow({ className }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [-60, 60]);
+  return <motion.div ref={ref} aria-hidden="true" style={{ y }} className={`pointer-events-none absolute rounded-full blur-3xl ${className}`} />;
+}
+
+function TiltCard({ children, className = "" }) {
+  const reduce = useReducedMotion();
+  const ref = useRef(null);
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const [canTilt] = useState(() => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+
+  if (reduce) return <div className={className}>{children}</div>;
+
+  function handleMove(e) {
+    if (!canTilt || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    ry.set(px * 10);
+    rx.set(py * -10);
+  }
+  function handleLeave() { rx.set(0); ry.set(0); }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
+      whileHover={{ scale: 1.02, y: -6 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function CopyButton({ value, label }) {
+  const [copied, setCopied] = useState(false);
+  async function handleClick() {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = value; ta.style.position = "fixed"; ta.style.left = "-9999px";
+        document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch (e) { /* clipboard unavailable, ignore */ }
+  }
+  return (
+    <button type="button" onClick={handleClick}
+      className={`relative rounded-lg border px-4 py-3 text-left transition-colors ${copied ? "border-brand-cyan bg-brand-cyan/5" : "border-black/10 bg-surface hover:border-brand-cyan/50"}`}>
+      <span className="block text-xs font-bold uppercase tracking-wide text-ink/60">{label}</span>
+      <strong className="block text-ink">{value}</strong>
+      {copied && <span className="absolute right-4 top-4 text-xs font-bold uppercase text-brand-cyan">Copié</span>}
+    </button>
+  );
+}
+
+/* ============================== Loader ============================== */
+
+function Loader({ loaded }) {
+  return (
+    <div className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-bg transition-opacity duration-700 ease-out ${loaded ? "pointer-events-none opacity-0" : "opacity-100"}`}>
+      <div className="text-sm font-bold tracking-[0.3em]">ORELLANA<span className="text-brand-amber">TECH</span></div>
+      <div className="relative h-0.5 w-56 overflow-hidden rounded bg-black/10">
+        <span className="absolute inset-y-0 left-0 w-1/5 animate-loadbar rounded bg-gradient-to-r from-brand-amber to-brand-cyan"></span>
+      </div>
+    </div>
+  );
+}
+
+/* ============================== Header ============================== */
+
+function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const links = [
+    { id: "accueil", label: "Accueil" },
+    { id: "services", label: "Services" },
+    { id: "configurateur", label: "Configurateur" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  function go(id) {
+    scrollToId(id);
+    setMenuOpen(false);
+  }
+
+  return (
+    <header className="sticky top-0 z-[60] border-b border-black/10 bg-white/70 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4">
+        <a href="#accueil" onClick={(e) => { e.preventDefault(); go("accueil"); }} className="flex items-center gap-2 font-extrabold text-brand-amber">
+          <img src="assets/logo-sts.png" alt="OrellanaTech" className="h-9 w-auto" />
+          <span>OrellanaTech</span>
+        </a>
+
+        <button type="button" aria-label="Ouvrir le menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((v) => !v)}
+          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-black/5 md:hidden">
+          <span className="h-0.5 w-5 bg-ink"></span>
+          <span className="h-0.5 w-5 bg-ink"></span>
+          <span className="h-0.5 w-5 bg-ink"></span>
+        </button>
+
+        <div className={`${menuOpen ? "flex" : "hidden"} absolute left-4 right-4 top-[70px] flex-col gap-4 rounded-xl border border-black/10 bg-white p-5 font-semibold text-ink/70 shadow-lg md:static md:flex md:flex-row md:items-center md:gap-6 md:border-0 md:bg-transparent md:p-0 md:shadow-none`}>
+          {links.map((l) => (
+            <a key={l.id} href={`#${l.id}`} onClick={(e) => { e.preventDefault(); go(l.id); }} className="transition-colors hover:text-brand-cyan">{l.label}</a>
+          ))}
+          <a href="#configurateur" onClick={(e) => { e.preventDefault(); go("configurateur"); }}
+            className="rounded-full bg-brand-amber px-4 py-2 text-center font-bold text-white shadow-lg shadow-brand-amber/30 transition-transform hover:-translate-y-0.5">
+            Demander un devis gratuit
+          </a>
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+/* ============================== Hero ============================== */
+
+function useHeroFallback() {
+  // Touch devices and prefers-reduced-motion get a plain autoplaying video instead of
+  // the scrubbed/pinned sequence — scroll-jacking on touch is unreliable and heavy.
+  const [fallback, setFallback] = useState(true);
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touch = window.matchMedia("(hover: none)").matches || window.matchMedia("(max-width: 767px)").matches;
+    setFallback(reduce || touch);
+  }, []);
+  return fallback;
+}
+
+const FRAME_COUNT = 121;
+const FRAME_SRC = (i) => `assets/frames/frame-${String(i + 1).padStart(4, "0")}.jpg`;
+
+// Draws one frame into the canvas with "object-fit: cover" framing (canvas has no
+// native object-fit, so the crop math is done by hand here).
+function drawCoverFrame(canvas, img) {
+  if (!canvas || !img || !img.complete || !img.naturalWidth) return;
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  const cw = canvas.clientWidth, ch = canvas.clientHeight;
+  const pw = Math.round(cw * dpr), ph = Math.round(ch * dpr);
+  if (canvas.width !== pw || canvas.height !== ph) { canvas.width = pw; canvas.height = ph; }
+
+  const canvasRatio = canvas.width / canvas.height;
+  const imgRatio = img.naturalWidth / img.naturalHeight;
+  let sx, sy, sw, sh;
+  if (imgRatio > canvasRatio) {
+    sh = img.naturalHeight; sw = sh * canvasRatio; sx = (img.naturalWidth - sw) / 2; sy = 0;
+  } else {
+    sw = img.naturalWidth; sh = sw / canvasRatio; sx = 0; sy = (img.naturalHeight - sh) / 2;
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+}
+
+function HeroScrollLegacy({ onVideoReady }) {
+  const wrapRef = useRef(null);
+  const canvasRef = useRef(null);
+  const videoRef = useRef(null); // fallback path only
+  const hotspotRefs = useRef([]);
+  const imagesRef = useRef([]);
+  const frameRef = useRef(0);
+  const [ready, setReady] = useState(false);
+  const fallback = useHeroFallback();
+
+  // Preload the whole frame sequence (this IS the "précharger avant scroll" step —
+  // there's no video to wait on anymore, just every frame image).
+  useEffect(() => {
+    if (fallback) return;
+    let cancelled = false;
+    let loaded = 0;
+    const imgs = new Array(FRAME_COUNT);
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === FRAME_COUNT && !cancelled) {
+          imagesRef.current = imgs;
+          setReady(true);
+          onVideoReady();
+        }
+      };
+      img.src = FRAME_SRC(i);
+      imgs[i] = img;
+    }
+    return () => { cancelled = true; };
+  }, [fallback]);
+
+  useEffect(() => {
+    if (fallback) return;
+    const v = videoRef.current;
+    if (!v) return;
+    function handleReady() { setReady(true); onVideoReady(); }
+    v.addEventListener("loadeddata", handleReady, { once: true });
+    v.addEventListener("error", handleReady, { once: true });
+    return () => {
+      v.removeEventListener("loadeddata", handleReady);
+      v.removeEventListener("error", handleReady);
+    };
+  }, [fallback]);
+
+  useEffect(() => {
+    if (fallback || !ready) return;
+    drawCoverFrame(canvasRef.current, imagesRef.current[frameRef.current]);
+    function onResize() { drawCoverFrame(canvasRef.current, imagesRef.current[frameRef.current]); }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [fallback, ready]);
+
+  // GSAP ScrollTrigger: only wired up once every frame is preloaded, and never on the
+  // fallback path (mobile / reduced motion) to avoid scroll-jacking there. Frames are
+  // drawn straight to canvas — no video seek/decode in the hot path — so this tracks
+  // the scroll position essentially instantly, the same technique Apple uses for its
+  // product-teardown sequences (a preloaded image sequence, not a scrubbed video).
+  useEffect(() => {
+    if (fallback || !ready) return;
+    if (!window.gsap || !window.ScrollTrigger) return;
+    const wrap = wrapRef.current;
+    const canvas = canvasRef.current;
+    if (!wrap || !canvas) return;
+
+    const gsap = window.gsap;
+    const ScrollTrigger = window.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const SEQUENCE_END = 0.75; // last frame is reached at 75% of the section's scroll
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: wrap,
+        start: "top top",
+        end: "bottom top",
+        onUpdate: (self) => {
+          const t = Math.min(self.progress / SEQUENCE_END, 1);
+          const idx = Math.round(t * (FRAME_COUNT - 1));
+          if (idx !== frameRef.current) {
+            frameRef.current = idx;
+            drawCoverFrame(canvas, imagesRef.current[idx]);
+          }
+        },
+      });
+
+      // One timeline per hotspot, each owning a single non-overlapping ScrollTrigger
+      // range for its whole lifecycle (fade in -> hold -> fade out). Two independent
+      // tweens per element would fight over `opacity` outside their own active window
+      // (whichever is "before its start" keeps clamping the property to its own resting
+      // value), so everything for one hotspot must live on one timeline/trigger.
+      const step = SEQUENCE_END / HOTSPOTS.length;
+      const fade = step * 0.22;
+      hotspotRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const start = i * step;
+        const end = start + step;
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: wrap, start: `${start * 100}% top`, end: `${end * 100}% top`, scrub: 0.3 },
+        });
+        tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, ease: "none", duration: fade })
+          .to(el, { opacity: 1, y: 0, ease: "none", duration: step - fade * 2 })
+          .to(el, { opacity: 0, y: -16, ease: "none", duration: fade });
+      });
+
+      gsap.fromTo(canvas,
+        { filter: "blur(0px)", opacity: 1 },
+        {
+          filter: "blur(22px)", opacity: 0.25, ease: "none",
+          scrollTrigger: { trigger: wrap, start: `${SEQUENCE_END * 100}% top`, end: "bottom top", scrub: 0.3 },
+        }
+      );
+    }, wrap);
+
+    return () => ctx.revert();
+  }, [fallback, ready]);
+
+  if (fallback) {
+    return (
+      <div id="accueil" className="relative bg-black">
+        <div className="relative flex h-[70vh] items-center justify-center overflow-hidden sm:h-screen">
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            src="assets/studio-scroll.mp4"
+            autoPlay muted loop playsInline preload="auto"
+            onLoadedData={onVideoReady}
+            onError={onVideoReady}
+          />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/70" />
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+            <h1 className="bg-gradient-to-r from-white via-brand-amber to-brand-cyan bg-clip-text text-[clamp(1.7rem,9vw,4.5rem)] font-extrabold tracking-[0.05em] text-transparent">
+              ORELLANATECH
+            </h1>
+            <p className="mt-4 max-w-[88vw] text-[0.65rem] uppercase tracking-[0.15em] text-white/75 sm:text-sm">
+              Services informatiques &amp; architecture digitale — Grenoble
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div id="accueil" ref={wrapRef} className="relative h-[200vh] bg-black">
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <canvas ref={canvasRef} className="h-full w-full" />
+        {HOTSPOTS.map((h, i) => (
+          <div
+            key={h.title}
+            ref={(el) => (hotspotRefs.current[i] = el)}
+            style={{ opacity: 0 }}
+            className={`absolute top-1/2 max-w-xs -translate-y-1/2 rounded-2xl border border-black/5 bg-white/90 p-4 shadow-lg backdrop-blur-md sm:max-w-sm ${h.pos === "left" ? "left-6 sm:left-12" : "right-6 sm:right-12"}`}
+          >
+            <h3 className="mb-1 text-sm font-bold uppercase tracking-wide text-brand-amber">{h.title}</h3>
+            <p className="text-sm leading-snug text-ink/70">{h.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Hero({ onVideoReady }) {
+  return (
+    <section id="accueil" className="relative h-[70vh] min-h-[520px] overflow-hidden bg-black sm:h-[calc(100vh-48px)]">
+      <video
+        className="h-full w-full object-cover"
+        src="assets/studio.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onLoadedData={onVideoReady}
+        onError={onVideoReady}
+      />
+    </section>
+  );
+}
+
+/* ============================== Services ============================== */
+
+const SERVICE_IMAGES = [
+  "service-repair-hd.png", "service-pc-build-hd.png", "service-setup-hd.png", "service-nas-hd.png",
+  "service-phone-hd.png", "service-web-hd.png", "service-business-card-hd.png", "service-education-hd.png",
+  "service-maxsono-hd.png", "service-lawyer-hd.png", "service-software-hd.png", "service-smart-home-hd.png"
+];
+
+function ServiceCard({ s, spriteIndex }) {
+  return (
+    <TiltCard className={`service-product-card h-full ${s.example ? "is-example" : ""}`}>
+      <a href={s.href} target={s.external ? "_blank" : undefined} rel={s.external ? "noopener noreferrer" : undefined} className="flex h-full flex-col">
+        <div className="service-media">
+          <img className="service-image-hd" src={`assets/${SERVICE_IMAGES[spriteIndex]}`} alt="" loading="lazy" />
+          {s.example && <span className="portfolio-label">PROJET RÉALISÉ</span>}
+        </div>
+        <div className="flex flex-1 flex-col gap-2 p-5">
+        <h3 className="font-semibold text-white">{s.title}</h3>
+        {s.price && <p className="font-bold text-white">{s.price}</p>}
+        <p className="flex-1 text-sm text-white/55">{s.desc}</p>
+        <span className="mt-1 font-semibold text-[#2997ff]">{s.linkLabel || "Voir la page du service"} ›</span>
+        </div>
+      </a>
+    </TiltCard>
+  );
+}
+
+function ServicesSection() {
+  const [sector, setSector] = useState("informatique");
+  const tabs = [
+    { id: "informatique", label: "Informatique" },
+    { id: "web", label: "Sites web" },
+    { id: "outils", label: "Logiciels sur mesure" },
+    { id: "connecte", label: "Maison connectée" },
+    { id: "all", label: "Tout voir" },
+  ];
+  const filtered = SERVICES.filter((s) => (s.example ? sector === "web" : sector === "all" || s.sector === sector));
+
+  return (
+    <section id="services" className="relative overflow-hidden py-20 sm:py-28">
+      <ParallaxGlow className="left-[-10%] top-10 h-72 w-72 bg-brand-cyan/10" />
+      <ParallaxGlow className="right-[-10%] bottom-0 h-80 w-80 bg-brand-amber/10" />
+      <div className="relative mx-auto max-w-6xl px-4">
+        <Reveal className="mb-8 max-w-xl">
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Services</h2>
+          <p className="services-intro mt-3">Chaque service est rangé par domaine pour trouver rapidement la prestation adaptée à votre besoin.</p>
+        </Reveal>
+        <Reveal delay={0.05} className="mb-8 flex flex-wrap gap-2">
+          {tabs.map((t) => (
+            <button key={t.id} type="button" onClick={() => setSector(t.id)}
+              className={`service-filter rounded-full border px-4 py-2 text-sm font-bold transition-colors ${sector === t.id ? "is-active" : ""}`}>
+              {t.label}
+            </button>
+          ))}
+        </Reveal>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((s, i) => (
+            <Reveal key={s.title} delay={Math.min(i * 0.05, 0.3)} className="service-showcase">
+              <ServiceCard s={s} spriteIndex={SERVICES.indexOf(s)} />
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={0.1} className="service-area-band mt-6 border-l-2 px-4 py-3 font-bold">
+          Services physiques disponibles sur Grenoble. En dehors de Grenoble, un supplément kilométrique peut être appliqué selon la distance.
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== Trust ============================== */
+
+function TrustSection() {
+  return (
+    <section id="pourquoi" className="bg-bg py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4">
+        <Reveal className="mb-10 max-w-xl">
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Pourquoi choisir OrellanaTech ?</h2>
+          <p className="mt-3 text-ink/60">Une approche claire, locale et adaptée à votre niveau technique, avec une estimation avant toute intervention.</p>
+        </Reveal>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((f, i) => (
+            <Reveal key={f} delay={Math.min(i * 0.05, 0.3)}>
+              <TiltCard className="h-full rounded-xl border-t-2 border-brand-amber bg-surface p-6 backdrop-blur-md">
+                <span className="mb-3 inline-grid h-8 w-10 place-items-center rounded-lg bg-gradient-to-br from-brand-amber/15 to-brand-cyan/10 text-xs font-extrabold">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-semibold text-ink">{f}</h3>
+              </TiltCard>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== Configurateur ============================== */
+
+function BusinessCardPicker({ state, setState }) {
+  const isSlim = state.format === "Slim 85 x 40 mm";
+
+  useEffect(() => {
+    if (isSlim && state.finish !== "Aucun(e)") setState((s) => ({ ...s, finish: "Aucun(e)" }));
+  }, [isSlim]);
+
+  const optionKey = `${state.format} - ${state.finish} - ${state.quantity} cartes`;
+  const price = businessCardPrices[optionKey] || 0;
+
+  const formats = [
+    { value: "Standard 85 x 55 mm", label: "Standard", sub: "85 x 55 mm", cls: "h-[82px]" },
+    { value: "Carre 65 x 65 mm", label: "Carré", sub: "65 x 65 mm", cls: "h-[82px] w-[82px] mx-auto" },
+    { value: "Slim 85 x 40 mm", label: "Slim", sub: "85 x 40 mm", cls: "h-[54px]" },
+  ];
+  const finishes = [
+    { value: "Aucun(e)", label: "Aucun(e)", sub: "Prix slim", grad: "from-white via-[#fffaf4] to-[#efe1d6]" },
+    { value: "Effet metallise", label: "Effet métallisé", sub: "Rendu premium", grad: "from-[#f9f2df] via-[#e0cf9c] to-[#c6b47c]" },
+    { value: "Vernis selectif", label: "Vernis sélectif", sub: "Prix affiché", grad: "from-[#efe1d6] via-brand-cyan/60 to-[#fffaf4]" },
+  ];
+
+  return (
+    <div className="grid gap-6 md:grid-cols-[1fr_320px]">
+      <div className="grid gap-6">
+        <div>
+          <h3 className="mb-3 font-bold text-ink">Format</h3>
+          <div className="grid grid-cols-3 gap-3">
+            {formats.map((f) => (
+              <button key={f.value} type="button" onClick={() => setState((s) => ({ ...s, format: f.value }))}
+                className={`grid gap-2 rounded-lg border p-3 text-left transition-colors ${state.format === f.value ? "border-brand-cyan bg-brand-cyan/10" : "border-black/10 bg-surface hover:border-brand-cyan/60"}`}>
+                <span className={`block rounded bg-gradient-to-br from-white via-[#fffaf4] to-[#efe1d6] shadow-inner ${f.cls}`}></span>
+                <strong className="text-sm text-ink">{f.label}</strong>
+                <span className="text-xs text-ink/60">{f.sub}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="mb-3 font-bold text-ink">Finition</h3>
+          <div className="grid grid-cols-3 gap-3">
+            {finishes.map((f) => {
+              const disabled = isSlim && f.value !== "Aucun(e)";
+              return (
+                <button key={f.value} type="button" disabled={disabled} onClick={() => setState((s) => ({ ...s, finish: f.value }))}
+                  className={`grid gap-2 rounded-lg border p-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${state.finish === f.value ? "border-brand-cyan bg-brand-cyan/10" : "border-black/10 bg-surface hover:border-brand-cyan/60"}`}>
+                  <span className={`block h-[70px] rounded bg-gradient-to-br shadow-inner ${f.grad}`}></span>
+                  <strong className="text-sm text-ink">{f.label}</strong>
+                  <span className="text-xs text-ink/60">{f.sub}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-6">
+          <div>
+            <h3 className="mb-3 font-bold text-ink">Orientation</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {["Verticale", "Horizontale"].map((o) => (
+                <button key={o} type="button" onClick={() => setState((s) => ({ ...s, orientation: o }))}
+                  className={`rounded-lg border px-3 py-2 text-sm font-bold ${state.orientation === o ? "border-brand-cyan bg-brand-cyan/10" : "border-black/10 bg-surface"}`}>{o}</button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="mb-3 block font-bold text-ink" htmlFor="card-quantity">Quantité</label>
+            <select id="card-quantity" value={state.quantity} onChange={(e) => setState((s) => ({ ...s, quantity: e.target.value }))}
+              className="w-full rounded-lg border border-black/10 bg-surface px-3 py-2 text-ink">
+              {["100", "250", "500", "1000", "1500", "2000"].map((q) => <option key={q} value={q}>{q} cartes</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <h3 className="mb-3 font-bold text-ink">Design de la carte</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {["Création Complète", "J'ai Déjà Un Logo"].map((d) => (
+              <button key={d} type="button" onClick={() => setState((s) => ({ ...s, design: d }))}
+                className={`rounded-lg border px-3 py-2 text-sm font-bold ${state.design === d ? "border-brand-cyan bg-brand-cyan/10" : "border-black/10 bg-surface"}`}>{d}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <aside className="h-fit rounded-xl border border-black/10 bg-surface p-5">
+        <div className="mb-4 flex items-center gap-3 rounded-lg border border-black/10 bg-gradient-to-br from-white/10 to-white/5 p-4">
+          <img src="assets/icon-business-card.svg" alt="" className="h-12 w-12 rounded-lg object-contain" />
+          <div><strong className="block text-ink">Votre nom</strong><span className="text-sm text-ink/60">Carte de visite</span></div>
+        </div>
+        <p className="text-xs font-bold uppercase tracking-wide text-brand-cyan">Sélection</p>
+        <h3 className="mt-1 font-bold text-ink">{state.format} - {state.finish}</h3>
+        <p className="mt-1 text-sm text-ink/60">{state.quantity} cartes - {state.orientation}</p>
+        <p className="mt-3 text-2xl font-extrabold text-brand-amber">{formatPrice(price)}</p>
+      </aside>
+    </div>
+  );
+}
+
+function ConfiguratorSection({ cartApi }) {
+  const [categoryKey, setCategoryKey] = useState("");
+  const [answers, setAnswers] = useState({});
+  const [cardState, setCardState] = useState({ format: "Standard 85 x 55 mm", finish: "Aucun(e)", orientation: "Horizontale", quantity: "250", design: "Création Complète" });
+  const [message, setMessage] = useState(null);
+
+  const category = categories[categoryKey];
+
+  function selectCategory(key) {
+    setCategoryKey(key);
+    setAnswers({});
+    setMessage(null);
+  }
+
+  function toggleAnswer(qid, type, value) {
+    setAnswers((prev) => {
+      const current = prev[qid] || [];
+      if (type === "radio") return { ...prev, [qid]: [value] };
+      const has = current.includes(value);
+      return { ...prev, [qid]: has ? current.filter((v) => v !== value) : [...current, value] };
+    });
+  }
+
+  function addToCart() {
+    if (!category) { setMessage({ type: "error", text: "Choisis une catégorie avant d'ajouter une prestation." }); return; }
+
+    if (categoryKey === "cartesVisite") {
+      const optionKey = `${cardState.format} - ${cardState.finish} - ${cardState.quantity} cartes`;
+      const price = businessCardPrices[optionKey] || category.basePrice;
+      cartApi.addItem({
+        category: category.label,
+        details: `Format / Quantité : ${optionKey} | Orientation : ${cardState.orientation} | Design : ${cardState.design}`,
+        budget: "Prix affiché OK", price, priceLabel: "", billing: "one-time",
+      });
+      setMessage({ type: "success", text: "Prestation ajoutée à la demande." });
+      return;
+    }
+
+    const missing = category.questions.filter((q) => !(answers[q.id] && answers[q.id].length)).map((q) => q.title);
+    if (missing.length) { setMessage({ type: "error", text: `Complète les champs suivants : ${missing.join(", ")}.` }); return; }
+
+    const price = estimateCategoryPrice(categoryKey, answers);
+    const budget = (answers.budget && answers.budget[0]) || "Non précisé";
+    const details = Object.entries(answers).map(([k, v]) => `${labelFromKey(k)} : ${v.join(", ")}`).join(" | ");
+
+    cartApi.addItem({
+      category: category.label, details, budget, price,
+      priceLabel: category.billing === "monthly" ? `${formatPrice(price)} / mois` : "",
+      billing: category.billing || "one-time",
+    });
+    setMessage({ type: "success", text: "Prestation ajoutée à la demande." });
+  }
+
+  return (
+    <section id="configurateur" className="bg-bg py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4">
+        <Reveal className="mb-10 max-w-xl">
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Composez votre demande en quelques clics</h2>
+          <p className="mt-3 text-ink/60">Ajoutez une ou plusieurs prestations, puis envoyez un récapitulatif clair avec vos coordonnées.</p>
+        </Reveal>
+        <Reveal delay={0.05} className="grid gap-6 lg:grid-cols-[1fr_380px]">
+          <div className="rounded-xl border border-black/10 bg-surface p-6">
+            <label className="block font-bold text-ink" htmlFor="category-select">Catégorie de besoin</label>
+            <select id="category-select" value={categoryKey} onChange={(e) => selectCategory(e.target.value)}
+              className="mt-2 w-full rounded-lg border border-black/10 bg-surface px-3 py-3 text-ink">
+              <option value="">Choisir une catégorie</option>
+              {Object.entries(categories).map(([key, c]) => <option key={key} value={key}>{c.label}</option>)}
+            </select>
+
+            {category && categoryKey !== "cartesVisite" && (
+              <div className="my-6 grid gap-6">
+                {category.note && <p className="rounded-lg border-l-2 border-brand-amber bg-brand-amber/10 p-3 font-semibold text-ink">{category.note}</p>}
+                {category.questions.map((q) => (
+                  <fieldset key={q.id} className="border-0 p-0">
+                    <legend className="mb-2 font-bold text-ink">{q.title}</legend>
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      {q.options.map((opt) => {
+                        const checked = (answers[q.id] || []).includes(opt);
+                        return (
+                          <label key={opt} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium ${checked ? "border-brand-cyan bg-brand-cyan/5" : "border-black/10"}`}>
+                            <input type={q.type} name={q.id} checked={checked} onChange={() => toggleAnswer(q.id, q.type, opt)} className="h-4 w-4 accent-brand-cyan" />
+                            {opt}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+                ))}
+              </div>
+            )}
+
+            {categoryKey === "cartesVisite" && (
+              <div className="my-6"><BusinessCardPicker state={cardState} setState={setCardState} /></div>
+            )}
+
+            <button type="button" onClick={addToCart}
+              className="w-full rounded-full bg-brand-amber py-3 font-extrabold text-white shadow-lg shadow-brand-amber/25 transition-transform hover:-translate-y-0.5">
+              Ajouter à ma demande
+            </button>
+            {message && <p className={`mt-3 font-bold ${message.type === "error" ? "text-red-600" : "text-brand-cyan"}`}>{message.text}</p>}
+          </div>
+
+          <aside className="h-fit rounded-xl border border-black/10 bg-surface p-6">
+            <div className="mb-4 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-brand-cyan">Récapitulatif</p>
+                <h3 className="font-bold text-ink">Ma demande</h3>
+              </div>
+              <button type="button" onClick={cartApi.clearCart} className="font-bold text-brand-cyan">Vider</button>
+            </div>
+            <div className="grid gap-3">
+              {cartApi.cart.length === 0 && <p className="text-ink/60">Aucun service ajouté pour le moment.</p>}
+              {cartApi.cart.map((item) => (
+                <article key={item.id} className="rounded-lg bg-surface p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <h4 className="font-bold text-ink">{item.category}</h4>
+                    <button type="button" onClick={() => cartApi.removeItem(item.id)} aria-label={`Supprimer ${item.category}`} className="h-8 w-8 shrink-0 rounded-lg border border-black/10 font-bold text-red-600">X</button>
+                  </div>
+                  <p className="mt-2 text-sm text-ink/60">{item.details}</p>
+                  <p className="mt-2 text-sm text-ink/60">Budget indiqué : {item.budget}</p>
+                  <span className="mt-2 inline-block font-bold text-brand-cyan">Prestation estimée : {item.priceLabel || formatPrice(item.price)}</span>
+                </article>
+              ))}
+            </div>
+            <div className="mt-5 flex items-baseline justify-between border-t border-black/10 pt-4 text-lg font-extrabold">
+              <span>Total estimé</span><strong>{cartApi.totalsLabel}</strong>
+            </div>
+            <p className="mt-3 text-sm text-ink/60">Prix estimatif. Le devis final est confirmé après échange selon le matériel, la distance et la difficulté.</p>
+          </aside>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== About ============================== */
+
+function AboutSection() {
+  return (
+    <section id="a-propos" className="bg-bg py-20 sm:py-28">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-[1fr_360px] md:items-center">
+        <Reveal>
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">À propos d'OrellanaTech</h2>
+          <p className="mt-4 text-ink/60">Je m'appelle Enzo Orellana, fondateur d'OrellanaTech. J'accompagne les particuliers, indépendants et petites entreprises dans leurs besoins informatiques : dépannage, création de sites web, automatisation, sauvegarde, setup et maison connectée. Mon objectif est de proposer des solutions simples, claires et adaptées à chaque besoin.</p>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <TiltCard className="rounded-xl border border-black/10 bg-surface p-6">
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-cyan">OrellanaTech</p>
+            <h3 className="mt-1 text-lg font-bold text-ink">Enzo Orellana</h3>
+            <p className="mt-2 text-ink/60">Chaque demande est étudiée avant intervention afin de proposer une estimation cohérente, sans paiement en ligne.</p>
+            <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToId("contact"); }}
+              className="mt-4 block rounded-full bg-brand-amber py-3 text-center font-extrabold text-white">
+              Parler de mon projet
+            </a>
+          </TiltCard>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== FAQ ============================== */
+
+function FaqSection() {
+  return (
+    <section id="faq" className="bg-bg py-20 sm:py-28">
+      <div className="mx-auto max-w-4xl px-4">
+        <Reveal className="mb-8"><h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Questions fréquentes</h2></Reveal>
+        <div className="grid gap-3">
+          {FAQS.map(([q, a], i) => (
+            <Reveal key={q} delay={Math.min(i * 0.04, 0.2)}>
+              <details className="group rounded-xl border border-black/10 bg-surface">
+                <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 font-bold text-ink">
+                  {q}
+                  <span className="ml-4 text-brand-cyan transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="px-5 pb-4 text-ink/60">{a}</p>
+              </details>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== Contact ============================== */
+
+function ContactSection({ cart, summary }) {
+  const [formMessage, setFormMessage] = useState(null);
+
+  function handleSubmit(e) {
+    const form = e.target;
+    const data = new FormData(form);
+    const required = [["prenom", "Prénom"], ["email", "Email"]];
+    const missing = required.filter(([name]) => !String(data.get(name) || "").trim()).map(([, label]) => label);
+
+    if (cart.length === 0) { e.preventDefault(); setFormMessage({ type: "error", text: "Ajoute au moins une prestation dans ta demande avant l'envoi." }); return; }
+    if (missing.length) { e.preventDefault(); setFormMessage({ type: "error", text: `Renseigne les champs obligatoires : ${missing.join(", ")}.` }); }
+  }
+
+  const inputClass = "mt-2 w-full rounded-lg border border-black/10 bg-surface px-3 py-3 font-normal text-ink outline-none focus:border-brand-cyan focus:ring-4 focus:ring-brand-cyan/15";
+
+  return (
+    <section id="contact" className="relative overflow-hidden bg-bg py-20 sm:py-28">
+      <ParallaxGlow className="left-1/2 top-0 h-96 w-96 -translate-x-1/2 bg-brand-cyan/10" />
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-[0.8fr_1.2fr]">
+        <Reveal>
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Parlons de votre projet</h2>
+          <p className="mt-4 text-ink/60">Une panne, un site web, un logiciel sur mesure ou une installation à préparer ? Envoyez votre demande, je vous réponds avec une estimation claire.</p>
+          <ul className="mt-6 grid gap-3 text-ink/60">
+            {[
+              "Services physiques avec zone d'intervention précisée dans les services",
+              "Supplément possible selon les kilomètres",
+              "Estimation ajustée après échange",
+              "Contact possible par téléphone, email ou formulaire",
+              "Configuration domotique limitée aux objets compatibles",
+            ].map((t) => (
+              <li key={t} className="relative pl-6"><span className="absolute left-0 top-2 h-2.5 w-2.5 rounded-full bg-brand-cyan"></span>{t}</li>
+            ))}
+          </ul>
+          <div className="mt-7 grid gap-3">
+            <CopyButton value="07 59 72 78 56" label="Téléphone" />
+            <CopyButton value="orellanatech37@gmail.com" label="Email" />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <form onSubmit={handleSubmit} action="https://formspree.io/f/mjgdjjyv" method="POST" className="grid gap-4 rounded-xl border border-black/10 bg-surface p-6">
+            <input type="hidden" name="_subject" value="Nouvelle demande OrellanaTech" />
+            <h3 className="text-lg font-bold text-ink">Décrire mon besoin</h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="font-bold text-ink">Prénom *<input type="text" name="prenom" autoComplete="given-name" className={inputClass} /></label>
+              <label className="font-bold text-ink">Nom<input type="text" name="nom" autoComplete="family-name" className={inputClass} /></label>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="font-bold text-ink">Email *<input type="email" name="email" autoComplete="email" className={inputClass} /></label>
+              <label className="font-bold text-ink">Téléphone <span className="font-normal text-ink/45">(facultatif)</span><input type="tel" name="telephone" autoComplete="tel" className={inputClass} /></label>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="font-bold text-ink">Ville <span className="font-normal text-ink/45">(facultatif)</span><input type="text" name="ville" autoComplete="address-level2" className={inputClass} /></label>
+              <label className="font-bold text-ink">Créneau souhaité<input type="text" name="creneau" placeholder="Ex : soir, samedi, semaine" className={inputClass} /></label>
+            </div>
+            <label className="font-bold text-ink">Message complémentaire
+              <textarea name="message" rows="4" placeholder="Modèle du PC, référence téléphone, contraintes, disponibilités..." className={inputClass}></textarea>
+            </label>
+            <input type="hidden" name="recapitulatif_panier" value={summary} readOnly />
+            <button type="submit" className="rounded-full bg-brand-amber py-3 font-extrabold text-white shadow-lg shadow-brand-amber/25">
+              Envoyer ma demande
+            </button>
+            {formMessage && <p className={`font-bold ${formMessage.type === "error" ? "text-red-600" : "text-brand-cyan"}`}>{formMessage.text}</p>}
+          </form>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== Footer ============================== */
+
+function FooterCopy({ value }) {
+  const [copied, setCopied] = useState(false);
+  async function handleClick() {
+    try {
+      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch (e) { /* clipboard unavailable, ignore */ }
+  }
+  return <button type="button" onClick={handleClick} className="font-bold text-brand-cyan hover:underline">{copied ? "Copié" : value}</button>;
+}
+
+function Footer() {
+  return (
+    <footer className="bg-surface py-10 text-ink/60">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-start justify-between gap-6 px-4">
+        <div>
+          <p className="font-bold text-ink">OrellanaTech</p>
+          <p className="mt-1">Services informatiques, sites web, logiciels sur mesure, setup, NAS et maison connectée.</p>
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <FooterCopy value="07 59 72 78 56" />
+          <FooterCopy value="orellanatech37@gmail.com" />
+        </div>
+      </div>
+      <div className="mx-auto mt-6 grid max-w-6xl gap-3 border-t border-black/10 px-4 pt-6 sm:grid-cols-3">
+        <details className="rounded-lg border border-black/10 bg-white">
+          <summary className="cursor-pointer px-4 py-3 font-bold text-ink">Mentions légales</summary>
+          <p className="px-4 pb-4 text-sm">
+            OrellanaTech<br />Enzo Orellana<br />Entrepreneur individuel / micro-entreprise<br />SIREN : 105848204<br />
+            Email : orellanatech37@gmail.com<br />Téléphone : 07 59 72 78 56<br />Zone d'intervention : Grenoble et alentours<br />
+            TVA non applicable, article 293 B du CGI<br />Hébergement : à compléter selon la plateforme utilisée.
+          </p>
+        </details>
+        <details className="rounded-lg border border-black/10 bg-white">
+          <summary className="cursor-pointer px-4 py-3 font-bold text-ink">Confidentialité</summary>
+          <p className="px-4 pb-4 text-sm">Les informations envoyées via le formulaire servent uniquement à répondre à votre demande, préparer une estimation ou échanger sur une prestation. Elles ne sont pas vendues ni utilisées pour de la prospection automatique.</p>
+        </details>
+        <details className="rounded-lg border border-black/10 bg-white">
+          <summary className="cursor-pointer px-4 py-3 font-bold text-ink">Conditions de service</summary>
+          <p className="px-4 pb-4 text-sm">Les tarifs affichés sont indicatifs et présentés "à partir de". Aucun paiement n'est effectué sur le site. Une demande envoyée via le formulaire ne devient une commande qu'après confirmation d'un devis ou d'un accord.</p>
+        </details>
+      </div>
+    </footer>
+  );
+}
+
+/* ============================== App ============================== */
+
+function App() {
+  useLenis();
+  const [loaded, setLoaded] = useState(false);
+  const cartApi = useCart();
+
+  return (
+    <>
+      <Loader loaded={loaded} />
+      <Header />
+      <Hero onVideoReady={() => setLoaded(true)} />
+      <main>
+        <ServicesSection />
+        <TrustSection />
+        <ConfiguratorSection cartApi={cartApi} />
+        <AboutSection />
+        <FaqSection />
+        <ContactSection cart={cartApi.cart} summary={cartApi.summary} />
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+<script src="https://unpkg.com/lenis@1.3.11/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+</body>
+</html>

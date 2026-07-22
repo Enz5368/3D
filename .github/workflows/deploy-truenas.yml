@@ -43,11 +43,11 @@ jobs:
             -v "$PWD/deploy/nginx-orellanatech.conf:/etc/nginx/conf.d/default.conf:ro" \
             nginx:1.28-alpine nginx -t
 
-      - name: Upload production files
+      - name: Upload final production files
         uses: actions/upload-artifact@v7
         with:
           name: orellanatech-site
-          path: dist/
+          path: final/
           if-no-files-found: error
           retention-days: 7
 

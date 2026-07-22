@@ -970,3 +970,68 @@ copyButtons.forEach((button) => {
   button.setAttribute("aria-label", `Copier ${button.dataset.label || "contact"}`);
   button.addEventListener("click", () => handleCopyContact(button));
 });
+
+// Spatial service cards: pointer parallax, light tracking and scroll reveal.
+const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (supportsFinePointer && !prefersReducedMotion) {
+  serviceCards.forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const bounds = card.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width;
+      const y = (event.clientY - bounds.top) / bounds.height;
+      card.style.setProperty("--rx", `${(0.5 - y) * 10}deg`);
+      card.style.setProperty("--ry", `${(x - 0.5) * 12}deg`);
+      card.style.setProperty("--mx", `${x * 100}%`);
+      card.style.setProperty("--my", `${y * 100}%`);
+    });
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--rx", "0deg");
+      card.style.setProperty("--ry", "0deg");
+    });
+  });
+}
+
+const revealItems = document.querySelectorAll(".section-heading, .service-card, .feature-card, .config-panel, .cart-panel, .about-card, .faq-list details, .contact-form");
+revealItems.forEach((item) => item.classList.add("reveal-item"));
+
+if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+  revealItems.forEach((item) => item.classList.add("is-visible"));
+} else {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px" });
+  revealItems.forEach((item) => revealObserver.observe(item));
+}
+
+// One distinct CSS-3D product sculpture for every service card.
+const serviceObjectTypes = [
+  "laptop", "tower", "desk", "nas", "phone", "browser",
+  "card", "portal", "dj", "legal", "software", "home"
+];
+
+serviceCards.forEach((card, index) => {
+  if (card.querySelector(".service-product-stage")) return;
+  const type = serviceObjectTypes[index] || "software";
+  const stage = document.createElement("div");
+  stage.className = `service-product-stage product-${type}`;
+  stage.setAttribute("aria-hidden", "true");
+  stage.innerHTML = `
+    <div class="product-glow"></div>
+    <div class="product-shadow"></div>
+    <div class="product-object">
+      <span class="product-face product-front"></span>
+      <span class="product-face product-side"></span>
+      <span class="product-face product-top"></span>
+      <span class="product-detail detail-a"></span>
+      <span class="product-detail detail-b"></span>
+      <span class="product-detail detail-c"></span>
+      <span class="product-detail detail-d"></span>
+    </div>`;
+  card.prepend(stage);
+});

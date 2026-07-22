@@ -36,12 +36,12 @@ export const MainObject = ({ reducedMotion }: MainObjectProps) => {
         <mesh ref={core} castShadow>
           <icosahedronGeometry args={[1.08, 3]} />
           <meshPhysicalMaterial
-            color="#c9fff4"
+            color="#d8eaff"
             transmission={0.45}
             roughness={0.18}
             metalness={0.12}
             thickness={0.8}
-            emissive="#1a4f4a"
+            emissive="#003a78"
             emissiveIntensity={0.18}
           />
         </mesh>
@@ -49,8 +49,8 @@ export const MainObject = ({ reducedMotion }: MainObjectProps) => {
           <mesh key={ring} rotation={[ring * 0.7, ring * 0.95, ring * 0.35]}>
             <torusGeometry args={[1.75 + ring * 0.22, 0.018, 16, 128]} />
             <meshStandardMaterial
-              color={ring === 1 ? '#f0c36a' : '#8df4df'}
-              emissive={ring === 1 ? '#6d4a18' : '#1e625c'}
+              color={ring === 1 ? '#ff9f0a' : '#2997ff'}
+              emissive={ring === 1 ? '#6b3700' : '#003f85'}
               emissiveIntensity={0.7}
             />
           </mesh>
