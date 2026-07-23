@@ -10,34 +10,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  body.intro-locked{overflow:hidden}
-  #ot-intro{--blue:#0071e3;--blue2:#2997ff;position:fixed;inset:0;z-index:99999;overflow:hidden;background:#1d1d1f;color:#fff;font-family:Inter,sans-serif;isolation:isolate;cursor:none}
+  #ot-intro{--blue:#0071e3;--blue2:#2997ff;position:relative;z-index:70;height:220vh;background:#1d1d1f;color:#fff;font-family:Inter,sans-serif;isolation:isolate}
+  .ot-sticky{position:sticky;top:0;height:100vh;overflow:hidden;background:#1d1d1f}
   .ot-lines{position:absolute;inset:-10%;opacity:.24;background:radial-gradient(ellipse at 18% 35%,transparent 0 16%,rgba(41,151,255,.35) 16.1% 16.22%,transparent 16.3%),radial-gradient(ellipse at 82% 68%,transparent 0 20%,rgba(41,151,255,.3) 20.1% 20.22%,transparent 20.3%);transform:rotate(-8deg)}
-  .ot-words{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;z-index:0;overflow:hidden;pointer-events:none}
-  .ot-wordline{width:max-content;margin-left:-4vw;font-size:clamp(86px,12.4vw,240px);font-weight:800;line-height:.78;letter-spacing:-.07em;text-transform:uppercase;white-space:nowrap;color:#f5f5f7}
-  .ot-wordline.serif{margin-left:-10vw;color:var(--blue2);font-family:"Cormorant Garamond",serif;font-weight:700;letter-spacing:-.045em}
-  .ot-stage{position:absolute;left:50%;top:50%;z-index:2;width:min(88vw,1440px);height:min(79vh,900px);transform:translate(-50%,-50%);perspective:1100px;animation:otCardIn 1s .12s cubic-bezier(.18,.9,.2,1) both}
-  .ot-card{position:absolute;inset:0;overflow:hidden;background:#eef1f6;box-shadow:0 34px 100px rgba(0,0,0,.42);will-change:transform;transform-style:preserve-3d}
+  .ot-words{position:absolute;inset:0;display:grid;place-items:center;z-index:4;overflow:hidden;pointer-events:none}
+  .ot-wordline{font-size:clamp(92px,15.5vw,300px);font-weight:800;line-height:.75;letter-spacing:-.085em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 8px 45px rgba(0,0,0,.3);will-change:transform,opacity}
+  .ot-wordline.serif{display:none}
+  .ot-stage{position:absolute;inset:0;z-index:2;perspective:1100px;will-change:transform,opacity}
+  .ot-card{position:absolute;inset:0;overflow:hidden;background:#0b1017;will-change:transform;transform-style:preserve-3d}
   .ot-card::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,113,227,.09),transparent 45%,rgba(41,151,255,.08));pointer-events:none}
-  .ot-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.06);transform:scale(1.05);will-change:transform}
+  .ot-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.06) brightness(.72);transform:scale(1.04);will-change:transform}
   .ot-card-label{position:absolute;z-index:3;left:28px;bottom:24px;padding:11px 14px;background:#fff;color:#1d1d1f;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-  .ot-head,.ot-enter,.ot-hint{position:absolute;z-index:5}
+  .ot-head,.ot-scroll{position:absolute;z-index:5}
   .ot-head{left:0;right:0;top:0;display:flex;align-items:flex-start;justify-content:space-between;padding:clamp(18px,2vw,32px)}
   .ot-brand{display:flex;flex-direction:column;color:#fff;font-family:"Cormorant Garamond",serif;font-size:clamp(25px,2.1vw,39px);font-weight:700;line-height:.65;letter-spacing:-.055em}
   .ot-brand span:last-child{margin-left:1.15em;color:var(--blue2);font-family:Inter,sans-serif;font-size:.56em;letter-spacing:.08em}
   .ot-place{color:rgba(255,255,255,.58);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-  .ot-enter{right:clamp(18px,2vw,32px);bottom:clamp(18px,2vw,32px);display:flex;align-items:center;gap:13px;padding:7px 7px 7px 19px;border:0;border-radius:999px;background:var(--blue);color:#fff;font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;cursor:none;box-shadow:0 12px 34px rgba(0,113,227,.38)}
-  .ot-arrow{display:grid;width:38px;height:38px;place-items:center;border-radius:50%;background:#fff;color:#0071e3;font-size:17px}
-  .ot-hint{left:clamp(18px,2vw,32px);bottom:clamp(22px,2vw,36px);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
-  .ot-cursor{position:fixed;z-index:20;left:0;top:0;width:72px;height:72px;display:grid;place-items:center;border-radius:50%;background:#0071e3;color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.6);transition:opacity .2s,transform .2s;mix-blend-mode:normal}
-  #ot-intro.has-mouse .ot-cursor{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  #ot-intro.ot-out .ot-stage{transform:translate(-50%,-150%) rotate(-5deg) scale(.78);opacity:0;transition:transform 1.05s cubic-bezier(.65,.05,0,1),opacity .68s .22s}
-  #ot-intro.ot-out .ot-wordline:first-child{transform:translateX(-16vw);transition:transform 1s cubic-bezier(.65,.05,0,1)}
-  #ot-intro.ot-out .ot-wordline:last-child{transform:translateX(16vw);transition:transform 1s cubic-bezier(.65,.05,0,1)}
-  #ot-intro.ot-out{opacity:0;visibility:hidden;transition:opacity .55s .72s,visibility 0s 1.3s}
-  @keyframes otCardIn{from{opacity:0;transform:translate(-50%,-42%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-  @media(max-width:700px){#ot-intro{cursor:auto}.ot-stage{width:88vw;height:66vh}.ot-wordline{font-size:24vw}.ot-card-label,.ot-hint,.ot-place,.ot-cursor{display:none}.ot-enter{cursor:pointer}.ot-brand{font-size:28px}}
-  @media(prefers-reduced-motion:reduce){.ot-stage{animation:none}.ot-cursor{display:none}}
+  .ot-scroll{left:50%;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:9px;transform:translateX(-50%);font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+  .ot-scroll::after{content:"";width:1px;height:34px;background:linear-gradient(#2997ff,transparent);animation:otScroll 1.5s ease-in-out infinite}
+  @keyframes otScroll{0%,100%{transform:scaleY(.35);transform-origin:top;opacity:.35}50%{transform:scaleY(1);opacity:1}}
+  @media(max-width:700px){#ot-intro{height:190vh}.ot-wordline{font-size:22vw}.ot-card-label,.ot-place{display:none}.ot-brand{font-size:28px}}
+  @media(prefers-reduced-motion:reduce){.ot-scroll::after{animation:none}}
 
   .service-showcase { perspective: 1100px; }
   .service-showcase > div { height: 100%; }
@@ -104,21 +97,18 @@
 </head>
 <body class="bg-bg font-sans text-ink antialiased selection:bg-brand-amber selection:text-white">
 <section id="ot-intro" aria-label="Introduction OrellanaTech">
-  <div class="ot-lines"></div>
-  <div class="ot-words" aria-hidden="true">
-    <div class="ot-wordline serif">NOUS CRÉONS LE NUMÉRIQUE</div>
-    <div class="ot-wordline">SIMPLE · CLAIR · SUR MESURE</div>
-  </div>
-  <div class="ot-stage" id="ot-stage">
-    <div class="ot-card" id="ot-card">
-      <img id="ot-card-image" src="assets/intro-studio-01.jpg" alt="Studio informatique OrellanaTech">
-      <span class="ot-card-label">Grenoble · Services numériques</span>
+  <div class="ot-sticky">
+    <div class="ot-lines"></div>
+    <div class="ot-stage" id="ot-stage">
+      <div class="ot-card" id="ot-card">
+        <img id="ot-card-image" src="assets/intro-studio-01.jpg" alt="Studio informatique OrellanaTech">
+        <span class="ot-card-label">Grenoble · Services numériques</span>
+      </div>
     </div>
+    <div class="ot-words" aria-hidden="true"><div class="ot-wordline" id="ot-title">OrellanaTech</div></div>
+    <div class="ot-head"><div class="ot-brand"><span>Orellana</span><span>TECH</span></div><span class="ot-place">GRENOBLE · FR</span></div>
+    <div class="ot-scroll" id="ot-scroll">Faire défiler</div>
   </div>
-  <div class="ot-head"><div class="ot-brand"><span>Orellana</span><span>TECH</span></div><span class="ot-place">GRENOBLE · FR</span></div>
-  <div class="ot-hint">Déplacez la souris · Cliquez pour entrer</div>
-  <button class="ot-enter" id="ot-enter" type="button"><span>Découvrir OrellanaTech</span><span class="ot-arrow">↗</span></button>
-  <div class="ot-cursor" id="ot-cursor">Entrer</div>
 </section>
 <div id="root"></div>
 
@@ -1255,14 +1245,11 @@ function Footer() {
 
 function App() {
   useLenis();
-  const [loaded, setLoaded] = useState(false);
   const cartApi = useCart();
 
   return (
     <>
-      <Loader loaded={loaded} />
       <Header />
-      <Hero onVideoReady={() => setLoaded(true)} />
       <main>
         <ServicesSection />
         <TrustSection />
@@ -1285,39 +1272,32 @@ createRoot(document.getElementById("root")).render(<App />);
 <script>
   (() => {
     const intro = document.getElementById("ot-intro");
-    const enter = document.getElementById("ot-enter");
+    const stage = document.getElementById("ot-stage");
     const card = document.getElementById("ot-card");
     const image = document.getElementById("ot-card-image");
-    const cursor = document.getElementById("ot-cursor");
-    if (!intro || !enter) return;
-    document.body.classList.add("intro-locked");
-    let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-    const move = (event) => {
-      const nx = event.clientX / innerWidth - .5;
-      const ny = event.clientY / innerHeight - .5;
-      targetX = nx;
-      targetY = ny;
-      cursor.style.left = `${event.clientX}px`;
-      cursor.style.top = `${event.clientY}px`;
-      intro.classList.add("has-mouse");
+    const title = document.getElementById("ot-title");
+    const scrollHint = document.getElementById("ot-scroll");
+    if (!intro || !stage || !card || !image || !title) return;
+    let mx = 0, my = 0;
+    intro.addEventListener("pointermove", (event) => {
+      mx = event.clientX / innerWidth - .5;
+      my = event.clientY / innerHeight - .5;
+    });
+    const update = () => {
+      const max = intro.offsetHeight - innerHeight;
+      const progress = Math.max(0, Math.min(1, -intro.getBoundingClientRect().top / max));
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const scale = Math.max(.045, 1 - eased * .955);
+      const opacity = Math.max(0, 1 - Math.max(0, progress - .72) / .22);
+      stage.style.transform = `scale(${scale}) rotate(${progress * -2.2}deg)`;
+      stage.style.opacity = `${opacity}`;
+      title.style.transform = `scale(${1 + progress * .35}) translateY(${-progress * 24}vh)`;
+      title.style.opacity = `${Math.max(0, 1 - progress * 1.35)}`;
+      image.style.transform = `scale(${1.04 + progress * .08}) translate(${mx * -10}px,${my * -8}px)`;
+      if (scrollHint) scrollHint.style.opacity = `${Math.max(0, 1 - progress * 5)}`;
+      requestAnimationFrame(update);
     };
-    const animate = () => {
-      currentX += (targetX - currentX) * .075;
-      currentY += (targetY - currentY) * .075;
-      if (card) card.style.transform = `rotateX(${-currentY * 5}deg) rotateY(${currentX * 7}deg) translate(${currentX * 18}px,${currentY * 14}px)`;
-      if (image) image.style.transform = `scale(1.07) translate(${-currentX * 22}px,${-currentY * 18}px)`;
-      requestAnimationFrame(animate);
-    };
-    const close = () => {
-      intro.classList.add("ot-out");
-      document.body.classList.remove("intro-locked");
-      window.setTimeout(() => intro.remove(), 1400);
-    };
-    intro.addEventListener("pointermove", move);
-    intro.addEventListener("pointerleave", () => intro.classList.remove("has-mouse"));
-    enter.addEventListener("click", close, { once: true });
-    card?.addEventListener("click", close, { once: true });
-    animate();
+    update();
   })();
 </script>
 </body>
