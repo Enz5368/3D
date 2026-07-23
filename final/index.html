@@ -10,15 +10,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  #ot-intro{--blue:#0071e3;--blue2:#2997ff;position:relative;z-index:70;height:220vh;background:#1d1d1f;color:#fff;font-family:Inter,sans-serif;isolation:isolate}
-  .ot-sticky{position:sticky;top:0;height:100vh;overflow:hidden;background:#1d1d1f}
+  #ot-intro{--blue:#0071e3;--blue2:#2997ff;position:relative;z-index:70;height:220vh;background:#f4f7fb;color:#fff;font-family:Inter,sans-serif;isolation:isolate}
+  .ot-sticky{position:sticky;top:0;height:100vh;overflow:hidden;background:#f4f7fb;transition:background-color .7s ease}
   .ot-lines{position:absolute;inset:-10%;opacity:.24;background:radial-gradient(ellipse at 18% 35%,transparent 0 16%,rgba(41,151,255,.35) 16.1% 16.22%,transparent 16.3%),radial-gradient(ellipse at 82% 68%,transparent 0 20%,rgba(41,151,255,.3) 20.1% 20.22%,transparent 20.3%);transform:rotate(-8deg)}
   .ot-words{position:absolute;inset:0;display:grid;place-items:center;z-index:4;overflow:hidden;pointer-events:none}
   .ot-wordline{font-size:clamp(92px,15.5vw,300px);font-weight:800;line-height:.75;letter-spacing:-.085em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 8px 45px rgba(0,0,0,.3);will-change:transform,opacity}
   .ot-wordline .ot-title-tech{color:var(--blue2)}
   .ot-wordline.serif{display:none}
   .ot-stage{position:absolute;inset:0;z-index:2;perspective:1100px;will-change:transform,opacity}
-  .ot-card{position:absolute;inset:0;overflow:hidden;background:#0b1017;will-change:transform;transform-style:preserve-3d}
+  .ot-card{position:absolute;inset:0;overflow:hidden;background:#f4f7fb;will-change:transform;transform-style:preserve-3d}
   .ot-card::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,113,227,.09),transparent 45%,rgba(41,151,255,.08));pointer-events:none}
   .ot-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.06) brightness(.72);transform:scale(1.04);will-change:transform;opacity:0}
   .ot-card img.ot-reveal-complete{opacity:1}
@@ -26,7 +26,8 @@
   .ot-fluid-reveal.is-complete{opacity:0}
   .ot-ribbons{position:absolute;inset:0;z-index:3;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen;will-change:opacity}
   .ot-card-label{position:absolute;z-index:3;left:28px;bottom:24px;padding:11px 14px;background:#fff;color:#1d1d1f;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-  .ot-head,.ot-scroll{position:absolute;z-index:5}
+  .ot-head,.ot-scroll{position:absolute;z-index:5;opacity:0;transition:opacity .7s ease}
+  #ot-intro.is-revealed .ot-head,#ot-intro.is-revealed .ot-scroll{opacity:1}
   .ot-head{left:0;right:0;top:0;display:flex;align-items:flex-start;justify-content:space-between;padding:clamp(18px,2vw,32px)}
   .ot-brand{display:flex;flex-direction:column;color:#fff;font-family:"Cormorant Garamond",serif;font-size:clamp(25px,2.1vw,39px);font-weight:700;line-height:.65;letter-spacing:-.055em}
   .ot-brand span:last-child{margin-left:1.15em;color:var(--blue2);font-family:Inter,sans-serif;font-size:.56em;letter-spacing:.08em}
@@ -106,7 +107,7 @@
     <div class="ot-lines"></div>
     <div class="ot-stage" id="ot-stage">
       <div class="ot-card" id="ot-card">
-        <img id="ot-card-image" src="assets/intro-studio-01.jpg" alt="Studio informatique OrellanaTech">
+        <img id="ot-card-image" src="assets/intro-studio-cold.png" alt="Studio informatique OrellanaTech">
         <canvas class="ot-fluid-reveal" id="ot-fluid-reveal" aria-hidden="true"></canvas>
         <span class="ot-card-label">Grenoble · Services numériques</span>
       </div>
@@ -1305,6 +1306,7 @@ createRoot(document.getElementById("root")).render(<App />);
       }
       context.drawImage(source, x, y, drawWidth, drawHeight);
     };
+    let revealReady = false;
     const runFluidReveal = () => {
       if (!fluidCtx) {
         image.classList.add("ot-reveal-complete");
@@ -1343,6 +1345,8 @@ createRoot(document.getElementById("root")).render(<App />);
         else {
           image.classList.add("ot-reveal-complete");
           fluidCanvas.classList.add("is-complete");
+          revealReady = true;
+          intro.classList.add("is-revealed");
         }
       };
       requestAnimationFrame(renderReveal);
@@ -1414,7 +1418,7 @@ createRoot(document.getElementById("root")).render(<App />);
       stage.style.transform = `scale(${scale}) rotate(${progress * -2.2}deg)`;
       stage.style.opacity = `${opacity}`;
       title.style.transform = `scale(${1 + progress * .35}) translateY(${-progress * 24}vh)`;
-      title.style.opacity = `${Math.max(0, 1 - progress * 1.35)}`;
+      title.style.opacity = revealReady ? `${Math.max(0, 1 - progress * 1.35)}` : "0";
       image.style.transform = `scale(${1.04 + progress * .08}) translate(${mx * -10}px,${my * -8}px)`;
       ribbons.style.opacity = `${Math.max(0, 1 - progress * 2.4)}`;
       if (ctx && progress < .55) {
