@@ -20,7 +20,10 @@
   .ot-stage{position:absolute;inset:0;z-index:2;perspective:1100px;will-change:transform,opacity}
   .ot-card{position:absolute;inset:0;overflow:hidden;background:#0b1017;will-change:transform;transform-style:preserve-3d}
   .ot-card::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,113,227,.09),transparent 45%,rgba(41,151,255,.08));pointer-events:none}
-  .ot-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.06) brightness(.72);transform:scale(1.04);will-change:transform}
+  .ot-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.06) brightness(.72);transform:scale(1.04);will-change:transform;opacity:0}
+  .ot-card img.ot-reveal-complete{opacity:1}
+  .ot-fluid-reveal{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;transition:opacity .35s ease}
+  .ot-fluid-reveal.is-complete{opacity:0}
   .ot-ribbons{position:absolute;inset:0;z-index:3;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen;will-change:opacity}
   .ot-card-label{position:absolute;z-index:3;left:28px;bottom:24px;padding:11px 14px;background:#fff;color:#1d1d1f;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
   .ot-head,.ot-scroll{position:absolute;z-index:5}
@@ -104,6 +107,7 @@
     <div class="ot-stage" id="ot-stage">
       <div class="ot-card" id="ot-card">
         <img id="ot-card-image" src="assets/intro-studio-01.jpg" alt="Studio informatique OrellanaTech">
+        <canvas class="ot-fluid-reveal" id="ot-fluid-reveal" aria-hidden="true"></canvas>
         <span class="ot-card-label">Grenoble · Services numériques</span>
       </div>
     </div>
@@ -1278,10 +1282,73 @@ createRoot(document.getElementById("root")).render(<App />);
     const stage = document.getElementById("ot-stage");
     const card = document.getElementById("ot-card");
     const image = document.getElementById("ot-card-image");
+    const fluidCanvas = document.getElementById("ot-fluid-reveal");
     const title = document.getElementById("ot-title");
     const scrollHint = document.getElementById("ot-scroll");
     const ribbons = document.getElementById("ot-ribbons");
-    if (!intro || !stage || !card || !image || !title || !ribbons) return;
+    if (!intro || !stage || !card || !image || !title || !ribbons || !fluidCanvas) return;
+    const fluidCtx = fluidCanvas.getContext("2d");
+    const drawCoverImage = (context, source, width, height) => {
+      const sourceRatio = source.naturalWidth / source.naturalHeight;
+      const boxRatio = width / height;
+      let drawWidth, drawHeight, x, y;
+      if (sourceRatio > boxRatio) {
+        drawHeight = height;
+        drawWidth = height * sourceRatio;
+        x = (width - drawWidth) * .5;
+        y = 0;
+      } else {
+        drawWidth = width;
+        drawHeight = width / sourceRatio;
+        x = 0;
+        y = (height - drawHeight) * .5;
+      }
+      context.drawImage(source, x, y, drawWidth, drawHeight);
+    };
+    const runFluidReveal = () => {
+      if (!fluidCtx) {
+        image.classList.add("ot-reveal-complete");
+        return;
+      }
+      const ratio = Math.min(devicePixelRatio || 1, 2);
+      const width = innerWidth, height = innerHeight;
+      fluidCanvas.width = Math.round(width * ratio);
+      fluidCanvas.height = Math.round(height * ratio);
+      fluidCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const started = performance.now();
+      const duration = 1900;
+      const renderReveal = (now) => {
+        const raw = Math.min(1, (now - started) / duration);
+        const progress = 1 - Math.pow(1 - raw, 3);
+        const diagonal = Math.hypot(width, height);
+        fluidCtx.clearRect(0, 0, width, height);
+        fluidCtx.save();
+        fluidCtx.beginPath();
+        const points = 110;
+        const baseRadius = progress * diagonal * .72;
+        for (let index = 0; index <= points; index++) {
+          const angle = index / points * Math.PI * 2;
+          const wave = Math.sin(angle * 3 + progress * 5) * .09 + Math.cos(angle * 5 - progress * 3) * .055 + Math.sin(angle * 2) * .035;
+          const radius = Math.max(0, baseRadius * (1 + wave));
+          const x = width * .5 + Math.cos(angle) * radius;
+          const y = height * .58 + Math.sin(angle) * radius;
+          if (index === 0) fluidCtx.moveTo(x, y);
+          else fluidCtx.lineTo(x, y);
+        }
+        fluidCtx.closePath();
+        fluidCtx.clip();
+        drawCoverImage(fluidCtx, image, width, height);
+        fluidCtx.restore();
+        if (raw < 1) requestAnimationFrame(renderReveal);
+        else {
+          image.classList.add("ot-reveal-complete");
+          fluidCanvas.classList.add("is-complete");
+        }
+      };
+      requestAnimationFrame(renderReveal);
+    };
+    if (image.complete && image.naturalWidth) runFluidReveal();
+    else image.addEventListener("load", runFluidReveal, { once: true });
     const ctx = ribbons.getContext("2d");
     const target = { x: innerWidth * .5, y: innerHeight * .5 };
     class RibbonLine {
