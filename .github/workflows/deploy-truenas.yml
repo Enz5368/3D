@@ -33,7 +33,9 @@ jobs:
         run: npm run lint
 
       - name: Build production site
-        run: npm run build
+        run: |
+          npm run build
+          npm run build:production
 
       - name: Valider les fichiers de deploiement
         run: |
@@ -47,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: orellanatech-site
-          path: final/
+          path: deploy-dist/
           if-no-files-found: error
           retention-days: 7
 

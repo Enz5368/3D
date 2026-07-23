@@ -12,7 +12,13 @@ npm ci
 npm run dev
 npm run lint
 npm run build
+npm run build:production
 ```
+
+`npm run build:production` produit `deploy-dist/`, l'unique surface destinée
+à la production. Ce dossier est reconstruit depuis zéro avec une liste blanche
+de pages et de médias, compile le JSX, minifie le JavaScript et le CSS, et
+n'inclut ni prototypes, ni sources TypeScript, ni source maps, ni médias morts.
 
 ## Structure
 
@@ -26,6 +32,13 @@ npm run build
 - Réglages de la scène : `src/config/animationConfig.ts`
 
 ## Architecture de production
+
+Le dépôt de travail et le site public sont volontairement séparés :
+
+- `final/` contient la source éditable du site actuel ;
+- `scripts/build-production.mjs` prépare et contrôle la publication ;
+- `deploy-dist/` est un artefact généré et ignoré par Git ;
+- le workflow publie exclusivement `deploy-dist/`.
 
 Le build est publie dans un dossier distinct du site principal :
 
@@ -54,6 +67,18 @@ sert donc jamais un build partiellement copie.
 
 Cloudflare cree automatiquement l'entree DNS du tunnel. Aucun port entrant ne doit
 etre ouvert sur la box.
+
+## Sécurité
+
+La configuration Nginx refuse les fichiers cachés, sources, archives de
+configuration et extensions sensibles. Elle désactive l'indexation des dossiers
+et applique CSP, HSTS, Permissions Policy, protection anti-iframe, politique de
+référent stricte et contrôle des types MIME.
+
+Le HTML, le CSS et le JavaScript indispensables au rendu restent observables
+dans le navigateur : c'est une propriété fondamentale du Web. Aucun secret,
+identifiant de déploiement ou code serveur ne doit donc être placé dans ces
+fichiers.
 
 ## Deploiements suivants
 
