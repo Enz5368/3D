@@ -1,6 +1,6 @@
 Exit code: 0
 Wall time: 0.2 seconds
-Total output lines: 1523
+Total output lines: 1528
 Output:
 <!DOCTYPE html>
 <html lang="fr">
@@ -253,9 +253,7 @@ const businessCardPrices = {
 
 const categories = {
   reparation: {
-    label: "RÃ©paration PC",…12452 tokens truncated… <div className="flex items-start justify-between gap-3">
-                    <h4 className="font-bold text-ink">{item.category}</h4>
-                    <button type="button" onClick={() => cartApi.removeItem(item.id)} aria-label={`Supprimer ${item.category}`} className="h-8 w-8 shrink-0 rounded-lg border border-black/10 font-bold text-red-600">X</button>
+    label: "RÃ©paration PC",…12507 tokens truncated…} aria-label={`Supprimer ${item.category}`} className="h-8 w-8 shrink-0 rounded-lg border border-black/10 font-bold text-red-600">X</button>
                   </div>
                   <p className="mt-2 text-sm text-ink/60">{item.details}</p>
                   <p className="mt-2 text-sm text-ink/60">Budget indiquÃ© : {item.budget}</p>
@@ -506,6 +504,7 @@ createRoot(document.getElementById("root")).render(<App />);
       context.drawImage(source, x, y, drawWidth, drawHeight);
     };
     let revealReady = false;
+    let revealProgress = 0;
     const runFluidReveal = () => {
       if (!fluidCtx) {
         image.classList.add("ot-reveal-complete");
@@ -521,6 +520,9 @@ createRoot(document.getElementById("root")).render(<App />);
       const renderReveal = (now) => {
         const raw = Math.min(1, (now - started) / duration);
         const progress = 1 - Math.pow(1 - raw, 3);
+        revealProgress = progress;
+        title.style.opacity = "1";
+        title.style.clipPath = `circle(${progress * 78}vmax at 50% 58%)`;
         const diagonal = Math.hypot(width, height);
         fluidCtx.clearRect(0, 0, width, height);
         fluidCtx.save();
@@ -546,6 +548,7 @@ createRoot(document.getElementById("root")).render(<App />);
           fluidCanvas.classList.add("is-complete");
           revealReady = true;
           intro.classList.add("is-revealed");
+          title.style.clipPath = "none";
         }
       };
       requestAnimationFrame(renderReveal);
@@ -617,7 +620,7 @@ createRoot(document.getElementById("root")).render(<App />);
       stage.style.transform = `scale(${scale}) rotate(${progress * -2.2}deg)`;
       stage.style.opacity = `${opacity}`;
       title.style.transform = `scale(${1 + progress * .35}) translateY(${-progress * 24}vh)`;
-      title.style.opacity = revealReady ? `${Math.max(0, 1 - progress * 1.35)}` : "0";
+      title.style.opacity = revealProgress > 0 ? `${Math.max(0, 1 - progress * 1.35)}` : "0";
       image.style.transform = `scale(${1.04 + progress * .08}) translate(${mx * -10}px,${my * -8}px)`;
       ribbons.style.opacity = `${Math.max(0, 1 - progress * 2.4)}`;
       const backdropOpacity = Math.max(0, 1 - Math.max(0, progress - .55) / .38);
