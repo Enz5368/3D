@@ -1035,3 +1035,20 @@ serviceCards.forEach((card, index) => {
     </div>`;
   card.prepend(stage);
 });
+const cinematicIntro = document.getElementById("cinematic-intro");
+const cinematicEnter = document.getElementById("intro-enter");
+
+if (cinematicIntro && cinematicEnter) {
+  document.body.classList.add("intro-locked");
+
+  const closeCinematicIntro = () => {
+    cinematicIntro.classList.add("is-leaving");
+    document.body.classList.remove("intro-locked");
+    window.setTimeout(() => cinematicIntro.remove(), 1200);
+  };
+
+  cinematicEnter.addEventListener("click", closeCinematicIntro, { once: true });
+  cinematicEnter.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") closeCinematicIntro();
+  }, { once: true });
+}
