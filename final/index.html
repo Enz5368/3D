@@ -21,6 +21,7 @@
   .ot-card{position:absolute;inset:0;overflow:hidden;background:#0b1017;will-change:transform;transform-style:preserve-3d}
   .ot-card::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,113,227,.09),transparent 45%,rgba(41,151,255,.08));pointer-events:none}
   .ot-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.06) brightness(.72);transform:scale(1.04);will-change:transform}
+  .ot-ribbons{position:absolute;inset:0;z-index:3;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen;will-change:opacity}
   .ot-card-label{position:absolute;z-index:3;left:28px;bottom:24px;padding:11px 14px;background:#fff;color:#1d1d1f;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
   .ot-head,.ot-scroll{position:absolute;z-index:5}
   .ot-head{left:0;right:0;top:0;display:flex;align-items:flex-start;justify-content:space-between;padding:clamp(18px,2vw,32px)}
@@ -106,6 +107,7 @@
         <span class="ot-card-label">Grenoble · Services numériques</span>
       </div>
     </div>
+    <canvas class="ot-ribbons" id="ot-ribbons" aria-hidden="true"></canvas>
     <div class="ot-words" aria-hidden="true"><div class="ot-wordline" id="ot-title"><span>Orellana</span><span class="ot-title-tech">Tech</span></div></div>
     <div class="ot-head"><div class="ot-brand"><span>Orellana</span><span>TECH</span></div><span class="ot-place">GRENOBLE · FR</span></div>
     <div class="ot-scroll" id="ot-scroll">Faire défiler</div>
@@ -1278,11 +1280,63 @@ createRoot(document.getElementById("root")).render(<App />);
     const image = document.getElementById("ot-card-image");
     const title = document.getElementById("ot-title");
     const scrollHint = document.getElementById("ot-scroll");
-    if (!intro || !stage || !card || !image || !title) return;
+    const ribbons = document.getElementById("ot-ribbons");
+    if (!intro || !stage || !card || !image || !title || !ribbons) return;
+    const ctx = ribbons.getContext("2d");
+    const target = { x: innerWidth * .5, y: innerHeight * .5 };
+    class RibbonLine {
+      constructor(index, count) {
+        this.spring = .4 + (index / count) * .025 + Math.random() * .04;
+        this.friction = .49 + Math.random() * .012;
+        this.nodes = Array.from({ length: 28 }, () => ({ x: target.x, y: target.y, vx: 0, vy: 0 }));
+      }
+      update() {
+        let spring = this.spring;
+        for (let i = 0; i < this.nodes.length; i++) {
+          const node = this.nodes[i];
+          const lead = i === 0 ? target : this.nodes[i - 1];
+          node.vx += (lead.x - node.x) * spring;
+          node.vy += (lead.y - node.y) * spring;
+          if (i > 0) {
+            node.vx += lead.vx * .1;
+            node.vy += lead.vy * .1;
+          }
+          node.vx *= this.friction;
+          node.vy *= this.friction;
+          node.x += node.vx;
+          node.y += node.vy;
+          spring *= .95;
+        }
+      }
+      draw(context, color) {
+        context.beginPath();
+        context.moveTo(this.nodes[0].x, this.nodes[0].y);
+        for (let i = 1; i < this.nodes.length - 2; i++) {
+          const a = this.nodes[i], b = this.nodes[i + 1];
+          context.quadraticCurveTo(a.x, a.y, (a.x + b.x) * .5, (a.y + b.y) * .5);
+        }
+        context.strokeStyle = color;
+        context.stroke();
+      }
+    }
+    const ribbonLines = Array.from({ length: 38 }, (_, index) => new RibbonLine(index, 38));
+    const ribbonColors = ["rgba(0,113,227,.22)", "rgba(41,151,255,.2)", "rgba(100,210,255,.16)", "rgba(255,255,255,.1)"];
+    const resizeRibbons = () => {
+      const ratio = Math.min(devicePixelRatio || 1, 2);
+      ribbons.width = Math.round(innerWidth * ratio);
+      ribbons.height = Math.round(innerHeight * ratio);
+      ribbons.style.width = `${innerWidth}px`;
+      ribbons.style.height = `${innerHeight}px`;
+      ctx?.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+    resizeRibbons();
+    addEventListener("resize", resizeRibbons);
     let mx = 0, my = 0;
     intro.addEventListener("pointermove", (event) => {
       mx = event.clientX / innerWidth - .5;
       my = event.clientY / innerHeight - .5;
+      target.x = event.clientX;
+      target.y = event.clientY;
     });
     const update = () => {
       const max = intro.offsetHeight - innerHeight;
@@ -1295,6 +1349,17 @@ createRoot(document.getElementById("root")).render(<App />);
       title.style.transform = `scale(${1 + progress * .35}) translateY(${-progress * 24}vh)`;
       title.style.opacity = `${Math.max(0, 1 - progress * 1.35)}`;
       image.style.transform = `scale(${1.04 + progress * .08}) translate(${mx * -10}px,${my * -8}px)`;
+      ribbons.style.opacity = `${Math.max(0, 1 - progress * 2.4)}`;
+      if (ctx && progress < .55) {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        ctx.globalCompositeOperation = "lighter";
+        ctx.lineWidth = 1.6;
+        ribbonLines.forEach((line, index) => {
+          line.update();
+          line.draw(ctx, ribbonColors[Math.floor(index / 10) % ribbonColors.length]);
+        });
+        ctx.globalCompositeOperation = "source-over";
+      }
       if (scrollHint) scrollHint.style.opacity = `${Math.max(0, 1 - progress * 5)}`;
       requestAnimationFrame(update);
     };
