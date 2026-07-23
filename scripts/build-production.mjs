@@ -16,6 +16,7 @@ const assets = [
   "icon-smart-home.svg",
   "icon-software.svg",
   "icon-web.svg",
+  "cart-basket-ai.png",
   "intro-studio-cold.png",
   "logo-avocat-meite.svg",
   "logo-maxsono.svg",

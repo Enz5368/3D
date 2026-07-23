@@ -66,14 +66,14 @@
   @keyframes serviceFloat{0%,100%{transform:translate(-50%,-50%) rotateX(-8deg) rotateY(-22deg) translateY(0)}50%{transform:translate(-50%,-50%) rotateX(-3deg) rotateY(22deg) translateY(-11px)}}
   @media(prefers-reduced-motion:reduce){.service-object{animation:none}.service-product-card{transition:none}}
   /* Compact cards using generated 3D raster artwork only. */
-  .service-card-link { position:relative; z-index:2; display:block; height:100%; border-radius:22px; cursor:pointer; outline:none; transition:transform .45s cubic-bezier(.2,.8,.2,1); }
-  .service-card-link:hover { transform:translateY(-9px); }
+  .service-card-link { position:relative; z-index:2; display:block; height:100%; border-radius:22px; cursor:pointer; outline:none; transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
+  .service-card-link:hover { transform:translateY(-11px) scale(1.018); filter:drop-shadow(0 24px 28px rgba(0,0,0,.28)); }
   .service-card-link:focus-visible { box-shadow:0 0 0 3px #1d1d1f,0 0 0 6px #2997ff; }
-  .service-product-card { min-height:clamp(330px,43vh,450px); border-radius:22px; border:1px solid transparent; }
+  .service-product-card { min-height:clamp(330px,43vh,450px); overflow:hidden; border-radius:22px; border:1px solid transparent; transition:box-shadow .45s ease,border-color .45s ease; }
   .service-product-card:hover { box-shadow:0 28px 65px rgba(0,0,0,.42),0 0 0 1px rgba(41,151,255,.45); }
   .service-media { position:relative; isolation:isolate; aspect-ratio:3/2; flex:none; overflow:hidden; background:#02060a; }
   .service-media::before { content:""; position:absolute; z-index:0; inset:-12%; pointer-events:none; background-image:var(--service-image); background-position:center; background-size:cover; filter:blur(20px) brightness(.48) saturate(1.15); opacity:.72; transform:scale(1.12); transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
-  .service-image-hd { position:relative; z-index:1; display:block; width:100%; height:100%; object-fit:contain; transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
+  .service-image-hd { position:relative; z-index:1; display:block; width:100%; height:100%; pointer-events:none; object-fit:contain; transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
   .service-product-card:hover .service-media::before { transform:scale(1.22); filter:blur(17px) brightness(.6) saturate(1.3); }
   .service-product-card:hover .service-image-hd { transform:scale(1.065); filter:brightness(1.1) saturate(1.08); }
   .service-card-link:hover .service-product-card { box-shadow:0 30px 70px rgba(0,0,0,.48),0 0 0 1px rgba(41,151,255,.5); }
@@ -91,8 +91,9 @@
   #services .service-area-band { border-left-color:#2997ff; background:#2c2c2e; color:#d2d2d7; }
   .cart-panel { overflow:hidden; border:1px solid rgba(0,113,227,.16); border-radius:26px; background:linear-gradient(155deg,#fff 0%,#f7faff 100%); box-shadow:0 24px 70px rgba(20,45,80,.12); }
   .cart-panel-head { display:flex; align-items:center; gap:14px; padding:20px; border-bottom:1px solid rgba(29,29,31,.07); }
-  .cart-icon { position:relative; display:grid; width:54px; height:54px; flex:none; place-items:center; border-radius:17px; color:#fff; background:linear-gradient(145deg,#0071e3,#2997ff); box-shadow:0 12px 28px rgba(0,113,227,.3); }
-  .cart-count { position:absolute; right:-7px; top:-7px; display:grid; min-width:24px; height:24px; padding:0 6px; place-items:center; border:3px solid #fff; border-radius:999px; color:#fff; background:#1d1d1f; font-size:10px; font-weight:800; }
+  .cart-icon { position:relative; display:grid; flex:none; place-items:center; }
+  .cart-icon-image { display:block; width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 12px 18px rgba(0,113,227,.2)); }
+  .cart-count { position:absolute; right:2%; top:4%; display:grid; min-width:25px; height:25px; padding:0 6px; place-items:center; border:3px solid #fff; border-radius:999px; color:#fff; background:#0071e3; box-shadow:0 7px 16px rgba(0,113,227,.3); font-size:10px; font-weight:800; }
   .cart-item { display:grid; grid-template-columns:30px minmax(0,1fr) 30px; align-items:center; gap:10px; padding:12px; border:1px solid rgba(29,29,31,.07); border-radius:15px; background:#fff; box-shadow:0 8px 22px rgba(20,45,80,.05); }
   .cart-item-index { display:grid; width:30px; height:30px; place-items:center; border-radius:10px; color:#0071e3; background:rgba(0,113,227,.09); font-size:11px; font-weight:800; }
   .cart-total { margin-top:16px; padding:16px; border-radius:18px; color:#fff; background:linear-gradient(145deg,#1d1d1f,#29292c); box-shadow:0 16px 35px rgba(0,0,0,.18); }
@@ -585,11 +586,7 @@ function CartBasket({ count, size = 84, className = "" }) {
     <motion.div className={`cart-icon ${className}`} animate={controls}
       style={{ width:size, height:size }} role="img"
       aria-label={`${count} prestation${count > 1 ? "s" : ""} dans la demande`}>
-      <svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true">
-        <path d="M3.5 5h2l1.7 9.1a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.5L20.5 8H6.1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="9.4" cy="19" r="1.2" fill="currentColor"/>
-        <circle cx="17.2" cy="19" r="1.2" fill="currentColor"/>
-      </svg>
+      <img className="cart-icon-image" src="assets/cart-basket-ai.png" alt="" aria-hidden="true" />
       <span className="cart-count">{count}</span>
     </motion.div>
   );
@@ -882,9 +879,14 @@ const SERVICE_IMAGES = [
 
 function ServiceCard({ s, spriteIndex }) {
   const imagePath = `assets/${SERVICE_IMAGES[spriteIndex]}`;
+  const openService = (event) => {
+    if (s.external || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    window.location.assign(s.href);
+  };
   return (
     <a href={s.href} target={s.external ? "_blank" : undefined} rel={s.external ? "noopener noreferrer" : undefined}
-      className="service-card-link" aria-label={`${s.title} — ${s.linkLabel || "Voir la page du service"}`}>
+      onClick={openService} className="service-card-link" aria-label={`${s.title} — ${s.linkLabel || "Voir la page du service"}`}>
       <TiltCard className={`service-product-card h-full ${s.example ? "is-example" : ""}`}>
       <div className="flex h-full flex-col">
         <div className="service-media" style={{ "--service-image": `url("${imagePath}")` }}>
@@ -895,7 +897,7 @@ function ServiceCard({ s, spriteIndex }) {
         <h3 className="font-semibold text-white">{s.title}</h3>
         {s.price && <p className="font-bold text-white">{s.price}</p>}
         <p className="flex-1 text-sm text-white/55">{s.desc}</p>
-        <span className="mt-1 font-semibold text-[#2997ff]">{s.linkLabel || "Voir la page du service"} ›</span>
+        <span className="mt-1 font-semibold text-[#2997ff]">{s.linkLabel || "Voir la page du service"} <span className="service-link-arrow">›</span></span>
         </div>
       </div>
       </TiltCard>
