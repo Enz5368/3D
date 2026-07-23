@@ -66,11 +66,13 @@
   @keyframes serviceFloat{0%,100%{transform:translate(-50%,-50%) rotateX(-8deg) rotateY(-22deg) translateY(0)}50%{transform:translate(-50%,-50%) rotateX(-3deg) rotateY(22deg) translateY(-11px)}}
   @media(prefers-reduced-motion:reduce){.service-object{animation:none}.service-product-card{transition:none}}
   /* Compact cards using generated 3D raster artwork only. */
-  .service-product-card { min-height:clamp(330px,43vh,450px); border-radius:22px; }
-  .service-product-card:hover { transform:translateY(-6px); box-shadow:0 22px 55px rgba(0,0,0,.2); }
-  .service-media { position:relative; aspect-ratio:3/2; flex:none; overflow:hidden; background:#02060a; }
-  .service-image-hd { display:block; width:100%; height:100%; padding:clamp(6px,1vw,12px); object-fit:contain; transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
-  .service-product-card:hover .service-image-hd { transform:scale(1.02); filter:brightness(1.06); }
+  .service-product-card { min-height:clamp(330px,43vh,450px); border-radius:22px; border:1px solid transparent; }
+  .service-product-card:hover { box-shadow:0 28px 65px rgba(0,0,0,.42),0 0 0 1px rgba(41,151,255,.45); }
+  .service-media { position:relative; isolation:isolate; aspect-ratio:3/2; flex:none; overflow:hidden; background:#02060a; }
+  .service-media::before { content:""; position:absolute; z-index:0; inset:-12%; background-image:var(--service-image); background-position:center; background-size:cover; filter:blur(20px) brightness(.48) saturate(1.15); opacity:.72; transform:scale(1.12); transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
+  .service-image-hd { position:relative; z-index:1; display:block; width:100%; height:100%; object-fit:contain; transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .45s ease; }
+  .service-product-card:hover .service-media::before { transform:scale(1.22); filter:blur(17px) brightness(.6) saturate(1.3); }
+  .service-product-card:hover .service-image-hd { transform:scale(1.065); filter:brightness(1.1) saturate(1.08); }
   .portfolio-label { position:absolute; left:14px; top:14px; z-index:2; padding:7px 11px; border-radius:999px; background:rgba(0,113,227,.92); color:white; font-size:10px; font-weight:800; letter-spacing:.08em; box-shadow:0 8px 20px rgba(0,0,0,.24); backdrop-filter:blur(12px); }
   .service-product-card.is-example { box-shadow:inset 0 0 0 1px rgba(41,151,255,.5); }
   #services { background:#1d1d1f; color:#f5f5f7; }
@@ -211,7 +213,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   motion, useScroll, useSpring, useTransform,
-  useReducedMotion, useMotionValue,
+  useReducedMotion, useMotionValue, useAnimation,
 } from "framer-motion";
 
 /* ============================== Data ============================== */
@@ -500,8 +502,8 @@ function TiltCard({ children, className = "" }) {
     const rect = ref.current.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    ry.set(px * 10);
-    rx.set(py * -10);
+    ry.set(px * 14);
+    rx.set(py * -14);
   }
   function handleLeave() { rx.set(0); ry.set(0); }
 
@@ -511,7 +513,7 @@ function TiltCard({ children, className = "" }) {
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      whileHover={{ scale: 1.02, y: -6 }}
+      whileHover={{ scale: 1.035, y: -10 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
       className={className}
@@ -543,6 +545,79 @@ function CopyButton({ value, label }) {
       <strong className="block text-ink">{value}</strong>
       {copied && <span className="absolute right-4 top-4 text-xs font-bold uppercase text-brand-cyan">Copié</span>}
     </button>
+  );
+}
+
+/* ============================== CartBasket ============================== */
+
+const BASKET_ITEM_SLOTS = [
+  [0, 10], [-21, -1], [21, -1],
+  [0, -12], [-21, -23], [21, -23],
+];
+
+function CartBasket({ count, size = 84, className = "" }) {
+  const reduce = useReducedMotion();
+  const controls = useAnimation();
+  const prevCount = useRef(count);
+
+  useEffect(() => {
+    if (count !== prevCount.current) {
+      if (!reduce) controls.start({ scale: [1, 1.12, 0.96, 1], transition: { duration: 0.5, ease: "easeOut" } });
+      prevCount.current = count;
+    }
+  }, [count, reduce]);
+
+  const shown = Math.min(count, BASKET_ITEM_SLOTS.length);
+  const overflow = count - BASKET_ITEM_SLOTS.length;
+  const cx = 60, cy = 33;
+
+  return (
+    <motion.div
+      className={`inline-block shrink-0 ${className}`}
+      animate={reduce ? undefined : { rotate: [0, -2, 0, 2, 0] }}
+      transition={reduce ? undefined : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <motion.svg
+        viewBox="0 0 120 116" width={size} height={size}
+        role="img" aria-label={`${count} prestation${count > 1 ? "s" : ""} dans la demande`}
+        animate={controls}
+        style={{ transformOrigin: "60px 108px" }}
+      >
+        <ellipse cx="60" cy="106" rx="38" ry="6" fill="#1d1d1f" fillOpacity="0.08" />
+        <polygon points="104,33 60,56 60,102 98,82" fill="#e4e4e7" />
+        <polygon points="16,33 60,56 60,102 22,82" fill="#eeeeef" />
+        <polygon points="60,10 104,33 60,56 16,33" fill="#f5f5f7" />
+        {Array.from({ length: shown }).map((_, i) => {
+          const [dx, dy] = BASKET_ITEM_SLOTS[i];
+          const x = cx + dx, y = cy + dy;
+          const w = 17, h = 9;
+          const pts = `${x},${y - h} ${x + w},${y} ${x},${y + h} ${x - w},${y}`;
+          return (
+            <motion.polygon
+              key={i}
+              points={pts}
+              fill="#0071e3"
+              fillOpacity={0.16 + i * 0.02}
+              stroke="#0071e3"
+              strokeWidth="1.4"
+              initial={reduce ? false : { scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 420, damping: 22 }}
+              style={{ transformOrigin: `${x}px ${y}px` }}
+            />
+          );
+        })}
+        <polygon points="60,10 104,33 60,56 16,33" fill="none" stroke="#1d1d1f" strokeOpacity="0.55" strokeWidth="1.6" />
+        <path d="M 20 31 Q 60 -8 100 31" fill="none" stroke="#1d1d1f" strokeOpacity="0.35" strokeWidth="3" strokeLinecap="round" />
+        <path d="M 16 33 L 22 82 L 60 102 L 98 82 L 104 33" fill="none" stroke="#1d1d1f" strokeOpacity="0.55" strokeWidth="1.6" />
+        {overflow > 0 && (
+          <g>
+            <circle cx="100" cy="12" r="11" fill="#0071e3" />
+            <text x="100" y="16" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="700">+{overflow}</text>
+          </g>
+        )}
+      </motion.svg>
+    </motion.div>
   );
 }
 
@@ -832,11 +907,12 @@ const SERVICE_IMAGES = [
 ];
 
 function ServiceCard({ s, spriteIndex }) {
+  const imagePath = `assets/${SERVICE_IMAGES[spriteIndex]}`;
   return (
     <TiltCard className={`service-product-card h-full ${s.example ? "is-example" : ""}`}>
       <a href={s.href} target={s.external ? "_blank" : undefined} rel={s.external ? "noopener noreferrer" : undefined} className="flex h-full flex-col">
-        <div className="service-media">
-          <img className="service-image-hd" src={`assets/${SERVICE_IMAGES[spriteIndex]}`} alt="" loading="lazy" />
+        <div className="service-media" style={{ "--service-image": `url("${imagePath}")` }}>
+          <img className="service-image-hd" src={imagePath} alt="" loading="lazy" />
           {s.example && <span className="portfolio-label">PROJET RÉALISÉ</span>}
         </div>
         <div className="flex flex-1 flex-col gap-2 p-5">
@@ -1071,33 +1147,36 @@ function ConfiguratorSection({ cartApi }) {
   }
 
   return (
-    <section id="configurateur" className="bg-bg py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-4">
-        <Reveal className="mb-10 max-w-xl">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Composez votre demande en quelques clics</h2>
-          <p className="mt-3 text-ink/60">Ajoutez une ou plusieurs prestations, puis envoyez un récapitulatif clair avec vos coordonnées.</p>
+    <section id="configurateur" className="bg-bg py-24 sm:py-32">
+      <div className="mx-auto max-w-5xl px-6">
+        <Reveal className="mb-14 max-w-xl">
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Composez votre demande</h2>
+          <p className="mt-4 text-lg text-ink/50">Ajoutez une ou plusieurs prestations. Le panier se remplit, vous envoyez un récapitulatif clair.</p>
         </Reveal>
-        <Reveal delay={0.05} className="grid gap-6 lg:grid-cols-[1fr_380px]">
-          <div className="rounded-xl border border-black/10 bg-surface p-6">
-            <label className="block font-bold text-ink" htmlFor="category-select">Catégorie de besoin</label>
-            <select id="category-select" value={categoryKey} onChange={(e) => selectCategory(e.target.value)}
-              className="mt-2 w-full rounded-lg border border-black/10 bg-surface px-3 py-3 text-ink">
-              <option value="">Choisir une catégorie</option>
-              {Object.entries(categories).map(([key, c]) => <option key={key} value={key}>{c.label}</option>)}
-            </select>
+        <div className="grid gap-16 lg:grid-cols-[1fr_360px]">
+          <Reveal delay={0.05}>
+            <label className="block text-sm font-medium text-ink/50" htmlFor="category-select">Catégorie de besoin</label>
+            <div className="relative mt-2">
+              <select id="category-select" value={categoryKey} onChange={(e) => selectCategory(e.target.value)}
+                className="w-full appearance-none rounded-2xl border border-black/10 bg-surface px-4 py-4 text-lg font-medium text-ink outline-none transition-colors focus:border-brand-cyan/60">
+                <option value="">Choisir une catégorie…</option>
+                {Object.entries(categories).map(([key, c]) => <option key={key} value={key}>{c.label}</option>)}
+              </select>
+              <svg className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-ink/40" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
 
             {category && categoryKey !== "cartesVisite" && (
-              <div className="my-6 grid gap-6">
-                {category.note && <p className="rounded-lg border-l-2 border-brand-amber bg-brand-amber/10 p-3 font-semibold text-ink">{category.note}</p>}
+              <div className="mt-10 grid gap-10">
+                {category.note && <p className="rounded-xl bg-brand-cyan/5 px-4 py-3 text-sm font-medium text-ink/70">{category.note}</p>}
                 {category.questions.map((q) => (
                   <fieldset key={q.id} className="border-0 p-0">
-                    <legend className="mb-2 font-bold text-ink">{q.title}</legend>
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <legend className="mb-3 text-sm font-medium text-ink/50">{q.title}</legend>
+                    <div className="flex flex-wrap gap-2">
                       {q.options.map((opt) => {
                         const checked = (answers[q.id] || []).includes(opt);
                         return (
-                          <label key={opt} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium ${checked ? "border-brand-cyan bg-brand-cyan/5" : "border-black/10"}`}>
-                            <input type={q.type} name={q.id} checked={checked} onChange={() => toggleAnswer(q.id, q.type, opt)} className="h-4 w-4 accent-brand-cyan" />
+                          <label key={opt} className={`cursor-pointer select-none rounded-full border px-4 py-2 text-sm font-medium transition-colors ${checked ? "border-brand-cyan bg-brand-cyan text-white" : "border-black/10 bg-surface text-ink/70 hover:border-brand-cyan/40"}`}>
+                            <input type={q.type} name={q.id} checked={checked} onChange={() => toggleAnswer(q.id, q.type, opt)} className="sr-only" />
                             {opt}
                           </label>
                         );
@@ -1109,44 +1188,56 @@ function ConfiguratorSection({ cartApi }) {
             )}
 
             {categoryKey === "cartesVisite" && (
-              <div className="my-6"><BusinessCardPicker state={cardState} setState={setCardState} /></div>
+              <div className="mt-10"><BusinessCardPicker state={cardState} setState={setCardState} /></div>
             )}
 
             <button type="button" onClick={addToCart}
-              className="w-full rounded-full bg-brand-amber py-3 font-extrabold text-white shadow-lg shadow-brand-amber/25 transition-transform hover:-translate-y-0.5">
+              className="mt-12 w-full rounded-full bg-ink py-4 text-base font-semibold text-white transition-transform hover:-translate-y-0.5 active:translate-y-0">
               Ajouter à ma demande
             </button>
-            {message && <p className={`mt-3 font-bold ${message.type === "error" ? "text-red-600" : "text-brand-cyan"}`}>{message.text}</p>}
-          </div>
+            {message && <p className={`mt-4 text-sm font-medium ${message.type === "error" ? "text-red-600" : "text-brand-cyan"}`}>{message.text}</p>}
+          </Reveal>
 
-          <aside className="h-fit rounded-xl border border-black/10 bg-surface p-6">
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-brand-cyan">Récapitulatif</p>
-                <h3 className="font-bold text-ink">Ma demande</h3>
+          <Reveal delay={0.1}>
+            <aside className="lg:sticky lg:top-24">
+              <div className="flex flex-col items-center border-b border-black/10 pb-6 text-center">
+                <CartBasket count={cartApi.cart.length} size={112} />
+                <p className="mt-2 text-sm font-medium text-ink/50">
+                  {cartApi.cart.length === 0 ? "Votre panier est vide" : `${cartApi.cart.length} prestation${cartApi.cart.length > 1 ? "s" : ""} ajoutée${cartApi.cart.length > 1 ? "s" : ""}`}
+                </p>
               </div>
-              <button type="button" onClick={cartApi.clearCart} className="font-bold text-brand-cyan">Vider</button>
-            </div>
-            <div className="grid gap-3">
-              {cartApi.cart.length === 0 && <p className="text-ink/60">Aucun service ajouté pour le moment.</p>}
-              {cartApi.cart.map((item) => (
-                <article key={item.id} className="rounded-lg bg-surface p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <h4 className="font-bold text-ink">{item.category}</h4>
-                    <button type="button" onClick={() => cartApi.removeItem(item.id)} aria-label={`Supprimer ${item.category}`} className="h-8 w-8 shrink-0 rounded-lg border border-black/10 font-bold text-red-600">X</button>
+
+              <div className="mt-6 grid gap-3">
+                {cartApi.cart.length === 0 && <p className="text-sm text-ink/40">Ajoutez une prestation depuis le formulaire pour la voir apparaître ici.</p>}
+                {cartApi.cart.map((item) => (
+                  <article key={item.id} className="group flex items-start justify-between gap-3 border-b border-black/5 pb-3">
+                    <div className="min-w-0">
+                      <h4 className="truncate font-medium text-ink">{item.category}</h4>
+                      <p className="mt-0.5 text-sm text-ink/45">{item.priceLabel || formatPrice(item.price)}</p>
+                    </div>
+                    <button type="button" onClick={() => cartApi.removeItem(item.id)} aria-label={`Retirer ${item.category}`}
+                      className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full text-ink/30 transition-colors hover:bg-red-50 hover:text-red-600">
+                      <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                    </button>
+                  </article>
+                ))}
+              </div>
+
+              {cartApi.cart.length > 0 && (
+                <>
+                  <div className="mt-5 flex items-baseline justify-between text-lg font-semibold">
+                    <span className="text-ink/60">Total estimé</span><strong className="text-ink">{cartApi.totalsLabel}</strong>
                   </div>
-                  <p className="mt-2 text-sm text-ink/60">{item.details}</p>
-                  <p className="mt-2 text-sm text-ink/60">Budget indiqué : {item.budget}</p>
-                  <span className="mt-2 inline-block font-bold text-brand-cyan">Prestation estimée : {item.priceLabel || formatPrice(item.price)}</span>
-                </article>
-              ))}
-            </div>
-            <div className="mt-5 flex items-baseline justify-between border-t border-black/10 pt-4 text-lg font-extrabold">
-              <span>Total estimé</span><strong>{cartApi.totalsLabel}</strong>
-            </div>
-            <p className="mt-3 text-sm text-ink/60">Prix estimatif. Le devis final est confirmé après échange selon le matériel, la distance et la difficulté.</p>
-          </aside>
-        </Reveal>
+                  <div className="mt-4 flex items-center justify-between">
+                    <button type="button" onClick={cartApi.clearCart} className="text-sm font-medium text-ink/40 transition-colors hover:text-ink/70">Vider le panier</button>
+                    <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToId("contact"); }} className="text-sm font-semibold text-brand-cyan">Envoyer →</a>
+                  </div>
+                  <p className="mt-4 text-xs leading-relaxed text-ink/35">Prix estimatif. Le devis final est confirmé après échange selon le matériel, la distance et la difficulté.</p>
+                </>
+              )}
+            </aside>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -1218,56 +1309,59 @@ function ContactSection({ cart, summary }) {
     if (missing.length) { e.preventDefault(); setFormMessage({ type: "error", text: `Renseigne les champs obligatoires : ${missing.join(", ")}.` }); }
   }
 
-  const inputClass = "mt-2 w-full rounded-lg border border-black/10 bg-surface px-3 py-3 font-normal text-ink outline-none focus:border-brand-cyan focus:ring-4 focus:ring-brand-cyan/15";
+  const inputClass = "mt-2 w-full rounded-xl border border-black/10 bg-surface px-4 py-3.5 font-normal text-ink outline-none transition-colors placeholder:text-ink/30 focus:border-brand-cyan/60";
+  const labelClass = "block text-sm font-medium text-ink/50";
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-bg py-20 sm:py-28">
-      <ParallaxGlow className="left-1/2 top-0 h-96 w-96 -translate-x-1/2 bg-brand-cyan/10" />
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-[0.8fr_1.2fr]">
+    <section id="contact" className="bg-bg py-24 sm:py-32">
+      <div className="mx-auto grid max-w-5xl gap-16 px-6 md:grid-cols-[0.85fr_1.15fr]">
         <Reveal>
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Parlons de votre projet</h2>
-          <p className="mt-4 text-ink/60">Une panne, un site web, un logiciel sur mesure ou une installation à préparer ? Envoyez votre demande, je vous réponds avec une estimation claire.</p>
-          <ul className="mt-6 grid gap-3 text-ink/60">
-            {[
-              "Services physiques avec zone d'intervention précisée dans les services",
-              "Supplément possible selon les kilomètres",
-              "Estimation ajustée après échange",
-              "Contact possible par téléphone, email ou formulaire",
-              "Configuration domotique limitée aux objets compatibles",
-            ].map((t) => (
-              <li key={t} className="relative pl-6"><span className="absolute left-0 top-2 h-2.5 w-2.5 rounded-full bg-brand-cyan"></span>{t}</li>
-            ))}
-          </ul>
-          <div className="mt-7 grid gap-3">
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Parlons de votre projet</h2>
+          <p className="mt-4 text-lg text-ink/50">Une panne, un site web, un logiciel sur mesure ou une installation à préparer ? Envoyez votre demande, je réponds avec une estimation claire.</p>
+
+          <div className="mt-8 flex items-center gap-4 rounded-2xl bg-surface px-5 py-4">
+            <CartBasket count={cart.length} size={68} />
+            <div className="min-w-0">
+              <p className="font-medium text-ink">
+                {cart.length === 0 ? "Panier vide" : `${cart.length} prestation${cart.length > 1 ? "s" : ""} jointe${cart.length > 1 ? "s" : ""}`}
+              </p>
+              <p className="mt-0.5 text-sm text-ink/45">
+                {cart.length === 0
+                  ? <a href="#configurateur" onClick={(e) => { e.preventDefault(); scrollToId("configurateur"); }} className="font-medium text-brand-cyan">Composer ma demande →</a>
+                  : "Le récapitulatif part avec votre message."}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-3">
             <CopyButton value="07 59 72 78 56" label="Téléphone" />
             <CopyButton value="orellanatech37@gmail.com" label="Email" />
           </div>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <form onSubmit={handleSubmit} action="https://formspree.io/f/mjgdjjyv" method="POST" className="grid gap-4 rounded-xl border border-black/10 bg-surface p-6">
+          <form onSubmit={handleSubmit} action="https://formspree.io/f/mjgdjjyv" method="POST" className="grid gap-5">
             <input type="hidden" name="_subject" value="Nouvelle demande OrellanaTech" />
-            <h3 className="text-lg font-bold text-ink">Décrire mon besoin</h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="font-bold text-ink">Prénom *<input type="text" name="prenom" autoComplete="given-name" className={inputClass} /></label>
-              <label className="font-bold text-ink">Nom<input type="text" name="nom" autoComplete="family-name" className={inputClass} /></label>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <label className={labelClass}>Prénom *<input type="text" name="prenom" autoComplete="given-name" className={inputClass} /></label>
+              <label className={labelClass}>Nom<input type="text" name="nom" autoComplete="family-name" className={inputClass} /></label>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="font-bold text-ink">Email *<input type="email" name="email" autoComplete="email" className={inputClass} /></label>
-              <label className="font-bold text-ink">Téléphone <span className="font-normal text-ink/45">(facultatif)</span><input type="tel" name="telephone" autoComplete="tel" className={inputClass} /></label>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <label className={labelClass}>Email *<input type="email" name="email" autoComplete="email" className={inputClass} /></label>
+              <label className={labelClass}>Téléphone <span className="text-ink/30">(facultatif)</span><input type="tel" name="telephone" autoComplete="tel" className={inputClass} /></label>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="font-bold text-ink">Ville <span className="font-normal text-ink/45">(facultatif)</span><input type="text" name="ville" autoComplete="address-level2" className={inputClass} /></label>
-              <label className="font-bold text-ink">Créneau souhaité<input type="text" name="creneau" placeholder="Ex : soir, samedi, semaine" className={inputClass} /></label>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <label className={labelClass}>Ville <span className="text-ink/30">(facultatif)</span><input type="text" name="ville" autoComplete="address-level2" className={inputClass} /></label>
+              <label className={labelClass}>Créneau souhaité<input type="text" name="creneau" placeholder="Ex : soir, samedi, semaine" className={inputClass} /></label>
             </div>
-            <label className="font-bold text-ink">Message complémentaire
-              <textarea name="message" rows="4" placeholder="Modèle du PC, référence téléphone, contraintes, disponibilités..." className={inputClass}></textarea>
+            <label className={labelClass}>Message complémentaire
+              <textarea name="message" rows="4" placeholder="Modèle du PC, référence téléphone, contraintes, disponibilités…" className={inputClass}></textarea>
             </label>
             <input type="hidden" name="recapitulatif_panier" value={summary} readOnly />
-            <button type="submit" className="rounded-full bg-brand-amber py-3 font-extrabold text-white shadow-lg shadow-brand-amber/25">
+            <button type="submit" className="mt-1 rounded-full bg-ink py-4 text-base font-semibold text-white transition-transform hover:-translate-y-0.5 active:translate-y-0">
               Envoyer ma demande
             </button>
-            {formMessage && <p className={`font-bold ${formMessage.type === "error" ? "text-red-600" : "text-brand-cyan"}`}>{formMessage.text}</p>}
+            {formMessage && <p className={`text-sm font-medium ${formMessage.type === "error" ? "text-red-600" : "text-brand-cyan"}`}>{formMessage.text}</p>}
           </form>
         </Reveal>
       </div>
